@@ -24,4 +24,4 @@
         %td= category
         %td.margined-links
           - benchmarks.each do |benchmark|
-            = link_to benchmark, "/benchmarks/#{benchmark}.html"
+            = link_to benchmark, "/benchmarks/yjit-bench.html?benchmark=#{benchmark}"
