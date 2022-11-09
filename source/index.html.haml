@@ -11,8 +11,17 @@
 %table.benchmarks-table.table.table-striped
   %thead
     %tr
-      %th Name
+      %th Category
+      %th Benchmarks
   %tbody
-    - %w[optcarrot railsbench].each do |name|
+    :ruby
+      category_benchmarks = {
+        'Headlining Benchmarks' => %w[activerecord hexapdf liquid-render mail psych-load railsbench],
+        'Other Benchmarks' => %w[binarytrees chunky_png erubi erubi_rails etanni fannkuchredux lee nbody optcarrot ruby-lsp rubykon],
+      }
+    - category_benchmarks.each do |category, benchmarks|
       %tr
-        %td= link_to name, "/benchmarks/#{name}.html"
+        %td= category
+        %td.margined-links
+          - benchmarks.each do |benchmark|
+            = link_to name, "/benchmarks/#{name}.html"
