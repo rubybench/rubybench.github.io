@@ -1,7 +1,9 @@
 .text-center
   %h1 Hardware
 
-  %p All benchmark results are measured on the machine with following spec.
+  %p
+    All benchmark results are measured on the machine with following spec, using
+    #{link_to 'ruby/ruby-docker-images', 'https://github.com/ruby/ruby-docker-images'}.
 
 %table.benchmarks-table.table.table-striped
   %thead
@@ -11,13 +13,10 @@
   %tbody
     %tr
       %td Operating System
-      %td Ubuntu 18.04
+      %td Ubuntu 22.04
     %tr
       %td Processor
-      %td Intel(R) Core(TM) i7-6700 CPU @ 3.40GHz
+      %td AMD Ryzen 9 5900HX with Radeon Graphics
     %tr
       %td Memory
-      %td 62GiB
-    %tr
-      %td C compiler
-      %td gcc version 7.4.0
+      %td 15GiB
