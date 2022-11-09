@@ -1,3 +1,8 @@
+:ruby
+  benchmarks = %w[
+    activerecord hexapdf liquid-render mail psych-load railsbench
+    binarytrees chunky_png erubi erubi_rails etanni fannkuchredux lee nbody optcarrot ruby-lsp rubykon
+  ]
 .benchmark_page
   .text-center
     %h1 yjit-bench
@@ -7,18 +12,13 @@
     #graph_metadata{ 'data-unit': 's', 'data-type': 'line' }
 
     %ul.nav.nav-pills.benchmark_navbar
-      :ruby
-        benchmarks = %w[
-          activerecord hexapdf liquid-render mail psych-load railsbench
-          binarytrees chunky_png erubi erubi_rails etanni fannkuchredux lee nbody optcarrot ruby-lsp rubykon
-        ]
       - benchmarks.each_with_index do |benchmark, index|
         %li{ class: ('active' if index == 0) }
           %a.activate-chart{ href: '#', 'data-id': "chart-#{index}" }= benchmark
 
 - graph_data = { 'data-versions': %w[foo bar baz], 'data-vm-values': [12, 13, 14], 'data-jit-values': [15, 16, 17], 'data-yjit-values': [18, 19, 20] }
-.benchmark_graph{ graph_data, id: 'chart-0', 'data-name': 'activerecord', style: "width: 100%; height: 340px;" }
-.benchmark_graph{ graph_data, id: 'chart-1', 'data-name': 'hexapdf', style: "width: 100%; height: 340px;" }
+- benchmarks.each_with_index do |benchmark, index|
+  .benchmark_graph{ graph_data, id: "chart-#{index}", 'data-name': benchmark, style: "width: 100%; height: 340px;" }
 
 :javascript
   $(function() {
@@ -35,7 +35,7 @@
       }]
       if (graphElement.data('jit-values')) {
         series.push({
-          name: name + " +JIT",
+          name: name + " +MJIT",
           data: graphElement.data('jit-values')
         })
       }
