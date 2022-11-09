@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/k0kubun/middleman.git
-  revision: 3090784903424feca7445982a6218d6b5f336224
+  revision: bd681def6bcee5acbcfd9123adeb90e34ff56212
   branch: master
   specs:
     middleman (5.0.0.rc.2)
