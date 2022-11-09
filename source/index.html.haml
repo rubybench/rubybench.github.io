@@ -5,4 +5,17 @@
     %p.large_explanation
       Ruby benchmark results
 
-= partial 'benchmarks/table'
+%h2.text-center yjit-bench
+%h4.text-center Set of benchmarks for the YJIT CRuby JIT compiler
+
+%table.benchmarks-table.table.table-striped
+  %thead
+    %tr
+      %th Name
+      %th Results
+  %tbody
+    - %w[optcarrot railsbench].each do |name|
+      %tr
+        %td= name
+        %td.margined-links
+          = link_to name, "/benchmarks/#{name}.html"
