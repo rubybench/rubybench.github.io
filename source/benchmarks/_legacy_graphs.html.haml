@@ -1,0 +1,68 @@
+:ruby
+  require 'json'
+  require 'yaml'
+
+  data = YAML.load_file(yaml_path)
+
+  metrics_unit = data.fetch('metrics_unit')
+  results = data.fetch('results')
+
+#graph_metadata{ 'data-unit': metrics_unit, 'data-type': chart_type }
+
+- results.each do |name, value_by_version|
+  :ruby
+    versions = value_by_version.keys.map { |v| v.sub(/ --jit\z/, '') }.uniq
+    vm_values = versions.map { |version| value_by_version[version] }
+    jit_values = versions.map { |version| value_by_version["#{version} --jit"] }
+
+    graph_data = {
+      'data-versions': versions.to_json,
+      'data-vm-values': vm_values.to_json,
+      'data-jit-values': jit_values.to_json,
+    }
+  .benchmark_graph{ graph_data, id: name, style: "width: #{width_percent}%;" }
+
+  - if defined?(show_table) && show_table
+    - versions.zip(vm_values).each_slice(16).each do |group|
+      %table.table.table-striped.table-bordered{ style: 'width: 40%; margin: 8px auto;' }
+        %tbody
+          %tr
+            %th Revision
+            - group.map(&:first).each do |version|
+              %td= version
+          %tr
+            %th= metrics_unit
+            - group.map(&:last).each do |value|
+              %td= value
+
+:javascript
+  $(function () {
+    var type = $('#graph_metadata').data('type');
+    var unit = $('#graph_metadata').data('unit');
+    $('.benchmark_graph').each(function() {
+      var id = $(this).attr('id');
+      Highcharts.chart(id, {
+        chart: {
+          type: type
+        },
+        title: {
+          text: id
+        },
+        yAxis: {
+          title: {
+            text: unit
+          }
+        },
+        xAxis: {
+          categories: $(this).data('versions')
+        },
+        series: [{
+          name: id,
+          data: $(this).data('vm-values')
+        },{
+          name: id + " +JIT",
+          data: $(this).data('jit-values')
+        }]
+      });
+    });
+  });

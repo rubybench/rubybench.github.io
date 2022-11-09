@@ -1,0 +1,33 @@
+!!!
+%html
+  %head
+    %meta{ content: 'text/html; charset=UTF-8', 'http-equiv': 'Content-Type' }
+    %meta{ charset: 'utf-8' }
+    %meta{ content: 'ie=edge', 'http-equiv': 'x-ua-compatible' }
+    %meta{ content: 'width=device-width, initial-scale=1, shrink-to-fit=no', name: 'viewport' }
+    %title benchmark-driver
+    = stylesheet_link_tag 'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css'
+    = stylesheet_link_tag 'site'
+    = javascript_include_tag 'https://code.highcharts.com/highcharts.src.js'
+    = javascript_include_tag 'https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js'
+  %body
+    %nav.navbar
+      .container
+        = link_to 'benchmark-driver.github.io', '/', class: 'navbar-brand'
+        .collapse.navbar-collapse
+          %ul.nav.navbar-nav.navbar-right
+            %li
+              = link_to 'Benchmarks', '/benchmarks.html'
+            %li
+              = link_to 'Hardware', '/hardware.html'
+    .container
+      = yield
+
+    %footer.footer
+      .container.text-center
+        %p.text-muted
+          Developed by #{link_to '@k0kubun', 'https://github.com/k0kubun'}.
+          See the source code at #{link_to 'benchmark-driver/sky2-viewer', 'https://github.com/benchmark-driver/sky2-viewer'}.
+          %br
+          This is built to test edge features of benchmark_driver.gem.
+          You may want to see #{link_to 'RubyBench', 'https://rubybench.org'} as well.

@@ -1,0 +1,122 @@
+:ruby
+  require 'json'
+  require 'yaml'
+
+  # Required Parameters:
+  # value_by_version_by_job
+  # description_by_version
+  # metrics_unit
+
+  # Optional Parameters:
+  width_percent ||= 70
+  height_pixel ||= 340
+  chart_type ||= 'column'
+
+#graph_metadata{ 'data-unit': metrics_unit, 'data-type': chart_type }
+
+- if value_by_version_by_job.size > 1
+  %ul.nav.nav-pills.benchmark_navbar
+    - value_by_version_by_job.each_with_index do |(job, value_by_version), index|
+      %li{ class: ('active' if index == 0) }
+        %a.activate-chart{ href: '#', 'data-id': "chart-#{index}" }= job
+
+- value_by_version_by_job.each_with_index do |(job, value_by_version), index|
+  :ruby
+    versions = description_by_version.map(&:first).reject { |v| v.match?(/ --y?jit\z/) || !value_by_version.key?(v) }
+    vm_values = versions.map { |version| value_by_version[version] }
+    jit_values = versions.map { |version| value_by_version["#{version} --jit"] }
+    yjit_values = versions.map { |version| value_by_version["#{version} --yjit"] }
+
+    graph_data = {
+      'data-versions': versions.map { |v|
+        v_label =
+          if v.match(/\A\h{10}\z/)
+            "#{description_by_version.fetch(v).match(/\Aruby [^ ]+ \(([^ ]+)/)[1]} (#{v})"
+          else
+            v
+          end
+        "Ruby: #{v_label} <br>#{description_by_version.fetch(v)}"
+      }.to_json,
+      'data-vm-values': vm_values.to_json,
+    }
+    if jit_values.any? { |v| !v.nil? }
+      graph_data['data-jit-values'] = jit_values.to_json
+    end
+    if yjit_values.any? { |v| !v.nil? }
+      graph_data['data-yjit-values'] = yjit_values.to_json
+    end
+  .benchmark_graph{ graph_data, id: "chart-#{index}", 'data-name': job, style: "width: #{width_percent}%; height: #{height_pixel}px;" }
+
+:javascript
+  $(function() {
+    function activateChart(graphElement) {
+      var type = $('#graph_metadata').data('type');
+      var unit = $('#graph_metadata').data('unit');
+      var name = graphElement.data('name');
+      $('.benchmark_graph').hide();
+      graphElement.show();
+
+      var series = [{
+        name: name,
+        data: graphElement.data('vm-values')
+      }]
+      if (graphElement.data('jit-values')) {
+        series.push({
+          name: name + " +JIT",
+          data: graphElement.data('jit-values')
+        })
+      }
+      if (graphElement.data('yjit-values')) {
+        series.push({
+          name: name + " +YJIT",
+          data: graphElement.data('yjit-values')
+        })
+      }
+
+      Highcharts.chart(graphElement.attr('id'), {
+        chart: {
+          zoomType: 'x',
+          type: type
+        },
+        title: {
+          text: name
+        },
+        yAxis: {
+          min: 0,
+          title: {
+            text: unit
+          }
+        },
+        xAxis: {
+          categories: graphElement.data('versions'),
+          labels: {
+            formatter: function() {
+              return /Ruby: ([^<T ]+)/.exec(this.value)[1]
+            }
+          }
+        },
+        series: series
+      });
+    };
+
+    $('.activate-chart').on('click', function(event) {
+      event.preventDefault();
+      $('.benchmark_navbar li').removeClass('active');
+      $(this).closest('li').addClass('active');
+      var id = $(this).data('id');
+      var graphElement = $("#" + id);
+      activateChart(graphElement);
+      window.location.hash = id;
+    });
+
+    var url = document.location.toString();
+    if (url.match('#chart-')) {
+      var id = url.split('#')[1];
+      $('.benchmark_navbar li').removeClass('active');
+      activateChart($('.benchmark_graph#' + id));
+      $('.activate-chart[data-id=' + id + ']').closest('li').addClass('active');
+    }
+    else {
+      activateChart($('.benchmark_graph#chart-0'));
+    }
+  });
