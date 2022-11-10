@@ -22,12 +22,10 @@
 
 :javascript
   $(function() {
-    function activateChart(graphElement) {
+    function plotChart(graphElement) {
       var type = $('#graph_metadata').data('type');
       var unit = $('#graph_metadata').data('unit');
       var name = graphElement.data('name');
-      $('.benchmark_graph').hide();
-      graphElement.show();
 
       var series = [{
         name: name,
@@ -75,6 +73,38 @@
       });
     };
 
+    function activateChart(graphElement) {
+      // TODO: show a loading indicator until it receives a response?
+
+      var benchmark = graphElement.attr('id');
+      $.get('https://raw.githubusercontent.com/rubybench/rubybench/master/results/' + benchmark + '.yml').done(function (data) {
+        // Show only graphElement and hide everything else
+        $('.benchmark_graph').hide();
+        graphElement.show();
+
+        var versions = [];
+        var vm_values = [];
+        var mjit_values = [];
+        var yjit_values = [];
+
+        var date_results = jsyaml.load(data);
+        for (var date in date_results) {
+          var results = date_results[date];
+          versions.push(date);
+          vm_values.push(results[0]);
+          mjit_values.push(results[1]);
+          yjit_values.push(results[2]);
+        }
+
+        graphElement.data('versions', versions);
+        graphElement.data('vm-values', vm_values);
+        graphElement.data('jit-values', mjit_values);
+        graphElement.data('yjit-values', yjit_values);
+
+        plotChart(graphElement);
+      });
+    };
+
     $('.activate-chart').on('click', function(event) {
       event.preventDefault();
       $('.benchmark_navbar li').removeClass('active');
@@ -86,7 +116,7 @@
     });
 
     var url = document.location.toString();
-    if (url.match('#chart-')) {
+    if (url.match('#')) {
       var id = url.split('#')[1];
       $('.benchmark_navbar li').removeClass('active');
       activateChart($('.benchmark_graph#' + id));
