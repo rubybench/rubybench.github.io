@@ -16,12 +16,14 @@
         %li{ class: ('active' if index == 0) }
           %a.activate-chart{ href: '#', 'data-id': benchmark }= benchmark
 
-- graph_data = { 'data-versions': %w[foo bar baz], 'data-vm-values': [12, 13, 14], 'data-jit-values': [15, 16, 17], 'data-yjit-values': [18, 19, 20] }
+- graph_data = { 'data-versions': [], 'data-vm-values': [], 'data-mjit-values': [], 'data-yjit-values': [] }
 - benchmarks.each do |benchmark|
   .benchmark_graph{ graph_data, id: benchmark, 'data-name': benchmark, style: "width: 100%; height: 340px;" }
 
 :javascript
   $(function() {
+    var rubies = {};
+
     function plotChart(graphElement) {
       var type = $('#graph_metadata').data('type');
       var unit = $('#graph_metadata').data('unit');
@@ -30,19 +32,13 @@
       var series = [{
         name: name,
         data: graphElement.data('vm-values')
+      }, {
+        name: name + ' +MJIT',
+        data: graphElement.data('mjit-values')
+      }, {
+        name: name + ' +YJIT',
+        data: graphElement.data('yjit-values')
       }]
-      if (graphElement.data('jit-values')) {
-        series.push({
-          name: name + " +MJIT",
-          data: graphElement.data('jit-values')
-        })
-      }
-      if (graphElement.data('yjit-values')) {
-        series.push({
-          name: name + " +YJIT",
-          data: graphElement.data('yjit-values')
-        })
-      }
 
       Highcharts.setOptions({ lang: { thousandsSep: '' } })
       Highcharts.chart(graphElement.attr('id'), {
@@ -62,12 +58,9 @@
         xAxis: {
           categories: graphElement.data('versions'),
           labels: {
-            // formatter: function() {
-            //   return /Ruby: ([^<T ]+)/.exec(this.value)[1]
-            // }
-            //formatter: function() {
-            //  return this.value;
-            //}
+            formatter: function() {
+              return /ruby [^ ]+ \(([^)T ]+)/.exec(this.value)[1];
+            }
           }
         },
         series: series
@@ -90,8 +83,9 @@
 
         var date_results = jsyaml.load(data);
         for (var date in date_results) {
+          var ruby = rubies[date];
           var results = date_results[date];
-          versions.push(date);
+          versions.push(ruby);
           vm_values.push(results[0]);
           mjit_values.push(results[1]);
           yjit_values.push(results[2]);
@@ -99,7 +93,7 @@
 
         graphElement.data('versions', versions);
         graphElement.data('vm-values', vm_values);
-        graphElement.data('jit-values', mjit_values);
+        graphElement.data('mjit-values', mjit_values);
         graphElement.data('yjit-values', yjit_values);
 
         plotChart(graphElement);
@@ -116,14 +110,20 @@
       window.location.hash = id;
     });
 
-    var url = document.location.toString();
-    if (url.match('#')) {
-      var id = url.split('#')[1];
-      $('.benchmark_navbar li').removeClass('active');
-      activateChart($('.benchmark_graph#' + id));
-      $('.activate-chart[data-id=' + id + ']').closest('li').addClass('active');
-    }
-    else {
-      activateChart($('.benchmark_graph##{benchmarks.first}'));
-    }
+    // Load rubies first
+    $.get('https://raw.githubusercontent.com/rubybench/rubybench/master/rubies.yml').done(function (data) {
+      rubies = jsyaml.load(data);
+
+      // Activate a benchmark result
+      var url = document.location.toString();
+      if (url.match('#')) {
+        var id = url.split('#')[1];
+        $('.benchmark_navbar li').removeClass('active');
+        activateChart($('.benchmark_graph#' + id));
+        $('.activate-chart[data-id=' + id + ']').closest('li').addClass('active');
+      }
+      else {
+        activateChart($('.benchmark_graph##{benchmarks.first}'));
+      }
+    });
   });
