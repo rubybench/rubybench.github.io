@@ -1,7 +1,8 @@
 :ruby
-  headlining_benchmarks = %w[activerecord hexapdf liquid-render mail psych-load railsbench]
-  other_benchmarks = %w[binarytrees chunky_png erubi erubi_rails etanni fannkuchredux lee nbody optcarrot ruby-lsp rubykon]
-  benchmarks = headlining_benchmarks + other_benchmarks
+  category_benchmarks = [
+    %w[activerecord hexapdf liquid-render mail psych-load railsbench],
+    %w[binarytrees chunky_png erubi erubi_rails etanni fannkuchredux lee nbody optcarrot ruby-lsp rubykon],
+  ]
 .benchmark_page
   .text-center
     %h1 yjit-bench
@@ -11,17 +12,16 @@
     #graph_metadata{ 'data-unit': 'seconds', 'data-type': 'line' }
 
     %ul.nav.nav-pills.benchmark_navbar
-      - headlining_benchmarks.each_with_index do |benchmark, index|
-        %li{ class: ('active' if index == 0) }
-          %a.activate-chart{ href: '#', 'data-id': benchmark }= benchmark
-      %li{ style: 'clear: both; float: left; display: block; position: relative;' }
-      - other_benchmarks.each do |benchmark|
-        %li
-          %a.activate-chart{ href: '#', 'data-id': benchmark }= benchmark
+      - category_benchmarks.each do |benchmarks|
+        - benchmarks.each_with_index do |benchmark, index|
+          %li
+            %a.activate-chart{ href: '#', 'data-id': benchmark }= benchmark
+        %li{ style: 'clear: both; float: left; display: block; position: relative;' }
 
 - graph_data = { 'data-versions': [], 'data-vm-values': [], 'data-mjit-values': [], 'data-yjit-values': [] }
-- benchmarks.each do |benchmark|
-  .benchmark_graph{ graph_data, id: benchmark, 'data-name': benchmark, style: "width: 100%; height: 340px;" }
+- category_benchmarks.each do |benchmarks|
+  - benchmarks.each do |benchmark|
+    .benchmark_graph{ graph_data, id: benchmark, 'data-name': benchmark, style: "width: 100%; height: 340px;" }
 
 :javascript
   $(function() {
@@ -66,7 +66,12 @@
             }
           }
         },
-        series: series
+        series: series,
+        plotOptions: {
+          series: {
+            animation: { duration: 400 }
+          }
+        }
       });
     };
 
@@ -126,7 +131,7 @@
         $('.activate-chart[data-id=' + id + ']').closest('li').addClass('active');
       }
       else {
-        activateChart($('.benchmark_graph##{benchmarks.first}'));
+        activateChart($('.benchmark_graph##{category_benchmarks.first.first}'));
       }
     });
   });
