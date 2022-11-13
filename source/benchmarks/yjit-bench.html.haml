@@ -62,7 +62,9 @@
           categories: graphElement.data('versions'),
           labels: {
             formatter: function() {
-              return /ruby [^ ]+ \(([^)T ]+)/.exec(this.value)[1];
+              var date = /ruby [^ ]+ \(([^)T ]+)/.exec(this.value)?.[1];
+              var sha = /master ([^ ]+)\)/.exec(this.value)?.[1];
+              return '<a href="https://github.com/ruby/ruby/commit/' + sha + '">' + date + '</a>';
             }
           }
         },
