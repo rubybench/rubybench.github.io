@@ -5,6 +5,27 @@
     %p.large_explanation
       Benchmark results for CRuby development
 
+%h2.text-center yjit-bench
+%h4.text-center Set of benchmarks for the YJIT CRuby JIT compiler
+
+%table.benchmarks-table.table.table-striped
+  %thead
+    %tr
+      %th Category
+      %th Benchmarks
+  %tbody
+    :ruby
+      category_benchmarks = {
+        'Headlining Benchmarks' => %w[activerecord hexapdf liquid-render mail psych-load railsbench ruby-lsp],
+        'Other Benchmarks' => %w[binarytrees chunky_png erubi erubi_rails etanni fannkuchredux lee nbody optcarrot rubykon],
+      }
+    - category_benchmarks.each do |category, benchmarks|
+      %tr
+        %td= category
+        %td.margined-links
+          - benchmarks.each do |benchmark|
+            = link_to benchmark, "/benchmarks/yjit-bench.html##{benchmark}"
+
 %h2.text-center ruby/ruby
 %h4.text-center Ruby core benchmarks
 
@@ -64,24 +85,3 @@
         %td.margined-links
           - benchmarks.each do |benchmark|
             = link_to benchmark.split('_', 2).last.gsub(/_/, ' '), "/benchmarks/ruby.html##{benchmark}"
-
-%h2.text-center yjit-bench
-%h4.text-center Set of benchmarks for the YJIT CRuby JIT compiler
-
-%table.benchmarks-table.table.table-striped
-  %thead
-    %tr
-      %th Category
-      %th Benchmarks
-  %tbody
-    :ruby
-      category_benchmarks = {
-        'Headlining Benchmarks' => %w[activerecord hexapdf liquid-render mail psych-load railsbench ruby-lsp],
-        'Other Benchmarks' => %w[binarytrees chunky_png erubi erubi_rails etanni fannkuchredux lee nbody optcarrot rubykon],
-      }
-    - category_benchmarks.each do |category, benchmarks|
-      %tr
-        %td= category
-        %td.margined-links
-          - benchmarks.each do |benchmark|
-            = link_to benchmark, "/benchmarks/yjit-bench.html##{benchmark}"
