@@ -1,6 +1,6 @@
 :ruby
   category_benchmarks = [
-    %w[activerecord hexapdf liquid-render mail psych-load railsbench ruby-lsp liquid-c],
+    %w[activerecord hexapdf liquid-render mail psych-load railsbench ruby-lsp sequel liquid-c],
     %w[binarytrees chunky_png erubi erubi_rails etanni fannkuchredux ruby-json lee nbody optcarrot rubykon],
     %w[30k_ifelse 30k_methods cfunc_itself fib getivar keyword_args respond_to setivar str_concat],
   ]
@@ -48,13 +48,16 @@
 
       var series = [{
         name: name,
-        data: graphElement.data('vm-values')
+        data: graphElement.data('vm-values'),
+        color: '#3285e1'
       }, {
         name: name + ' +YJIT',
-        data: graphElement.data('yjit-values')
+        data: graphElement.data('yjit-values'),
+        color: '#489d32'
       }, {
         name: name + ' +RJIT',
-        data: graphElement.data('rjit-values')
+        data: graphElement.data('rjit-values'),
+        color: '#e2c13e'
       }]
 
       Highcharts.setOptions({ lang: { thousandsSep: '' } })
