@@ -1,6 +1,6 @@
 :ruby
   category_benchmarks = [
-    %w[activerecord hexapdf liquid-render mail psych-load railsbench ruby-lsp sequel liquid-c],
+    %w[activerecord hexapdf liquid-render mail psych-load railsbench ruby-lsp liquid-c],
     %w[binarytrees chunky_png erubi erubi_rails etanni fannkuchredux ruby-json lee nbody optcarrot rubykon],
     %w[30k_ifelse 30k_methods cfunc_itself fib getivar keyword_args respond_to setivar str_concat],
   ]
@@ -10,7 +10,7 @@
 
     = github_link 'Shopify/yjit-bench'
 
-    #graph_metadata{ 'data-unit': 'seconds', 'data-type': 'line' }
+    #graph_metadata{ 'data-type': 'line' }
 
     %ul.nav.nav-pills.benchmark_navbar
       - category_benchmarks.each do |benchmarks|
@@ -24,14 +24,27 @@
   - benchmarks.each do |benchmark|
     .benchmark_graph{ graph_data, id: benchmark, 'data-name': benchmark, style: "width: 100%; height: 340px;" }
 
+.benchmark_page
+  .text-center
+    %div.radio
+      %label.metric_type
+        %input{ type: 'radio', name: 'metric_type', value: 'Speedup', checked: true }
+        Speedup
+      %label.metric_type
+        %input{ type: 'radio', name: 'metric_type', value: 'Time' }
+        Time
+
 :javascript
   $(function() {
     var rubies = {};
 
-    function plotChart(graphElement) {
-      var type = $('#graph_metadata').data('type');
-      var unit = $('#graph_metadata').data('unit');
+    function plotChart(graphElement, metricType) {
+      var graphType = $('#graph_metadata').data('type');
       var name = graphElement.data('name');
+      var unit = 'seconds';
+      if (metricType == 'Speedup') {
+        unit = 'times';
+      }
 
       var series = [{
         name: name,
@@ -48,7 +61,7 @@
       Highcharts.chart(graphElement.attr('id'), {
         chart: {
           zoomType: 'x',
-          type: type
+          type: graphType
         },
         title: {
           text: name
@@ -66,6 +79,17 @@
               var date = /ruby [^ ]+ \(([^)T ]+)/.exec(this.value)?.[1];
               var sha = /master ([^ ]+)\)/.exec(this.value)?.[1];
               return '<a href="https://github.com/ruby/ruby/commit/' + sha + '">' + date + '</a>';
+            }
+          }
+        },
+        tooltip: {
+          formatter: function(tooltip) {
+            var prefix = '<span style="font-size: 10px">' + this.x + '</span><br/>' +
+              '<span style="color:' + this.color + '">●</span> ' + this.series.name + ': ';
+            if (metricType == 'Speedup') {
+              return prefix + '<b>' + this.y.toFixed(2) + 'x faster</b>';
+            } else {
+              return prefix + '<b>' + this.y + 's</b>';
             }
           }
         },
@@ -91,15 +115,25 @@
         var vm_values = [];
         var yjit_values = [];
         var rjit_values = [];
+        var metricType = $('input[name="metric_type"]:checked').val();
 
         var date_results = jsyaml.load(data);
         for (var date in date_results) {
           var ruby = rubies[date];
-          var results = date_results[date];
+          var vm_result = date_results[date][0];
+          var yjit_result = date_results[date][1];
+          var rjit_result = date_results[date][2];
+
           versions.push(ruby);
-          vm_values.push(results[0]);
-          yjit_values.push(results[1]);
-          rjit_values.push(results[2]);
+          if (metricType == 'Speedup') {
+            vm_values.push(vm_result / vm_result);
+            yjit_values.push(vm_result / yjit_result);
+            rjit_values.push(vm_result / rjit_result);
+          } else {
+            vm_values.push(vm_result);
+            yjit_values.push(yjit_result);
+            rjit_values.push(rjit_result);
+          }
         }
 
         graphElement.data('versions', versions);
@@ -107,15 +141,24 @@
         graphElement.data('yjit-values', yjit_values);
         graphElement.data('rjit-values', rjit_values);
 
-        plotChart(graphElement);
+        plotChart(graphElement, metricType);
       });
     };
 
+    // Switch active tab and render it
     $('.activate-chart').on('click', function(event) {
       event.preventDefault();
       $('.benchmark_navbar li').removeClass('active');
       $(this).closest('li').addClass('active');
-      var id = $(this).data('id');
+      var id = $('.benchmark_navbar .active .activate-chart').data('id');
+      var graphElement = $("#" + id);
+      activateChart(graphElement);
+      window.location.hash = id;
+    });
+
+    // Render it on radio click
+    $('.metric_type').on('click', function(event) {
+      var id = $('.benchmark_navbar .active .activate-chart').data('id');
       var graphElement = $("#" + id);
       activateChart(graphElement);
       window.location.hash = id;
