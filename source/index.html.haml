@@ -1,12 +1,7 @@
-.index_page.text-center
-  %h1.large_title Rubybench
-
-  .description_box
-    %p.large_explanation
-      Benchmark results for CRuby development
-
 %h2.text-center yjit-bench
-%h4.text-center Set of benchmarks for the YJIT CRuby JIT compiler
+
+.benchmarks-wrapper
+  = partial 'yjit-bench'
 
 %table.benchmarks-table.table.table-striped
   %thead
@@ -16,7 +11,7 @@
   %tbody
     :ruby
       category_benchmarks = {
-        'Headlining Benchmarks' => %w[activerecord hexapdf liquid-render mail psych-load railsbench ruby-lsp sequel liquid-c],
+        'Headline Benchmarks' => %w[activerecord hexapdf liquid-render mail psych-load railsbench ruby-lsp sequel liquid-c],
         'Other Benchmarks' => %w[binarytrees chunky_png erubi erubi_rails etanni fannkuchredux ruby-json lee nbody optcarrot rubykon],
         'MicroBenchmarks' => %w[30k_ifelse 30k_methods cfunc_itself fib getivar keyword_args respond_to setivar str_concat],
       }
@@ -30,7 +25,7 @@
 %h2.text-center ruby/ruby
 %h4.text-center Ruby core benchmarks
 
-%table.benchmarks-table.table.table-striped
+%table.large-margin.benchmarks-table.table.table-striped
   %thead
     %tr
       %th Category

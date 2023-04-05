@@ -1,0 +1,120 @@
+%h4.text-center
+  Benchmark results on
+  %span.benchmark_date ...
+
+.benchmark_page
+  .text-center
+    #graph_metadata{ 'data-type': 'column' }
+
+    %ul.nav.nav-pills.benchmark_navbar
+      - %w[Headline Other Micro].each_with_index do |category, index|
+        %li{ class: ('active' if index == 0) }
+          %a.activate-chart{ href: '#', 'data-id': category.downcase }= category
+      %li{ style: 'clear: both; float: left; display: block; position: relative;' }
+
+- %w[headline other micro].each do |category|
+  .benchmark_graph{ id: category, style: "width: 100%; height: 340px;" }
+
+:javascript
+  $(function() {
+    var dashboard = {};
+
+    function plotChart(graphElement, category) {
+      var graphType = $('#graph_metadata').data('type');
+      var unit = 'times';
+
+      var series = [{
+        name: 'No JIT',
+        data: dashboard[category]['no_jit'],
+        color: '#3285e1'
+      }, {
+        name: 'YJIT',
+        data: dashboard[category]['yjit'],
+        color: '#489d32'
+      }, {
+        name: 'RJIT',
+        data: dashboard[category]['rjit'],
+        color: '#e2c13e'
+      }]
+      var categories = dashboard[category]['benchmarks'];
+
+      Highcharts.setOptions({ lang: { thousandsSep: '' } })
+      Highcharts.chart(graphElement.attr('id'), {
+        chart: {
+          zoomType: 'x',
+          type: graphType
+        },
+        title: {
+          text: null
+        },
+        yAxis: {
+          min: 0,
+          title: {
+            text: unit
+          }
+        },
+        xAxis: {
+          categories: categories,
+        },
+        tooltip: {
+          formatter: function(tooltip) {
+            var prefix = '<span style="font-size: 10px">' + this.x + '</span><br/>' +
+              '<span style="color:' + this.color + '">●</span> ' + this.series.name + ': ';
+            return prefix + '<b>' + this.y.toFixed(2) + 'x faster</b>';
+          }
+        },
+        series: series,
+        plotOptions: {
+          series: {
+            animation: { duration: 400 }
+          }
+        }
+      });
+    };
+
+    function activateChart(graphElement) {
+      // Show only graphElement and hide everything else
+      $('.benchmark_graph').hide();
+      graphElement.show();
+
+      // Plot charts in graphElement
+      var category = graphElement.attr('id');
+      plotChart(graphElement, category);
+    };
+
+    // Switch active tab and render it
+    $('.activate-chart').on('click', function(event) {
+      event.preventDefault();
+      $('.benchmark_navbar li').removeClass('active');
+      $(this).closest('li').addClass('active');
+      var id = $('.benchmark_navbar .active .activate-chart').data('id');
+      var graphElement = $('#' + id);
+      activateChart(graphElement);
+
+      if (history.pushState) {
+          history.pushState(null, null, '#' + id);
+      } else {
+          location.hash = '#' + id;
+      }
+    });
+
+    // Load dashboard first
+    $.get('https://raw.githubusercontent.com/rubybench/rubybench/master/results/dashboard.yml').done(function (data) {
+      dashboard = jsyaml.load(data);
+
+      // Update the date
+      $('.benchmark_date').html(dashboard['date']);
+
+      // Activate a benchmark result
+      var url = document.location.toString();
+      if (url.match('#')) {
+        var id = url.split('#')[1];
+        $('.benchmark_navbar li').removeClass('active');
+        activateChart($('.benchmark_graph#' + id));
+        $('.activate-chart[data-id=' + id + ']').closest('li').addClass('active');
+      }
+      else {
+        activateChart($('.benchmark_graph#headline'));
+      }
+    });
+  });

@@ -1,6 +1,6 @@
 :ruby
   category_benchmarks = [
-    %w[activerecord hexapdf liquid-render mail psych-load railsbench ruby-lsp sequel liquid-c],
+    %w[activerecord erubi_rails hexapdf liquid-c liquid-render mail psych-load railsbench ruby-lsp sequel],
     %w[binarytrees chunky_png erubi erubi_rails etanni fannkuchredux ruby-json lee nbody optcarrot rubykon],
     %w[30k_ifelse 30k_methods cfunc_itself fib getivar keyword_args respond_to setivar str_concat],
   ]
@@ -47,18 +47,19 @@
       }
 
       var series = [{
-        name: name,
+        name: 'No JIT',
         data: graphElement.data('vm-values'),
         color: '#3285e1'
       }, {
-        name: name + ' +YJIT',
+        name: 'YJIT',
         data: graphElement.data('yjit-values'),
         color: '#489d32'
       }, {
-        name: name + ' +RJIT',
+        name: 'RJIT',
         data: graphElement.data('rjit-values'),
         color: '#e2c13e'
       }]
+      var categories = graphElement.data('versions');
 
       Highcharts.setOptions({ lang: { thousandsSep: '' } })
       Highcharts.chart(graphElement.attr('id'), {
@@ -76,7 +77,7 @@
           }
         },
         xAxis: {
-          categories: graphElement.data('versions'),
+          categories: categories,
           labels: {
             formatter: function() {
               var date = /ruby [^ ]+ \(([^)T ]+)/.exec(this.value)?.[1];

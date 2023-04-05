@@ -42,12 +42,18 @@ a {
 
   .benchmark_navbar {
     margin-top: 20px;
+    margin-bottom: 10px;
     display: inline-block;
   }
 }
 
 .metric_type {
   margin: 0 12px;
+}
+
+.benchmarks-wrapper {
+  width: 70%;
+  margin: 0 auto 30px auto;
 }
 
 .benchmarks-table {
