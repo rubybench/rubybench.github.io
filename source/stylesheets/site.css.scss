@@ -40,10 +40,14 @@ a {
     margin: 60px auto;
   }
 
-  .benchmark_navbar {
+  .nav.benchmark_navbar {
     margin-top: 20px;
     margin-bottom: 10px;
     display: inline-block;
+
+    li > a {
+      padding: 10px 13px;
+    }
   }
 }
 
