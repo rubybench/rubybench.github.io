@@ -1,9 +1,13 @@
 :ruby
-  category_benchmarks = [
-    %w[activerecord erubi_rails hexapdf liquid-c liquid-render mail psych-load railsbench ruby-lsp sequel],
-    %w[binarytrees chunky_png erubi erubi_rails etanni fannkuchredux ruby-json lee nbody optcarrot rubykon],
-    %w[30k_ifelse 30k_methods cfunc_itself fib getivar keyword_args respond_to setivar str_concat],
-  ]
+  benchmarks_yml = File.expand_path('../../yjit-bench/benchmarks.yml', __dir__)
+  benchmarks = YAML.load_file(benchmarks_yml)
+  category_benchmarks = %w[headline other micro].map do |category|
+    benchmarks.filter_map do |name, benchmark|
+      if benchmark.fetch('category', 'other') == category
+        name
+      end
+    end
+  end
 .benchmark_page
   .text-center
     %h1 yjit-bench
