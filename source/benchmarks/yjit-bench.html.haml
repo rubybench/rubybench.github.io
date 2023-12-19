@@ -110,7 +110,7 @@
       // TODO: show a loading indicator until it receives a response?
 
       var benchmark = graphElement.attr('id');
-      $.get('https://raw.githubusercontent.com/rubybench/rubybench/d37fd2a87870722970864b6b9e4fa82ed520f0cf/results/yjit-bench/' + benchmark + '.yml').done(function (data) {
+      $.get('https://raw.githubusercontent.com/rubybench/rubybench/master/results/yjit-bench/' + benchmark + '.yml').done(function (data) {
         // Show only graphElement and hide everything else
         $('.benchmark_graph').hide();
         graphElement.show();
@@ -169,7 +169,7 @@
     });
 
     // Load rubies first
-    $.get('https://raw.githubusercontent.com/rubybench/rubybench/d37fd2a87870722970864b6b9e4fa82ed520f0cf/rubies.yml').done(function (data) {
+    $.get('https://raw.githubusercontent.com/rubybench/rubybench/master/rubies.yml').done(function (data) {
       rubies = jsyaml.load(data);
 
       // Activate a benchmark result
