@@ -1,6 +1,5 @@
 :ruby
-  benchmarks_yml = File.expand_path('../../yjit-bench/benchmarks.yml', __dir__)
-  benchmarks = YAML.load_file(benchmarks_yml)
+  benchmarks = YAML.load_file(File.expand_path('../../yjit-bench/benchmarks.yml', __dir__))
   category_benchmarks = %w[headline other micro].map do |category|
     benchmarks.filter_map do |name, benchmark|
       if benchmark.fetch('category', 'other') == category

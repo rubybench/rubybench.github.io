@@ -10,10 +10,11 @@
       %th Benchmarks
   %tbody
     :ruby
+      benchmarks = YAML.load_file(File.expand_path('../yjit-bench/benchmarks.yml', __dir__))
       category_benchmarks = {
-        'Headline Benchmarks' => %w[activerecord hexapdf liquid-render mail psych-load railsbench ruby-lsp sequel liquid-c],
-        'Other Benchmarks' => %w[binarytrees chunky_png erubi erubi_rails etanni fannkuchredux ruby-json lee nbody optcarrot rubykon],
-        'MicroBenchmarks' => %w[30k_ifelse 30k_methods cfunc_itself fib getivar keyword_args respond_to setivar str_concat],
+        'Headline Benchmarks' => benchmarks.filter_map { |name, benchmark| name if benchmark.fetch('category', 'other') == 'headline' },
+        'Other Benchmarks' => benchmarks.filter_map { |name, benchmark| name if benchmark.fetch('category', 'other') == 'other' },
+        'MicroBenchmarks' => benchmarks.filter_map { |name, benchmark| name if benchmark.fetch('category', 'other') == 'micro' },
       }
     - category_benchmarks.each do |category, benchmarks|
       %tr
