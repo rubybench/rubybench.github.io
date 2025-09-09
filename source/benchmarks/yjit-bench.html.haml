@@ -22,7 +22,7 @@
             %a.activate-chart{ href: '#', 'data-id': benchmark }= benchmark
         %li{ style: 'clear: both; float: left; display: block; position: relative;' }
 
-- graph_data = { 'data-versions': [], 'data-vm-values': [], 'data-zjit-values': [], 'data-yjit-values': [] }
+- graph_data = { 'data-ruby-versions': [], 'data-vm-values': [], 'data-zjit-values': [], 'data-yjit-values': [] }
 - category_benchmarks.each do |benchmarks|
   - benchmarks.each do |benchmark|
     .benchmark_graph{ graph_data, id: benchmark, 'data-name': benchmark, style: "width: 100%; height: 340px;" }
@@ -62,7 +62,7 @@
         data: graphElement.data('zjit-values'),
         color: '#e2c13e'
       }]
-      var categories = graphElement.data('versions');
+      var categories = graphElement.data('ruby-versions');
 
       Highcharts.setOptions({ lang: { thousandsSep: '' } })
       Highcharts.chart(graphElement.attr('id'), {
@@ -83,9 +83,14 @@
           categories: categories,
           labels: {
             formatter: function() {
-              var date = /ruby [^ ]+ \(([^)T ]+)/.exec(this.value)?.[1];
-              var sha = /master ([^ ]+)\)/.exec(this.value)?.[1];
-              return '<a href="https://github.com/ruby/ruby/commit/' + sha + '">' + date + '</a>';
+              var date = Number(this.value);
+              var year = Math.floor(date / 10000);
+              var month = Math.floor(date / 100) % 100;
+              var day = date % 100;
+
+              var sha = rubies[date];
+              var date_label = String(year) + '-' + String(month).padStart(2, '0') + '-' + String(day).padStart(2, '0');
+              return '<a href="https://github.com/ruby/ruby/commit/' + sha + '">' + date_label + '</a>';
             }
           }
         },
@@ -118,7 +123,7 @@
         $('.benchmark_graph').hide();
         graphElement.show();
 
-        var versions = [];
+        var ruby_versions = [];
         var vm_values = [];
         var yjit_values = [];
         var zjit_values = [];
@@ -126,12 +131,11 @@
 
         var date_results = jsyaml.load(data);
         for (var date in date_results) {
-          var ruby = rubies[date];
           var vm_result = date_results[date][0];
           var yjit_result = date_results[date][1];
           var zjit_result = date_results[date][2];
 
-          versions.push(ruby);
+          ruby_versions.push(date);
           if (metricType == 'Speedup') {
             vm_values.push(vm_result / vm_result);
             yjit_values.push(vm_result / yjit_result);
@@ -143,7 +147,7 @@
           }
         }
 
-        graphElement.data('versions', versions);
+        graphElement.data('ruby-versions', ruby_versions);
         graphElement.data('vm-values', vm_values);
         graphElement.data('yjit-values', yjit_values);
         graphElement.data('zjit-values', zjit_values);
