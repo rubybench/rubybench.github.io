@@ -41,6 +41,17 @@
   $(function() {
     var rubies = {};
 
+    // Convert 20250908 or "20250908" to "2025-09-08"
+    function formatDate(date) {
+      var n = Number(date);
+
+      var year = Math.floor(n / 10000);
+      var month = Math.floor(n / 100) % 100;
+      var day = n % 100;
+
+      return String(year) + '-' + String(month).padStart(2, '0') + '-' + String(day).padStart(2, '0');
+    }
+
     function plotChart(graphElement, metricType) {
       var graphType = $('#graph_metadata').data('type');
       var name = graphElement.data('name');
@@ -84,19 +95,16 @@
           labels: {
             formatter: function() {
               var date = Number(this.value);
-              var year = Math.floor(date / 10000);
-              var month = Math.floor(date / 100) % 100;
-              var day = date % 100;
-
               var sha = rubies[date];
-              var date_label = String(year) + '-' + String(month).padStart(2, '0') + '-' + String(day).padStart(2, '0');
-              return '<a href="https://github.com/ruby/ruby/commit/' + sha + '">' + date_label + '</a>';
+              return '<a href="https://github.com/ruby/ruby/commit/' + sha + '">' + formatDate(date) + '</a>';
             }
           }
         },
         tooltip: {
           formatter: function(tooltip) {
-            var prefix = '<span style="font-size: 10px">' + this.x + '</span><br/>' +
+            var date = Number(this.category);
+            var sha = rubies[date].substring(0, 10);
+            var prefix = '<span style="font-size: 10px">' + formatDate(date) + ' revision ' + sha + '</span><br/>' +
               '<span style="color:' + this.color + '">●</span> ' + this.series.name + ': ';
             if (metricType == 'Speedup') {
               return prefix + '<b>' + this.y.toFixed(2) + 'x faster</b>';
