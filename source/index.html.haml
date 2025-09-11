@@ -1,4 +1,4 @@
-%h2.text-center yjit-bench
+%h2.text-center ruby-bench
 
 .benchmarks-wrapper
   = partial 'dashboard'
@@ -10,7 +10,7 @@
       %th Benchmarks
   %tbody
     :ruby
-      benchmarks = YAML.load_file(File.expand_path('../yjit-bench/benchmarks.yml', __dir__))
+      benchmarks = YAML.load_file(File.expand_path('../ruby-bench/benchmarks.yml', __dir__))
       category_benchmarks = {
         'Headline Benchmarks' => benchmarks.filter_map { |name, benchmark| name if benchmark.fetch('category', 'other') == 'headline' },
         'Other Benchmarks' => benchmarks.filter_map { |name, benchmark| name if benchmark.fetch('category', 'other') == 'other' },
@@ -21,7 +21,7 @@
         %td= category
         %td.margined-links
           - benchmarks.each do |benchmark|
-            = link_to benchmark, "/benchmarks/yjit-bench.html##{benchmark}"
+            = link_to benchmark, "/benchmarks/ruby-bench.html##{benchmark}"
 
 %h2.text-center ruby/ruby
 %h4.text-center Ruby core benchmarks

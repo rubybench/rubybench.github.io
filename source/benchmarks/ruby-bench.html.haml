@@ -1,5 +1,5 @@
 :ruby
-  benchmarks = YAML.load_file(File.expand_path('../../yjit-bench/benchmarks.yml', __dir__))
+  benchmarks = YAML.load_file(File.expand_path('../../ruby-bench/benchmarks.yml', __dir__))
   category_benchmarks = %w[headline other micro].map do |category|
     benchmarks.filter_map do |name, benchmark|
       if benchmark.fetch('category', 'other') == category
@@ -9,9 +9,9 @@
   end
 .benchmark_page
   .text-center
-    %h1 yjit-bench
+    %h1 ruby-bench
 
-    = github_link 'ruby/yjit-bench'
+    = github_link 'ruby/ruby-bench'
 
     #graph_metadata{ 'data-type': 'line' }
 
@@ -126,7 +126,7 @@
       // TODO: show a loading indicator until it receives a response?
 
       var benchmark = graphElement.attr('id');
-      $.get('https://raw.githubusercontent.com/rubybench/rubybench/master/results/yjit-bench/' + benchmark + '.yml').done(function (data) {
+      $.get('https://raw.githubusercontent.com/rubybench/rubybench/master/results/ruby-bench/' + benchmark + '.yml').done(function (data) {
         // Show only graphElement and hide everything else
         $('.benchmark_graph').hide();
         graphElement.show();

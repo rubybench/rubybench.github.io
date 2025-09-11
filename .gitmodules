@@ -1,3 +1,3 @@
-[submodule "yjit-bench"]
-	path = yjit-bench
-	url = https://github.com/ruby/yjit-bench
+[submodule "ruby-bench"]
+	path = ruby-bench
+	url = https://github.com/ruby/ruby-bench
