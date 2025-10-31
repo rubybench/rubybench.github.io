@@ -17,7 +17,7 @@
 
     %ul.nav.nav-pills.benchmark_navbar
       - category_benchmarks.each do |benchmarks|
-        - benchmarks.each_with_index do |benchmark, index|
+        - benchmarks.reject{|b, _| b.to_s.include? 'ractor/'}.each_with_index do |benchmark, index|
           %li
             %a.activate-chart{ href: '#', 'data-id': benchmark }= benchmark
         %li{ style: 'clear: both; float: left; display: block; position: relative;' }

@@ -20,7 +20,7 @@
       %tr
         %td= category
         %td.margined-links
-          - benchmarks.each do |benchmark|
+          - benchmarks.reject{|b, _| b.to_s.include? 'ractor/'}.each do |benchmark|
             = link_to benchmark, "/benchmarks/ruby-bench.html##{benchmark}"
 
 %h2.text-center ruby/ruby
