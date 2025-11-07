@@ -126,7 +126,7 @@
       // TODO: show a loading indicator until it receives a response?
 
       var benchmark = graphElement.attr('id');
-      $.get('https://raw.githubusercontent.com/rubybench/rubybench-data/main/results/ruby-bench/' + benchmark + '.yml').done(function (data) {
+      $.get('https://raw.githubusercontent.com/rubybench/rubybench-data/main/ruby-bench/' + benchmark + '.yml').done(function (data) {
         // Show only graphElement and hide everything else
         $('.benchmark_graph').hide();
         graphElement.show();
