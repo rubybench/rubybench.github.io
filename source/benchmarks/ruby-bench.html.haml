@@ -41,17 +41,6 @@
   $(function() {
     var rubies = {};
 
-    // Convert 20250908 or "20250908" to "2025-09-08"
-    function formatDate(date) {
-      var n = Number(date);
-
-      var year = Math.floor(n / 10000);
-      var month = Math.floor(n / 100) % 100;
-      var day = n % 100;
-
-      return String(year) + '-' + String(month).padStart(2, '0') + '-' + String(day).padStart(2, '0');
-    }
-
     function plotChart(graphElement, metricType) {
       var graphType = $('#graph_metadata').data('type');
       var name = graphElement.data('name');
@@ -72,39 +61,33 @@
         name: 'ZJIT',
         data: graphElement.data('zjit-values'),
         color: '#e2c13e'
-      }]
-      var categories = graphElement.data('ruby-versions');
+      }];
 
-      Highcharts.setOptions({ lang: { thousandsSep: '' } })
-      Highcharts.chart(graphElement.attr('id'), {
-        chart: {
-          zoomType: 'x',
-          type: graphType
-        },
-        title: {
-          text: name
-        },
-        yAxis: {
-          min: 0,
-          title: {
-            text: unit
-          }
-        },
-        xAxis: {
-          categories: categories,
-          labels: {
-            formatter: function() {
-              var date = Number(this.value);
-              var sha = rubies[date];
-              return '<a href="https://github.com/ruby/ruby/commit/' + sha + '">' + formatDate(date) + '</a>';
+      var config = RubyBench.createBaseChartConfig(graphElement, {
+        graphType: graphType,
+        title: name,
+        yAxisTitle: unit,
+        categories: graphElement.data('ruby-versions'),
+        xAxisLabels: {
+          formatter: function() {
+            var date = Number(this.value);
+            var sha = rubies[date];
+            if (sha) {
+              return '<a href="https://github.com/ruby/ruby/commit/' + sha + '">' + RubyBench.formatDate(date) + '</a>';
+            } else {
+              return RubyBench.formatDate(date);
             }
           }
         },
         tooltip: {
-          formatter: function(tooltip) {
+          formatter: function() {
             var date = Number(this.category);
-            var sha = rubies[date].substring(0, 10);
-            var prefix = '<span style="font-size: 10px">' + formatDate(date) + ' revision ' + sha + '</span><br/>' +
+            var sha = rubies[date];
+            var prefix = '<span style="font-size: 10px">' + RubyBench.formatDate(date);
+            if (sha) {
+              prefix += ' revision ' + sha.substring(0, 10);
+            }
+            prefix += '</span><br/>' +
               '<span style="color:' + this.color + '">●</span> ' + this.series.name + ': ';
             if (metricType == 'Speedup') {
               return prefix + '<b>' + this.y.toFixed(2) + 'x faster</b>';
@@ -113,89 +96,83 @@
             }
           }
         },
-        series: series,
-        plotOptions: {
-          series: {
-            animation: { duration: 400 }
-          }
-        }
+        series: series
       });
+
+      try {
+        RubyBench.plotChart(graphElement, config);
+      } catch(e) {
+        console.error('Error in plotChart:', e);
+        console.error('Stack trace:', e.stack);
+        RubyBench.showError(graphElement, 'Chart rendering error: ' + e.message);
+      }
     };
 
     function activateChart(graphElement) {
-      // TODO: show a loading indicator until it receives a response?
-
       var benchmark = graphElement.attr('id');
-      $.get('https://raw.githubusercontent.com/rubybench/rubybench-data/main/ruby-bench/' + benchmark + '.yml').done(function (data) {
-        // Show only graphElement and hide everything else
-        $('.benchmark_graph').hide();
-        graphElement.show();
+      $.get('https://raw.githubusercontent.com/rubybench/rubybench-data/main/ruby-bench/' + benchmark + '.yml')
+        .done(function (data) {
+          RubyBench.showOnlyGraph(graphElement);
 
-        var ruby_versions = [];
-        var vm_values = [];
-        var yjit_values = [];
-        var zjit_values = [];
-        var metricType = $('input[name="metric_type"]:checked').val();
+          var ruby_versions = [];
+          var vm_values = [];
+          var yjit_values = [];
+          var zjit_values = [];
+          var metricType = RubyBench.getSelectedMetricType();
 
-        var date_results = jsyaml.load(data);
-        for (var date in date_results) {
-          var vm_result = date_results[date][0];
-          var yjit_result = date_results[date][1];
-          var zjit_result = date_results[date][2];
-          ruby_versions.push(date);
-          if (metricType == 'Speedup') {
-            vm_values.push(vm_result / vm_result);
-            yjit_values.push(vm_result / yjit_result);
-            zjit_values.push(vm_result / zjit_result);
-          } else {
-            vm_values.push(vm_result);
-            yjit_values.push(yjit_result);
-            zjit_values.push(zjit_result);
+          try {
+            var date_results = jsyaml.load(data);
+            for (var date in date_results) {
+              var vm_result = date_results[date][0];
+              var yjit_result = date_results[date][1];
+              var zjit_result = date_results[date][2];
+              ruby_versions.push(date);
+              if (metricType == 'Speedup') {
+                vm_values.push(vm_result ? 1 : null);
+                yjit_values.push(yjit_result && vm_result ? vm_result / yjit_result : null);
+                zjit_values.push(zjit_result && vm_result ? vm_result / zjit_result : null);
+              } else {
+                vm_values.push(vm_result || null);
+                yjit_values.push(yjit_result || null);
+                zjit_values.push(zjit_result || null);
+              }
+            }
+
+            graphElement.data('name', benchmark);
+            graphElement.data('ruby-versions', ruby_versions);
+            graphElement.data('vm-values', vm_values);
+            graphElement.data('yjit-values', yjit_values);
+            graphElement.data('zjit-values', zjit_values);
+
+            plotChart(graphElement, metricType);
+          } catch(e) {
+            console.error('Error processing benchmark data:', e);
+            RubyBench.showError(graphElement, 'Error loading benchmark data: ' + e.message);
           }
-        }
-
-        graphElement.data('ruby-versions', ruby_versions);
-        graphElement.data('vm-values', vm_values);
-        graphElement.data('yjit-values', yjit_values);
-        graphElement.data('zjit-values', zjit_values);
-
-        plotChart(graphElement, metricType);
-      });
+        })
+        .fail(function(xhr) {
+          console.error('Failed to load benchmark data:', xhr.status);
+          RubyBench.showError(graphElement, 'Failed to load benchmark data (HTTP ' + xhr.status + ')');
+        });
     };
 
-    // Switch active tab and render it
-    $('.activate-chart').on('click', function(event) {
-      event.preventDefault();
-      $('.benchmark_navbar li').removeClass('active');
-      $(this).closest('li').addClass('active');
-      var id = $('.benchmark_navbar .active .activate-chart').data('id');
-      var graphElement = $("#" + id);
-      activateChart(graphElement);
-      window.location.hash = id;
+    // Setup navigation
+    var navigation = RubyBench.setupBenchmarkNavigation({
+      activateChart: activateChart,
+      defaultBenchmark: $('.benchmark_graph##{category_benchmarks.first.first}')
     });
 
-    // Render it on radio click
-    $('.metric_type').on('click', function(event) {
-      var id = $('.benchmark_navbar .active .activate-chart').data('id');
+    // Setup metric type handlers
+    RubyBench.setupMetricTypeHandlers(function(event) {
+      var id = RubyBench.getActiveBenchmarkId();
       var graphElement = $("#" + id);
       activateChart(graphElement);
       window.location.hash = id;
     });
 
     // Load rubies first
-    $.get('https://raw.githubusercontent.com/rubybench/rubybench-data/master/rubies.yml').done(function (data) {
+    $.get('https://raw.githubusercontent.com/rubybench/rubybench-data/main/rubies.yml').done(function (data) {
       rubies = jsyaml.load(data);
-
-      // Activate a benchmark result
-      var url = document.location.toString();
-      if (url.match('#')) {
-        var id = url.split('#')[1];
-        $('.benchmark_navbar li').removeClass('active');
-        activateChart($('.benchmark_graph#' + id));
-        $('.activate-chart[data-id=' + id + ']').closest('li').addClass('active');
-      }
-      else {
-        activateChart($('.benchmark_graph##{category_benchmarks.first.first}'));
-      }
+      navigation.handleHashNavigation();
     });
   });

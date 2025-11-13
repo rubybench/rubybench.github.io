@@ -82,3 +82,25 @@
         %td.margined-links
           - benchmarks.each do |benchmark|
             = link_to benchmark.split('_', 2).last.gsub(/_/, ' '), "/benchmarks/ruby.html##{benchmark}"
+
+%h2.text-center ruby-bench (Ractor)
+%h4.text-center Parallel execution benchmarks
+
+%table.large-margin.benchmarks-table.table.table-striped
+  %thead
+    %tr
+      %th Category
+      %th Benchmarks
+  %tbody
+    :ruby
+      benchmarks = YAML.load_file(File.expand_path('../ruby-bench/benchmarks.yml', __dir__))
+      # Get all ractor benchmarks - both ractor-only and ractor-capable
+      ractor_only = benchmarks.select { |name, meta| name.to_s.start_with?('ractor/') }
+      ractor_capable = benchmarks.select { |name, meta| meta['ractor'] && !name.to_s.start_with?('ractor/') }
+      # Combine all ractor benchmarks into one list
+      all_ractor_benchmarks = ractor_only.merge(ractor_capable)
+    %tr
+      %td Ractor
+      %td.margined-links
+        - all_ractor_benchmarks.each do |benchmark, meta|
+          = link_to benchmark, "/benchmarks/ractor.html##{benchmark.gsub('/', '_')}"

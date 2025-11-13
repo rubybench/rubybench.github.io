@@ -1,0 +1,350 @@
+:ruby
+  benchmarks = YAML.load_file(File.expand_path('../../ruby-bench/benchmarks.yml', __dir__))
+  ractor_only = benchmarks.select { |name, meta| name.to_s.start_with?('ractor/') }
+  ractor_capable = benchmarks.select { |name, meta| meta['ractor'] && !name.to_s.start_with?('ractor/') }
+  all_ractor_benchmarks = ractor_only.merge(ractor_capable)
+
+.benchmark_page
+  .text-center
+    %h1 ruby-bench (Ractor)
+
+    = github_link 'ruby/ruby-bench'
+
+    #graph_metadata{ 'data-type': 'line' }
+
+    %ul.nav.nav-pills.benchmark_navbar
+      - all_ractor_benchmarks.each_with_index do |(name, meta), index|
+        %li
+          %a.activate-chart{ href: '#', 'data-id': name.gsub('/', '_') }= name
+      %li{ style: 'clear: both; float: left; display: block; position: relative;' }
+
+- graph_data = { 'data-dates': [], 'data-baseline-values': [], 'data-yjit-values': [], 'data-zjit-values': [] }
+- all_ractor_benchmarks.each do |name, meta|
+  .benchmark_graph{ graph_data, id: name.gsub('/', '_'), 'data-name': name, style: "width: 100%; height: 340px;" }
+
+.benchmark_page
+  .text-center
+    %div.radio
+      %label.metric_type
+        %input{ type: 'radio', name: 'metric_type', value: 'Speedup', checked: true }
+        Speedup
+      %label.metric_type
+        %input{ type: 'radio', name: 'metric_type', value: 'Time' }
+        Time
+    %div.filter-section{ style: 'margin-top: 20px; margin-bottom: 30px;' }
+      %div{ style: 'margin-bottom: 15px;' }
+        %strong{ style: 'display: block; margin-bottom: 10px;' } JIT Types:
+        %div
+          %label.checkbox-inline{ style: 'margin: 0 8px; font-weight: normal;' }
+            %input{ type: 'checkbox', name: 'jit_type', value: 'baseline', checked: true, style: 'margin-right: 5px;' }
+            Baseline (No JIT)
+          %label.checkbox-inline{ style: 'margin: 0 8px; font-weight: normal;' }
+            %input{ type: 'checkbox', name: 'jit_type', value: 'yjit', checked: true, style: 'margin-right: 5px;' }
+            YJIT
+          %label.checkbox-inline{ style: 'margin: 0 8px; font-weight: normal;' }
+            %input{ type: 'checkbox', name: 'jit_type', value: 'zjit', checked: true, style: 'margin-right: 5px;' }
+            ZJIT
+      %div
+        %strong{ style: 'display: block; margin-bottom: 10px;' } Ractor Counts:
+        %div
+          %label.checkbox-inline{ style: 'margin: 0 8px; font-weight: normal;' }
+            %input{ type: 'checkbox', name: 'ractor_count', value: '0', checked: true, style: 'margin-right: 5px;' }
+            0 Ractors (baseline)
+          %label.checkbox-inline{ style: 'margin: 0 8px; font-weight: normal;' }
+            %input{ type: 'checkbox', name: 'ractor_count', value: '1', style: 'margin-right: 5px;' }
+            1 Ractor
+          %label.checkbox-inline{ style: 'margin: 0 8px; font-weight: normal;' }
+            %input{ type: 'checkbox', name: 'ractor_count', value: '2', checked: true, style: 'margin-right: 5px;' }
+            2 Ractors
+          %label.checkbox-inline{ style: 'margin: 0 8px; font-weight: normal;' }
+            %input{ type: 'checkbox', name: 'ractor_count', value: '4', style: 'margin-right: 5px;' }
+            4 Ractors
+          %label.checkbox-inline{ style: 'margin: 0 8px; font-weight: normal;' }
+            %input{ type: 'checkbox', name: 'ractor_count', value: '6', style: 'margin-right: 5px;' }
+            6 Ractors
+          %label.checkbox-inline{ style: 'margin: 0 8px; font-weight: normal;' }
+            %input{ type: 'checkbox', name: 'ractor_count', value: '8', checked: true, style: 'margin-right: 5px;' }
+            8 Ractors
+
+:javascript
+  $(function() {
+
+    function plotChart(graphElement, metricType) {
+      var graphType = $('#graph_metadata').data('type');
+      var name = graphElement.data('name');
+      var dates = graphElement.data('dates');
+      var unit = 'seconds';
+      if (metricType == 'Speedup') {
+        unit = 'times';
+      }
+
+      if (!dates || dates.length === 0) {
+        RubyBench.showLoading(graphElement);
+        return;
+      }
+
+      var formattedDates = dates.map(function(d) { return RubyBench.formatDate(d); });
+
+      // Get selected JIT types and ractor counts
+      var selectedJits = [];
+      $('input[name="jit_type"]:checked').each(function() {
+        selectedJits.push($(this).val());
+      });
+
+      var selectedRactors = [];
+      $('input[name="ractor_count"]:checked').each(function() {
+        selectedRactors.push($(this).val());
+      });
+
+      if (selectedJits.length === 0 || selectedRactors.length === 0) {
+        RubyBench.showError(graphElement, 'Please select at least one JIT type and one ractor count');
+        return;
+      }
+
+      // Color schemes for different JIT types
+      var jitColors = {
+        'baseline': { '0': '#696969', '1': '#8B4513', '2': '#A0522D', '4': '#CD853F', '6': '#D2691E', '8': '#DEB887' },
+        'yjit': { '0': '#2F4F2F', '1': '#006400', '2': '#228B22', '4': '#32CD32', '6': '#00FF00', '8': '#7FFF00' },
+        'zjit': { '0': '#191970', '1': '#00008B', '2': '#0000CD', '4': '#4169E1', '6': '#1E90FF', '8': '#87CEEB' }
+      };
+
+      var series = [];
+
+      // Build series for each selected combination
+      selectedJits.forEach(function(jitType) {
+        selectedRactors.forEach(function(ractorCount) {
+          var dataSuffix = metricType == 'Speedup' ? '-speedup' : '-time';
+          var data = graphElement.data(jitType + '-' + ractorCount + dataSuffix);
+          if (data && data.some(function(v) { return v !== null; })) {
+            var label = jitType.toUpperCase() + ' - ';
+            if (ractorCount === '0') {
+              label += 'Single-threaded';
+            } else if (ractorCount === '1') {
+              label += '1 Ractor';
+            } else {
+              label += ractorCount + ' Ractors';
+            }
+            series.push({
+              name: label,
+              data: data,
+              color: jitColors[jitType][ractorCount] || '#808080',
+              visible: true,
+              dashStyle: ractorCount === '0' ? 'Dash' : 'Solid'
+            });
+          }
+        });
+      });
+
+      if (series.length === 0) {
+        RubyBench.showError(graphElement, 'No data available for selected options');
+        return;
+      }
+
+      var yAxisPlotLines = null;
+      // Only add baseline line for speedup view
+      if (metricType == 'Speedup') {
+        yAxisPlotLines = [{
+          value: 1,
+          color: '#888',
+          width: 1,
+          dashStyle: 'dash',
+          label: {
+            text: 'Single-threaded baseline',
+            align: 'left',
+            style: { color: '#888' }
+          }
+        }];
+      }
+
+      var config = RubyBench.createBaseChartConfig(graphElement, {
+        graphType: graphType,
+        title: name,
+        yAxisTitle: unit,
+        yAxisPlotLines: yAxisPlotLines,
+        categories: formattedDates,
+        xAxisTitle: 'Date',
+        tooltip: {
+          formatter: function() {
+            var dateStr = this.x;
+            var value = this.y;
+            var prefix = '<span style="font-size: 10px">' + dateStr + '</span><br/>' +
+              '<span style="color:' + this.color + '">●</span> ' + this.series.name + ': ';
+            if (metricType == 'Speedup') {
+              return prefix + '<b>' + value.toFixed(2) + 'x</b>' + (value > 1 ? ' faster' : ' slower');
+            } else {
+              return prefix + '<b>' + value.toFixed(3) + 's</b>';
+            }
+          }
+        },
+        series: series,
+        connectNulls: false,
+        legend: {
+          enabled: true,
+          layout: 'vertical',
+          align: 'right',
+          verticalAlign: 'middle'
+        }
+      });
+
+      RubyBench.plotChart(graphElement, config);
+    };
+
+    function activateChart(graphElement) {
+      var benchmark = graphElement.data('name');
+
+      // Convert benchmark name to filename
+      // ractor/foo -> ractor_only_foo
+      // other benchmarks stay as-is
+      var filename = benchmark;
+      if (benchmark.startsWith('ractor/')) {
+        filename = 'ractor_only_' + benchmark.substring(7);
+      }
+
+      $.get('https://raw.githubusercontent.com/rubybench/rubybench-data/main/ruby-bench-ractor/' + filename + '.yml').done(function(data) {
+        RubyBench.showOnlyGraph(graphElement);
+
+        // Parse the JSON data (despite .yml extension)
+        var results;
+        try {
+          results = JSON.parse(data);
+        } catch(e) {
+          // Fall back to yaml parsing if JSON parsing fails
+          results = jsyaml.load(data);
+        }
+
+        // Get all dates and sort them
+        var dates = Object.keys(results).map(Number).sort();
+
+        // Helper function to calculate average
+        function avg(arr) {
+          if (!arr || arr.length === 0 || arr.every(function(v) { return v === null; })) return null;
+          var filtered = arr.filter(function(v) { return v !== null; });
+          if (filtered.length === 0) return null;
+          return filtered.reduce(function(a, b) { return a + b; }, 0) / filtered.length;
+        }
+
+        // Process data for all JIT types
+        var jitTypes = ['baseline', 'yjit', 'zjit'];
+        var validDates = [];
+        var hasAnyData = false;
+
+        // Initialize data arrays for each JIT type and ractor count
+        jitTypes.forEach(function(jitType) {
+          ['0', '1', '2', '4', '6', '8'].forEach(function(ractorCount) {
+            graphElement.data(jitType + '-' + ractorCount + '-speedup', []);
+            graphElement.data(jitType + '-' + ractorCount + '-time', []);
+          });
+        });
+
+        // Process each date
+        dates.forEach(function(date) {
+          var dateData = results[date];
+          if (!dateData) return;
+
+          var dateHasData = false;
+          var tempData = {};
+
+          // First, get the baseline (no JIT) 0-ractor time as reference for all comparisons
+          var baselineReference = null;
+          if (dateData['baseline'] && dateData['baseline']['0']) {
+            baselineReference = avg(dateData['baseline']['0']);
+          }
+
+          // Process each JIT type for this date
+          jitTypes.forEach(function(jitType) {
+            if (!dateData[jitType]) {
+              tempData[jitType] = { '0': null, '1': null, '2': null, '4': null, '6': null, '8': null };
+              tempData[jitType + '_time'] = { '0': null, '1': null, '2': null, '4': null, '6': null, '8': null };
+              return;
+            }
+
+            var jitData = dateData[jitType];
+
+            // Always use baseline (no JIT) as reference, not each JIT's own 0-ractor time
+            if (baselineReference && baselineReference > 0) {
+              dateHasData = true;
+              hasAnyData = true;
+
+              // Calculate speedup and store time for each ractor count
+              // Values are execution time in ms (lower is better), so speedup = baselineReference / ractorN
+              ['0', '1', '2', '4', '6', '8'].forEach(function(ractorCount) {
+                var avgN = avg(jitData[ractorCount]);
+                tempData[jitType] = tempData[jitType] || {};
+                tempData[jitType + '_time'] = tempData[jitType + '_time'] || {};
+                // Speedup is always relative to baseline (no JIT) at 0 ractors
+                tempData[jitType][ractorCount] = avgN && avgN > 0 && baselineReference > 0 ? baselineReference / avgN : null;
+                // Store the actual time in milliseconds (converted to seconds for display)
+                tempData[jitType + '_time'][ractorCount] = avgN && avgN > 0 ? avgN / 1000 : null;
+              });
+            } else {
+              tempData[jitType] = { '0': null, '1': null, '2': null, '4': null, '6': null, '8': null };
+              tempData[jitType + '_time'] = { '0': null, '1': null, '2': null, '4': null, '6': null, '8': null };
+            }
+          });
+
+          // Only add this date if at least one JIT type has data
+          if (dateHasData) {
+            validDates.push(date);
+
+            // Append data for this date to the arrays
+            jitTypes.forEach(function(jitType) {
+              ['0', '1', '2', '4', '6', '8'].forEach(function(ractorCount) {
+                // Store speedup data
+                var currentSpeedupData = graphElement.data(jitType + '-' + ractorCount + '-speedup');
+                currentSpeedupData.push(tempData[jitType] ? tempData[jitType][ractorCount] : null);
+                graphElement.data(jitType + '-' + ractorCount + '-speedup', currentSpeedupData);
+
+                // Store time data
+                var currentTimeData = graphElement.data(jitType + '-' + ractorCount + '-time');
+                currentTimeData.push(tempData[jitType + '_time'] ? tempData[jitType + '_time'][ractorCount] : null);
+                graphElement.data(jitType + '-' + ractorCount + '-time', currentTimeData);
+              });
+            });
+          }
+        });
+
+        if (!hasAnyData) {
+          RubyBench.showError(graphElement, 'No valid data found for ' + benchmark);
+          return;
+        }
+
+        // Store valid dates
+        graphElement.data('dates', validDates);
+
+        // Get selected metric type
+        var metricType = $('input[name="metric_type"]:checked').val();
+        plotChart(graphElement, metricType);
+
+      }).fail(function() {
+        graphElement.show();
+        RubyBench.showError(graphElement, 'Failed to load data for ' + benchmark);
+      });
+    };
+
+    // Setup navigation
+    var navigation = RubyBench.setupBenchmarkNavigation({
+      activateChart: activateChart,
+      defaultBenchmark: $('.benchmark_graph').first()
+    });
+
+    // Render it on checkbox change
+    $('input[name="jit_type"], input[name="ractor_count"]').on('change', function(event) {
+      var activeGraph = $('.benchmark_graph:visible');
+      if (activeGraph.length > 0) {
+        var metricType = RubyBench.getSelectedMetricType();
+        plotChart(activeGraph, metricType);
+      }
+    });
+
+    // Setup metric type handlers
+    RubyBench.setupMetricTypeHandlers(function(event) {
+      var activeGraph = $('.benchmark_graph:visible');
+      if (activeGraph.length > 0) {
+        var metricType = RubyBench.getSelectedMetricType();
+        plotChart(activeGraph, metricType);
+      }
+    });
+
+    // Activate initial benchmark
+    navigation.handleHashNavigation();
+  });
