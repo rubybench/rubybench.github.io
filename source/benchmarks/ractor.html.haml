@@ -68,16 +68,6 @@
 
 :javascript
   $(function() {
-    // Convert 20250908 or "20250908" to "2025-09-08"
-    function formatDate(date) {
-      var n = Number(date);
-
-      var year = Math.floor(n / 10000);
-      var month = Math.floor(n / 100) % 100;
-      var day = n % 100;
-
-      return String(year) + '-' + String(month).padStart(2, '0') + '-' + String(day).padStart(2, '0');
-    }
 
     function plotChart(graphElement, metricType) {
       var graphType = $('#graph_metadata').data('type');
@@ -89,11 +79,11 @@
       }
 
       if (!dates || dates.length === 0) {
-        graphElement.html('<div style="padding: 100px; text-align: center;">Loading data...</div>');
+        RubyBench.showLoading(graphElement);
         return;
       }
 
-      var formattedDates = dates.map(function(d) { return formatDate(d); });
+      var formattedDates = dates.map(function(d) { return RubyBench.formatDate(d); });
 
       // Get selected JIT types and ractor counts
       var selectedJits = [];
@@ -107,7 +97,7 @@
       });
 
       if (selectedJits.length === 0 || selectedRactors.length === 0) {
-        graphElement.html('<div style="padding: 100px; text-align: center;">Please select at least one JIT type and one ractor count</div>');
+        RubyBench.showError(graphElement, 'Please select at least one JIT type and one ractor count');
         return;
       }
 
@@ -146,20 +136,14 @@
       });
 
       if (series.length === 0) {
-        graphElement.html('<div style="padding: 100px; text-align: center;">No data available for selected options</div>');
+        RubyBench.showError(graphElement, 'No data available for selected options');
         return;
       }
 
-      var yAxisConfig = {
-        min: 0,
-        title: {
-          text: unit
-        }
-      };
-
+      var yAxisPlotLines = null;
       // Only add baseline line for speedup view
       if (metricType == 'Speedup') {
-        yAxisConfig.plotLines = [{
+        yAxisPlotLines = [{
           value: 1,
           color: '#888',
           width: 1,
@@ -172,22 +156,13 @@
         }];
       }
 
-      Highcharts.setOptions({ lang: { thousandsSep: '' } })
-      Highcharts.chart(graphElement.attr('id'), {
-        chart: {
-          zoomType: 'x',
-          type: graphType
-        },
-        title: {
-          text: name
-        },
-        yAxis: yAxisConfig,
-        xAxis: {
-          categories: formattedDates,
-          title: {
-            text: 'Date'
-          }
-        },
+      var config = RubyBench.createBaseChartConfig(graphElement, {
+        graphType: graphType,
+        title: name,
+        yAxisTitle: unit,
+        yAxisPlotLines: yAxisPlotLines,
+        categories: formattedDates,
+        xAxisTitle: 'Date',
         tooltip: {
           formatter: function() {
             var dateStr = this.x;
@@ -202,14 +177,7 @@
           }
         },
         series: series,
-        plotOptions: {
-          series: {
-            animation: { duration: 400 }
-          },
-          line: {
-            connectNulls: false
-          }
-        },
+        connectNulls: false,
         legend: {
           enabled: true,
           layout: 'vertical',
@@ -217,6 +185,8 @@
           verticalAlign: 'middle'
         }
       });
+
+      RubyBench.plotChart(graphElement, config);
     };
 
     function activateChart(graphElement) {
@@ -231,9 +201,7 @@
       }
 
       $.get('https://raw.githubusercontent.com/rubybench/rubybench-data/main/ruby-bench-ractor/' + filename + '.yml').done(function(data) {
-        // Show only graphElement and hide everything else
-        $('.benchmark_graph').hide();
-        graphElement.show();
+        RubyBench.showOnlyGraph(graphElement);
 
         // Parse the JSON data (despite .yml extension)
         var results;
@@ -336,7 +304,7 @@
         });
 
         if (!hasAnyData) {
-          graphElement.html('<div style="padding: 100px; text-align: center;">No valid data found for ' + benchmark + '</div>');
+          RubyBench.showError(graphElement, 'No valid data found for ' + benchmark);
           return;
         }
 
@@ -349,56 +317,34 @@
 
       }).fail(function() {
         graphElement.show();
-        graphElement.html('<div style="padding: 100px; text-align: center;">Failed to load data for ' + benchmark + '</div>');
+        RubyBench.showError(graphElement, 'Failed to load data for ' + benchmark);
       });
     };
 
-    // Switch active tab and render it
-    $('.activate-chart').on('click', function(event) {
-      event.preventDefault();
-      $('.benchmark_navbar li').removeClass('active');
-      $(this).closest('li').addClass('active');
-      var id = $(this).data('id');
-      var graphElement = $("#" + id);
-      activateChart(graphElement);
-      window.location.hash = id;
+    // Setup navigation
+    var navigation = RubyBench.setupBenchmarkNavigation({
+      activateChart: activateChart,
+      defaultBenchmark: $('.benchmark_graph').first()
     });
 
     // Render it on checkbox change
     $('input[name="jit_type"], input[name="ractor_count"]').on('change', function(event) {
       var activeGraph = $('.benchmark_graph:visible');
       if (activeGraph.length > 0) {
-        var metricType = $('input[name="metric_type"]:checked').val();
+        var metricType = RubyBench.getSelectedMetricType();
         plotChart(activeGraph, metricType);
       }
     });
 
-    // Render it on metric type change
-    $('input[name="metric_type"]').on('change', function(event) {
+    // Setup metric type handlers
+    RubyBench.setupMetricTypeHandlers(function(event) {
       var activeGraph = $('.benchmark_graph:visible');
       if (activeGraph.length > 0) {
-        var metricType = $('input[name="metric_type"]:checked').val();
+        var metricType = RubyBench.getSelectedMetricType();
         plotChart(activeGraph, metricType);
       }
     });
 
-    // Activate a benchmark result
-    var url = document.location.toString();
-    if (url.match('#')) {
-      var id = url.split('#')[1];
-      $('.benchmark_navbar li').removeClass('active');
-      var graphElement = $('#' + id);
-      if (graphElement.length > 0) {
-        activateChart(graphElement);
-        $('.activate-chart[data-id="' + id + '"]').closest('li').addClass('active');
-      } else {
-        // Default to first if hash doesn't match
-        activateChart($('.benchmark_graph').first());
-        $('.benchmark_navbar li').first().addClass('active');
-      }
-    } else {
-      // Activate first benchmark on load
-      activateChart($('.benchmark_graph').first());
-      $('.benchmark_navbar li').first().addClass('active');
-    }
+    // Activate initial benchmark
+    navigation.handleHashNavigation();
   });
