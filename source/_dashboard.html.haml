@@ -14,15 +14,14 @@
 
 - %w[headline other micro].each do |category|
   .benchmark_graph{ id: category, style: "width: 100%; height: 340px;" }
+  .benchmark_graph.rss_graph{ id: "#{category}_rss", style: "width: 100%; height: 340px;" }
 
 :javascript
   $(function() {
     var dashboard = {};
 
-    function plotChart(graphElement, category) {
+    function plotSpeedChart(graphElement, category) {
       var graphType = $('#graph_metadata').data('type');
-      var unit = 'times';
-
       var series = [{
         name: 'No JIT',
         data: dashboard[category]['no_jit'],
@@ -35,52 +34,84 @@
         name: 'ZJIT',
         data: dashboard[category]['zjit'],
         color: '#e2c13e'
-      }]
+      }];
       var categories = dashboard[category]['benchmarks'];
 
-      Highcharts.setOptions({ lang: { thousandsSep: '' } })
+      Highcharts.setOptions({ lang: { thousandsSep: '' } });
       Highcharts.chart(graphElement.attr('id'), {
-        chart: {
-          zoomType: 'x',
-          type: graphType
-        },
-        title: {
-          text: null
-        },
-        yAxis: {
-          min: 0,
-          title: {
-            text: unit
-          }
-        },
-        xAxis: {
-          categories: categories,
-        },
+        chart: { zoomType: 'x', type: graphType },
+        title: { text: 'Speed (higher is better)' },
+        yAxis: { min: 0, title: { text: 'times' } },
+        xAxis: { categories: categories },
         tooltip: {
-          formatter: function(tooltip) {
+          formatter: function() {
             var prefix = '<span style="font-size: 10px">' + this.x + '</span><br/>' +
               '<span style="color:' + this.color + '">●</span> ' + this.series.name + ': ';
             return prefix + '<b>' + this.y.toFixed(2) + 'x faster</b>';
           }
         },
         series: series,
-        plotOptions: {
-          series: {
-            animation: { duration: 400 }
-          }
-        }
+        plotOptions: { series: { animation: { duration: 400 } } }
       });
-    };
+    }
+
+    function plotRssChart(graphElement, category) {
+      var graphType = $('#graph_metadata').data('type');
+      var rssData = dashboard[category]['rss'];
+      var series = [{
+        name: 'No JIT',
+        data: rssData['no_jit'],
+        color: '#3285e1'
+      }, {
+        name: 'YJIT',
+        data: rssData['yjit'],
+        color: '#489d32'
+      }, {
+        name: 'ZJIT',
+        data: rssData['zjit'],
+        color: '#e2c13e'
+      }];
+      var categories = dashboard[category]['benchmarks'];
+
+      Highcharts.chart(graphElement.attr('id'), {
+        chart: { zoomType: 'x', type: graphType },
+        title: { text: 'Memory (lower is better)' },
+        yAxis: {
+          min: 0,
+          title: { text: 'relative to no-JIT' },
+          plotLines: [{
+            value: 1.0,
+            color: '#666',
+            dashStyle: 'Dash',
+            width: 1,
+            label: { text: 'baseline', style: { color: '#666' } }
+          }]
+        },
+        xAxis: { categories: categories },
+        tooltip: {
+          formatter: function() {
+            var prefix = '<span style="font-size: 10px">' + this.x + '</span><br/>' +
+              '<span style="color:' + this.color + '">●</span> ' + this.series.name + ': ';
+            var pct = ((this.y - 1) * 100).toFixed(0);
+            var label = this.y === 1 ? 'same as baseline' :
+              (this.y > 1 ? '+' + pct + '% memory' : pct + '% memory');
+            return prefix + '<b>' + label + '</b>';
+          }
+        },
+        series: series,
+        plotOptions: { series: { animation: { duration: 400 } } }
+      });
+    }
 
     function activateChart(graphElement) {
-      // Show only graphElement and hide everything else
       $('.benchmark_graph').hide();
-      graphElement.show();
-
-      // Plot charts in graphElement
       var category = graphElement.attr('id');
-      plotChart(graphElement, category);
-    };
+      var rssElement = $('#' + category + '_rss');
+      graphElement.show();
+      rssElement.show();
+      plotSpeedChart(graphElement, category);
+      plotRssChart(rssElement, category);
+    }
 
     // Switch active tab and render it
     $('.activate-chart').on('click', function(event) {
