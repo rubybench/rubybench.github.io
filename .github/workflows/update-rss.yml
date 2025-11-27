@@ -28,3 +28,20 @@ jobs:
         run: |
           bundle exec ruby lib/generate_rss.rb
 
+      - name: Build site
+        run: |
+          bundle exec middleman build
+
+      - name: Commit and push changes
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          WEEK_DATE=$(date -u +%Y-%m-%d)
+          git add source/data/rss_entries.yml
+          if ! git diff --staged --quiet; then
+            git commit -m "Update RSS feed for week beginning $WEEK_DATE"
+            git push
+          else
+            echo "No changes to commit"
+          fi
+

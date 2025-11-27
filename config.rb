@@ -25,16 +25,6 @@ page '/*.txt', layout: false
 #   },
 # )
 
-# Helpers
-# Methods defined in the helpers block are available in templates
-# https://middlemanapp.com/basics/helper-methods/
-
-helpers do
-  def github_link(repository)
-    link_to repository, "https://github.com/#{repository}"
-  end
-end
-
 # Build-specific configuration
 # https://middlemanapp.com/advanced/configuration/#environment-specific-settings
 
