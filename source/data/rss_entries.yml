@@ -1,0 +1,50 @@
+---
+- week_beginning: '2025-11-24'
+  guid: rubybench-week-2025-11-24
+  link: https://rubybench.github.io/
+  zjit:
+    current_speedup: 2.54
+    previous_speedup: 2.29
+    change_pct: 11.1
+    improvements:
+    - name: structaset
+      current: 13.94
+      previous: 1.11
+      change: 1157.3
+    - name: protoboeuf
+      current: 1.63
+      previous: 1.17
+      change: 39.6
+    - name: nbody
+      current: 1.24
+      previous: 1.13
+      change: 9.7
+    - name: respond_to
+      current: 12.3
+      previous: 11.23
+      change: 9.5
+    - name: loops-times
+      current: 1.46
+      previous: 1.34
+      change: 8.9
+    regressions:
+    - name: setivar_object
+      current: 1.22
+      previous: 1.29
+      change: 5.2
+    - name: addressable-join
+      current: 1.23
+      previous: 1.29
+      change: 4.6
+    - name: addressable-merge
+      current: 1.31
+      previous: 1.37
+      change: 4.3
+    - name: erubi-rails
+      current: 1.38
+      previous: 1.43
+      change: 3.7
+    - name: knucleotide
+      current: 0.98
+      previous: 1.01
+      change: 3.0
