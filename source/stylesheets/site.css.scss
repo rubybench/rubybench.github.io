@@ -43,9 +43,10 @@ a {
   .nav.benchmark_navbar {
     margin-top: 20px;
     margin-bottom: 10px;
-    display: inline-block;
+    display: inline-flex;
+    flex-wrap: wrap;
 
-    li > a {
+    .nav-link {
       padding: 10px 13px;
     }
   }
@@ -76,7 +77,7 @@ a {
 }
 
 .filter-section {
-  label.checkbox-inline {
+  .form-check-inline {
     cursor: pointer;
     padding: 2px 12px;
     border-radius: 3px;

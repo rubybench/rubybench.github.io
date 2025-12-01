@@ -6,20 +6,19 @@
     %meta{ content: 'ie=edge', 'http-equiv': 'x-ua-compatible' }
     %meta{ content: 'width=device-width, initial-scale=1, shrink-to-fit=no', name: 'viewport' }
     %title Rubybench
-    = stylesheet_link_tag 'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css'
+    = stylesheet_link_tag 'https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css'
     = stylesheet_link_tag 'site'
     = javascript_include_tag 'https://code.highcharts.com/highcharts.src.js'
     = javascript_include_tag 'https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js'
     = javascript_include_tag 'https://unpkg.com/js-yaml@4.1.0/dist/js-yaml.min.js'
     = javascript_include_tag 'site'
   %body
-    %nav.navbar
+    %nav.navbar.navbar-expand
       .container
         = link_to 'Rubybench', '/', class: 'navbar-brand'
-        .collapse.navbar-collapse
-          %ul.nav.navbar-nav.navbar-right
-            %li
-              = link_to 'Hardware', '/hardware.html'
+        %ul.navbar-nav.ms-auto
+          %li.nav-item
+            = link_to 'Hardware', '/hardware.html', class: 'nav-link'
     .container
       = yield
 
