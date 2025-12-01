@@ -18,9 +18,9 @@
     %ul.nav.nav-pills.benchmark_navbar
       - category_benchmarks.each do |benchmarks|
         - benchmarks.reject{|b, _| b.to_s.include? 'ractor/'}.each_with_index do |benchmark, index|
-          %li
-            %a.activate-chart{ href: '#', 'data-id': benchmark }= benchmark
-        %li{ style: 'clear: both; float: left; display: block; position: relative;' }
+          %li.nav-item
+            %a.nav-link.activate-chart{ href: '#', 'data-id': benchmark }= benchmark
+        %li.nav-item{ style: 'clear: both; float: left; display: block; position: relative;' }
 
 - graph_data = { 'data-ruby-versions': [], 'data-vm-values': [], 'data-zjit-values': [], 'data-yjit-values': [] }
 - category_benchmarks.each do |benchmarks|
@@ -29,12 +29,12 @@
 
 .benchmark_page
   .text-center
-    %div.radio
-      %label.metric_type
-        %input{ type: 'radio', name: 'metric_type', value: 'Speedup', checked: true }
+    %div
+      %label.form-check.form-check-inline.metric_type
+        %input.form-check-input{ type: 'radio', name: 'metric_type', value: 'Speedup', checked: true }
         Speedup
-      %label.metric_type
-        %input{ type: 'radio', name: 'metric_type', value: 'Time' }
+      %label.form-check.form-check-inline.metric_type
+        %input.form-check-input{ type: 'radio', name: 'metric_type', value: 'Time' }
         Time
 
 :javascript

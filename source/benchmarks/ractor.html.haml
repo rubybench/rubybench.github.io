@@ -14,9 +14,9 @@
 
     %ul.nav.nav-pills.benchmark_navbar
       - all_ractor_benchmarks.each_with_index do |(name, meta), index|
-        %li
-          %a.activate-chart{ href: '#', 'data-id': name.gsub('/', '_') }= name
-      %li{ style: 'clear: both; float: left; display: block; position: relative;' }
+        %li.nav-item
+          %a.nav-link.activate-chart{ href: '#', 'data-id': name.gsub('/', '_') }= name
+      %li.nav-item{ style: 'clear: both; float: left; display: block; position: relative;' }
 
 - graph_data = { 'data-dates': [], 'data-baseline-values': [], 'data-yjit-values': [], 'data-zjit-values': [] }
 - all_ractor_benchmarks.each do |name, meta|
@@ -24,46 +24,46 @@
 
 .benchmark_page
   .text-center
-    %div.radio
-      %label.metric_type
-        %input{ type: 'radio', name: 'metric_type', value: 'Speedup', checked: true }
+    %div
+      %label.form-check.form-check-inline.metric_type
+        %input.form-check-input{ type: 'radio', name: 'metric_type', value: 'Speedup', checked: true }
         Speedup
-      %label.metric_type
-        %input{ type: 'radio', name: 'metric_type', value: 'Time' }
+      %label.form-check.form-check-inline.metric_type
+        %input.form-check-input{ type: 'radio', name: 'metric_type', value: 'Time' }
         Time
     %div.filter-section{ style: 'margin-top: 20px; margin-bottom: 30px;' }
       %div{ style: 'margin-bottom: 15px;' }
         %strong{ style: 'display: block; margin-bottom: 10px;' } JIT Types:
         %div
-          %label.checkbox-inline{ style: 'margin: 0 8px; font-weight: normal;' }
-            %input{ type: 'checkbox', name: 'jit_type', value: 'baseline', checked: true, style: 'margin-right: 5px;' }
+          %label.form-check.form-check-inline
+            %input.form-check-input{ type: 'checkbox', name: 'jit_type', value: 'baseline', checked: true }
             Baseline (No JIT)
-          %label.checkbox-inline{ style: 'margin: 0 8px; font-weight: normal;' }
-            %input{ type: 'checkbox', name: 'jit_type', value: 'yjit', checked: true, style: 'margin-right: 5px;' }
+          %label.form-check.form-check-inline
+            %input.form-check-input{ type: 'checkbox', name: 'jit_type', value: 'yjit', checked: true }
             YJIT
-          %label.checkbox-inline{ style: 'margin: 0 8px; font-weight: normal;' }
-            %input{ type: 'checkbox', name: 'jit_type', value: 'zjit', checked: true, style: 'margin-right: 5px;' }
+          %label.form-check.form-check-inline
+            %input.form-check-input{ type: 'checkbox', name: 'jit_type', value: 'zjit', checked: true }
             ZJIT
       %div
         %strong{ style: 'display: block; margin-bottom: 10px;' } Ractor Counts:
         %div
-          %label.checkbox-inline{ style: 'margin: 0 8px; font-weight: normal;' }
-            %input{ type: 'checkbox', name: 'ractor_count', value: '0', checked: true, style: 'margin-right: 5px;' }
+          %label.form-check.form-check-inline
+            %input.form-check-input{ type: 'checkbox', name: 'ractor_count', value: '0', checked: true }
             0 Ractors (baseline)
-          %label.checkbox-inline{ style: 'margin: 0 8px; font-weight: normal;' }
-            %input{ type: 'checkbox', name: 'ractor_count', value: '1', style: 'margin-right: 5px;' }
+          %label.form-check.form-check-inline
+            %input.form-check-input{ type: 'checkbox', name: 'ractor_count', value: '1' }
             1 Ractor
-          %label.checkbox-inline{ style: 'margin: 0 8px; font-weight: normal;' }
-            %input{ type: 'checkbox', name: 'ractor_count', value: '2', checked: true, style: 'margin-right: 5px;' }
+          %label.form-check.form-check-inline
+            %input.form-check-input{ type: 'checkbox', name: 'ractor_count', value: '2', checked: true }
             2 Ractors
-          %label.checkbox-inline{ style: 'margin: 0 8px; font-weight: normal;' }
-            %input{ type: 'checkbox', name: 'ractor_count', value: '4', style: 'margin-right: 5px;' }
+          %label.form-check.form-check-inline
+            %input.form-check-input{ type: 'checkbox', name: 'ractor_count', value: '4' }
             4 Ractors
-          %label.checkbox-inline{ style: 'margin: 0 8px; font-weight: normal;' }
-            %input{ type: 'checkbox', name: 'ractor_count', value: '6', style: 'margin-right: 5px;' }
+          %label.form-check.form-check-inline
+            %input.form-check-input{ type: 'checkbox', name: 'ractor_count', value: '6' }
             6 Ractors
-          %label.checkbox-inline{ style: 'margin: 0 8px; font-weight: normal;' }
-            %input{ type: 'checkbox', name: 'ractor_count', value: '8', checked: true, style: 'margin-right: 5px;' }
+          %label.form-check.form-check-inline
+            %input.form-check-input{ type: 'checkbox', name: 'ractor_count', value: '8', checked: true }
             8 Ractors
 
 :javascript

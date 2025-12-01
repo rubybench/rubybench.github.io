@@ -125,8 +125,8 @@ var RubyBench = (function() {
     // Switch active tab and render it
     $('.activate-chart').on('click', function(event) {
       event.preventDefault();
-      $('.benchmark_navbar li').removeClass('active');
-      $(this).closest('li').addClass('active');
+      $('.benchmark_navbar .nav-link').removeClass('active');
+      $(this).addClass('active');
       var id = $(this).data('id');
       var graphElement = $("#" + id);
       activateChart(graphElement);
@@ -138,19 +138,19 @@ var RubyBench = (function() {
       var url = document.location.toString();
       if (url.match('#')) {
         var id = url.split('#')[1];
-        $('.benchmark_navbar li').removeClass('active');
+        $('.benchmark_navbar .nav-link').removeClass('active');
         var graphElement = $('#' + id);
         if (graphElement.length > 0) {
           activateChart(graphElement);
-          $('.activate-chart[data-id="' + id + '"]').closest('li').addClass('active');
+          $('.activate-chart[data-id="' + id + '"]').addClass('active');
         } else if (defaultBenchmark) {
           // Default to first if hash doesn't match
           activateChart(defaultBenchmark);
-          $('.benchmark_navbar li').first().addClass('active');
+          $('.benchmark_navbar .nav-link').first().addClass('active');
         }
       } else if (defaultBenchmark) {
         activateChart(defaultBenchmark);
-        $('.benchmark_navbar li').first().addClass('active');
+        $('.benchmark_navbar .nav-link').first().addClass('active');
       }
     }
 
