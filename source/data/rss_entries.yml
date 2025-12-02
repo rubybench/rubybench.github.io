@@ -1,4 +1,53 @@
 ---
+- week_beginning: '2025-12-01'
+  guid: rubybench-week-2025-12-01
+  link: https://rubybench.github.io/
+  zjit:
+    current_speedup: 2.63
+    previous_speedup: 2.54
+    change_pct: 3.5
+    improvements:
+    - name: setivar
+      current: 9.4
+      previous: 1.28
+      change: 633.6
+    - name: setivar_object
+      current: 2.05
+      previous: 1.22
+      change: 67.6
+    - name: setivar_young
+      current: 2.25
+      previous: 1.36
+      change: 64.9
+    - name: matmul
+      current: 1.8
+      previous: 1.64
+      change: 9.7
+    - name: protoboeuf
+      current: 1.76
+      previous: 1.63
+      change: 7.8
+    regressions:
+    - name: structaref
+      current: 9.63
+      previous: 10.97
+      change: 12.3
+    - name: 30k_ifelse
+      current: 2.47
+      previous: 2.72
+      change: 9.2
+    - name: getivar
+      current: 9.6
+      previous: 10.46
+      change: 8.2
+    - name: structaset
+      current: 13.0
+      previous: 13.94
+      change: 6.7
+    - name: keyword_args
+      current: 1.04
+      previous: 1.11
+      change: 5.8
 - week_beginning: '2025-11-24'
   guid: rubybench-week-2025-11-24
   link: https://rubybench.github.io/
