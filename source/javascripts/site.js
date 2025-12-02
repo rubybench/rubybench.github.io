@@ -161,14 +161,14 @@ var RubyBench = (function() {
 
   // Setup metric type radio buttons
   function setupMetricTypeHandlers(callback) {
-    $('.metric_type').on('click', function(event) {
+    $('input[name="metric_type"]').on('change', function(event) {
       callback(event);
     });
   }
 
   // Get active benchmark ID from navbar
   function getActiveBenchmarkId() {
-    return $('.benchmark_navbar .active .activate-chart').data('id');
+    return $('.benchmark_navbar .nav-link.active').data('id');
   }
 
   // Get selected metric type
