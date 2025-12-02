@@ -22,10 +22,10 @@
             %a.nav-link.activate-chart{ href: '#', 'data-id': benchmark }= benchmark
         %li.nav-item{ style: 'clear: both; float: left; display: block; position: relative;' }
 
-- graph_data = { 'data-ruby-versions': [], 'data-vm-values': [], 'data-zjit-values': [], 'data-yjit-values': [] }
-- category_benchmarks.each do |benchmarks|
-  - benchmarks.each do |benchmark|
-    .benchmark_graph{ graph_data, id: benchmark, 'data-name': benchmark, style: "width: 100%; height: 340px;" }
+  - graph_data = { 'data-ruby-versions': [], 'data-vm-values': [], 'data-zjit-values': [], 'data-yjit-values': [] }
+  - category_benchmarks.each do |benchmarks|
+    - benchmarks.each do |benchmark|
+      .benchmark_graph{ graph_data, id: benchmark, 'data-name': benchmark }
 
 .benchmark_page
   .text-center
