@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+%feed{xmlns: 'http://www.w3.org/2005/Atom'}
+  %title RubyBench
+  %subtitle Weekly Ruby benchmark performance updates
+  <link href="https://rubybench.github.io/feed.xml" rel="self" type="application/atom+xml" />
+  <link href="https://rubybench.github.io/" rel="alternate" type="text/html" />
+  - if rss_entries.any?
+    %updated= Date.parse(rss_entries.first['week_beginning']).rfc3339
+  - else
+    %updated= Time.now.utc.strftime('%Y-%m-%dT%H:%M:%SZ')
+  %id https://rubybench.github.io/feed.xml
+  - rss_entries.each do |entry|
+    - week_date = Date.parse(entry['week_beginning'])
+    %entry
+      %title{type: 'html'}= rss_entry_title(entry)
+      <link href="#{entry['link']}" rel="alternate" type="text/html" />
+      %published= week_date.rfc3339
+      %updated= week_date.rfc3339
+      %id= entry['guid']
+      %content{type: 'html'}= rss_entry_summary(entry)

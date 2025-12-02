@@ -12,6 +12,7 @@
     = javascript_include_tag 'https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js'
     = javascript_include_tag 'https://unpkg.com/js-yaml@4.1.0/dist/js-yaml.min.js'
     = javascript_include_tag 'site'
+    %link{rel: 'alternate', type: 'application/atom+xml', title: 'RubyBench Feed', href: '/feed.xml'}
   %body
     %nav.navbar.navbar-expand
       .container
@@ -19,6 +20,8 @@
         %ul.navbar-nav.ms-auto
           %li.nav-item
             = link_to 'Hardware', '/hardware.html', class: 'nav-link'
+          %li.nav-item
+            = link_to 'RSS', '/feed.xml'
     .container-fluid.px-4
       = yield
 
