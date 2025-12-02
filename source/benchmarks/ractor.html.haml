@@ -18,9 +18,9 @@
           %a.nav-link.activate-chart{ href: '#', 'data-id': name.gsub('/', '_') }= name
       %li.nav-item{ style: 'clear: both; float: left; display: block; position: relative;' }
 
-- graph_data = { 'data-dates': [], 'data-baseline-values': [], 'data-yjit-values': [], 'data-zjit-values': [] }
-- all_ractor_benchmarks.each do |name, meta|
-  .benchmark_graph{ graph_data, id: name.gsub('/', '_'), 'data-name': name, style: "width: 100%; height: 340px;" }
+  - graph_data = { 'data-dates': [], 'data-baseline-values': [], 'data-yjit-values': [], 'data-zjit-values': [] }
+  - all_ractor_benchmarks.each do |name, meta|
+    .benchmark_graph{ graph_data, id: name.gsub('/', '_'), 'data-name': name }
 
 .benchmark_page
   .text-center

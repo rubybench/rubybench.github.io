@@ -12,9 +12,9 @@
           %a.nav-link.activate-chart{ href: '#', 'data-id': category.downcase, class: ('active' if index == 0) }= category
       %li.nav-item{ style: 'clear: both; float: left; display: block; position: relative;' }
 
-- %w[headline other micro].each do |category|
-  .benchmark_graph{ id: category, style: "width: 100%; height: 340px;" }
-  .benchmark_graph.rss_graph{ id: "#{category}_rss", style: "width: 100%; height: 340px;" }
+  - %w[headline other micro].each do |category|
+    .benchmark_graph{ id: category }
+    .benchmark_graph.rss_graph{ id: "#{category}_rss" }
 
 :javascript
   $(function() {
