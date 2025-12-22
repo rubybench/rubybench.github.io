@@ -1,4 +1,53 @@
 ---
+- week_beginning: '2025-12-22'
+  guid: rubybench-week-2025-12-22
+  link: https://rubybench.github.io/
+  zjit:
+    current_speedup: 2.85
+    previous_speedup: 2.82
+    change_pct: 1.1
+    improvements:
+    - name: cfunc_itself
+      current: 6.81
+      previous: 4.96
+      change: 37.5
+    - name: fib
+      current: 1.2
+      previous: 1.07
+      change: 12.7
+    - name: addressable-setters
+      current: 1.48
+      previous: 1.33
+      change: 12.0
+    - name: addressable-to-s
+      current: 1.43
+      previous: 1.28
+      change: 11.4
+    - name: addressable-merge
+      current: 1.56
+      previous: 1.41
+      change: 10.8
+    regressions:
+    - name: setivar
+      current: 10.32
+      previous: 13.1
+      change: 21.2
+    - name: setivar_young
+      current: 2.0
+      previous: 2.2
+      change: 9.0
+    - name: setivar_object
+      current: 1.75
+      previous: 1.92
+      change: 8.7
+    - name: fluentd
+      current: 1.07
+      previous: 1.15
+      change: 6.9
+    - name: knucleotide
+      current: 0.99
+      previous: 1.05
+      change: 4.9
 - week_beginning: '2025-12-15'
   guid: rubybench-week-2025-12-15
   link: https://rubybench.github.io/
