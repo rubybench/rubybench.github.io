@@ -1,4 +1,53 @@
 ---
+- week_beginning: '2025-12-29'
+  guid: rubybench-week-2025-12-29
+  link: https://rubybench.github.io/
+  zjit:
+    current_speedup: 2.9
+    previous_speedup: 2.88
+    change_pct: 0.9
+    improvements:
+    - name: getivar-module
+      current: 1.83
+      previous: 1.64
+      change: 11.6
+    - name: getivar
+      current: 10.07
+      previous: 9.26
+      change: 8.8
+    - name: keyword_args
+      current: 7.33
+      previous: 6.75
+      change: 8.6
+    - name: fluentd
+      current: 1.25
+      previous: 1.16
+      change: 8.0
+    - name: 30k_ifelse
+      current: 2.97
+      previous: 2.76
+      change: 7.6
+    regressions:
+    - name: setivar_object
+      current: 1.7
+      previous: 2.06
+      change: 17.4
+    - name: blurhash
+      current: 1.62
+      previous: 1.78
+      change: 8.7
+    - name: addressable-merge
+      current: 1.47
+      previous: 1.59
+      change: 7.9
+    - name: object-new
+      current: 2.5
+      previous: 2.69
+      change: 6.9
+    - name: structaset
+      current: 13.21
+      previous: 14.0
+      change: 5.6
 - week_beginning: '2025-12-22'
   guid: rubybench-week-2025-12-22
   link: https://rubybench.github.io/
