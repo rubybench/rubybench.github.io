@@ -7,10 +7,19 @@ on:
 
 permissions:
   contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: true
 
 jobs:
   update-rss:
     runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -28,11 +37,8 @@ jobs:
         run: |
           bundle exec ruby lib/generate_rss.rb
 
-      - name: Build site
-        run: |
-          bundle exec middleman build
-
       - name: Commit and push changes
+        id: commit
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
@@ -41,7 +47,29 @@ jobs:
           if ! git diff --staged --quiet; then
             git commit -m "Update RSS feed for week beginning $WEEK_DATE"
             git push
+            echo "changed=true" >> $GITHUB_OUTPUT
           else
             echo "No changes to commit"
+            echo "changed=false" >> $GITHUB_OUTPUT
           fi
+
+      - name: Setup Pages
+        if: steps.commit.outputs.changed == 'true'
+        uses: actions/configure-pages@v5
+
+      - name: Build site
+        if: steps.commit.outputs.changed == 'true'
+        run: |
+          bundle exec middleman build
+
+      - name: Upload artifact
+        if: steps.commit.outputs.changed == 'true'
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: build
+
+      - name: Deploy to GitHub Pages
+        if: steps.commit.outputs.changed == 'true'
+        id: deployment
+        uses: actions/deploy-pages@v4
 
