@@ -1,4 +1,53 @@
 ---
+- week_beginning: '2026-01-26'
+  guid: rubybench-week-2026-01-26
+  link: https://rubybench.github.io/
+  zjit:
+    current_speedup: 2.79
+    previous_speedup: 2.85
+    change_pct: -2.2
+    improvements:
+    - name: protoboeuf-encode
+      current: 2.07
+      previous: 1.87
+      change: 10.9
+    - name: protoboeuf
+      current: 2.03
+      previous: 1.89
+      change: 7.5
+    - name: setivar_young
+      current: 2.13
+      previous: 1.99
+      change: 7.2
+    - name: setivar_object
+      current: 1.71
+      previous: 1.64
+      change: 4.4
+    - name: loops-times
+      current: 1.98
+      previous: 1.9
+      change: 4.1
+    regressions:
+    - name: getivar
+      current: 8.3
+      previous: 9.39
+      change: 11.6
+    - name: cfunc_itself
+      current: 6.0
+      previous: 6.6
+      change: 9.1
+    - name: getivar-module
+      current: 1.52
+      previous: 1.66
+      change: 8.4
+    - name: 30k_ifelse
+      current: 2.7
+      previous: 2.94
+      change: 8.0
+    - name: erubi-rails
+      current: 1.39
+      previous: 1.48
+      change: 6.3
 - week_beginning: '2026-01-19'
   guid: rubybench-week-2026-01-19
   link: https://rubybench.github.io/
