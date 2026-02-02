@@ -1,4 +1,53 @@
 ---
+- week_beginning: '2026-02-02'
+  guid: rubybench-week-2026-02-02
+  link: https://rubybench.github.io/
+  zjit:
+    current_speedup: 3.02
+    previous_speedup: 2.85
+    change_pct: 5.9
+    improvements:
+    - name: send_rubyfunc_block
+      current: 9.07
+      previous: 0.94
+      change: 864.9
+    - name: throw
+      current: 0.98
+      previous: 0.75
+      change: 31.3
+    - name: binarytrees
+      current: 1.52
+      previous: 1.16
+      change: 30.9
+    - name: keyword_args
+      current: 9.22
+      previous: 7.36
+      change: 25.3
+    - name: object-new
+      current: 3.11
+      previous: 2.67
+      change: 16.7
+    regressions:
+    - name: hexapdf
+      current: 1.1
+      previous: 1.17
+      change: 6.1
+    - name: blurhash
+      current: 1.71
+      previous: 1.82
+      change: 6.0
+    - name: lee
+      current: 1.07
+      previous: 1.13
+      change: 5.4
+    - name: respond_to
+      current: 12.11
+      previous: 12.75
+      change: 5.0
+    - name: matmul
+      current: 1.66
+      previous: 1.74
+      change: 4.8
 - week_beginning: '2026-01-26'
   guid: rubybench-week-2026-01-26
   link: https://rubybench.github.io/
