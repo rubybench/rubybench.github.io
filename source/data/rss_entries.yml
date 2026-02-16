@@ -1,4 +1,53 @@
 ---
+- week_beginning: '2026-02-16'
+  guid: rubybench-week-2026-02-16
+  link: https://rubybench.github.io/
+  zjit:
+    current_speedup: 3.08
+    previous_speedup: 2.99
+    change_pct: 2.7
+    improvements:
+    - name: structaset
+      current: 14.17
+      previous: 12.2
+      change: 16.1
+    - name: send_bmethod
+      current: 21.26
+      previous: 19.04
+      change: 11.7
+    - name: send_cfunc_block
+      current: 2.99
+      previous: 2.7
+      change: 10.7
+    - name: keyword_args
+      current: 8.02
+      previous: 7.29
+      change: 10.0
+    - name: throw
+      current: 1.05
+      previous: 0.96
+      change: 8.8
+    regressions:
+    - name: getivar-module
+      current: 1.57
+      previous: 1.82
+      change: 13.8
+    - name: setivar_young
+      current: 1.97
+      previous: 2.14
+      change: 8.0
+    - name: matmul
+      current: 1.65
+      previous: 1.79
+      change: 7.6
+    - name: setivar
+      current: 11.19
+      previous: 12.07
+      change: 7.3
+    - name: cfunc_itself
+      current: 6.09
+      previous: 6.47
+      change: 5.8
 - week_beginning: '2026-02-09'
   guid: rubybench-week-2026-02-09
   link: https://rubybench.github.io/
