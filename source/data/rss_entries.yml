@@ -1,4 +1,53 @@
 ---
+- week_beginning: '2026-02-23'
+  guid: rubybench-week-2026-02-23
+  link: https://rubybench.github.io/
+  zjit:
+    current_speedup: 3.1
+    previous_speedup: 3.1
+    change_pct: 0.0
+    improvements:
+    - name: fluentd
+      current: 1.17
+      previous: 1.04
+      change: 12.1
+    - name: send_rubyfunc_block
+      current: 9.89
+      previous: 9.04
+      change: 9.4
+    - name: setivar_young
+      current: 2.02
+      previous: 1.88
+      change: 7.8
+    - name: setivar_object
+      current: 1.68
+      previous: 1.58
+      change: 6.9
+    - name: str_concat
+      current: 2.27
+      previous: 2.13
+      change: 6.6
+    regressions:
+    - name: setivar
+      current: 11.62
+      previous: 12.61
+      change: 7.9
+    - name: object-new
+      current: 2.95
+      previous: 3.14
+      change: 6.0
+    - name: sequel
+      current: 1.29
+      previous: 1.35
+      change: 4.8
+    - name: getivar-module
+      current: 1.73
+      previous: 1.78
+      change: 3.1
+    - name: rubocop
+      current: 1.12
+      previous: 1.15
+      change: 2.6
 - week_beginning: '2026-02-16'
   guid: rubybench-week-2026-02-16
   link: https://rubybench.github.io/
