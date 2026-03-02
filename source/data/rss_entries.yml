@@ -1,4 +1,53 @@
 ---
+- week_beginning: '2026-03-02'
+  guid: rubybench-week-2026-03-02
+  link: https://rubybench.github.io/
+  zjit:
+    current_speedup: 3.27
+    previous_speedup: 3.07
+    change_pct: 6.5
+    improvements:
+    - name: getivar-module
+      current: 7.3
+      previous: 1.77
+      change: 312.0
+    - name: structaref
+      current: 13.64
+      previous: 10.47
+      change: 30.3
+    - name: setivar
+      current: 13.83
+      previous: 11.35
+      change: 21.8
+    - name: attr_accessor
+      current: 12.45
+      previous: 11.03
+      change: 12.9
+    - name: ruby-lsp
+      current: 1.42
+      previous: 1.29
+      change: 10.4
+    regressions:
+    - name: str_concat
+      current: 1.97
+      previous: 2.16
+      change: 8.9
+    - name: addressable-new
+      current: 1.42
+      previous: 1.52
+      change: 6.7
+    - name: fib
+      current: 1.12
+      previous: 1.2
+      change: 6.6
+    - name: chunky-png
+      current: 1.68
+      previous: 1.75
+      change: 4.4
+    - name: tinygql
+      current: 1.82
+      previous: 1.9
+      change: 4.1
 - week_beginning: '2026-02-23'
   guid: rubybench-week-2026-02-23
   link: https://rubybench.github.io/
