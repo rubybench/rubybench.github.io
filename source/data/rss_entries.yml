@@ -1,4 +1,53 @@
 ---
+- week_beginning: '2026-03-23'
+  guid: rubybench-week-2026-03-23
+  link: https://rubybench.github.io/
+  zjit:
+    current_speedup: 3.47
+    previous_speedup: 3.36
+    change_pct: 3.3
+    improvements:
+    - name: nqueens
+      current: 4.47
+      previous: 1.78
+      change: 150.7
+    - name: sudoku
+      current: 3.23
+      previous: 1.43
+      change: 126.1
+    - name: ruby-xor
+      current: 5.34
+      previous: 2.39
+      change: 123.5
+    - name: matmul
+      current: 2.6
+      previous: 1.63
+      change: 59.0
+    - name: nbody
+      current: 1.68
+      previous: 1.24
+      change: 36.0
+    regressions:
+    - name: protoboeuf
+      current: 1.13
+      previous: 2.08
+      change: 45.7
+    - name: ruby-lsp
+      current: 1.31
+      previous: 1.47
+      change: 11.3
+    - name: rubyboy
+      current: 0.81
+      previous: 0.9
+      change: 10.3
+    - name: erubi
+      current: 1.14
+      previous: 1.27
+      change: 9.8
+    - name: setivar_young
+      current: 1.95
+      previous: 2.13
+      change: 8.3
 - week_beginning: '2026-03-16'
   guid: rubybench-week-2026-03-16
   link: https://rubybench.github.io/
