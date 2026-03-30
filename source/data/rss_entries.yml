@@ -1,4 +1,53 @@
 ---
+- week_beginning: '2026-03-30'
+  guid: rubybench-week-2026-03-30
+  link: https://rubybench.github.io/
+  zjit:
+    current_speedup: 3.61
+    previous_speedup: 3.48
+    change_pct: 3.7
+    improvements:
+    - name: fib
+      current: 7.16
+      previous: 1.22
+      change: 485.6
+    - name: rubyboy
+      current: 1.49
+      previous: 0.8
+      change: 86.8
+    - name: protoboeuf
+      current: 2.1
+      previous: 1.13
+      change: 86.2
+    - name: optcarrot
+      current: 1.82
+      previous: 1.19
+      change: 52.9
+    - name: protoboeuf-encode
+      current: 2.91
+      previous: 2.08
+      change: 39.5
+    regressions:
+    - name: 30k_ifelse
+      current: 2.38
+      previous: 3.14
+      change: 24.1
+    - name: addressable-setters
+      current: 1.21
+      previous: 1.51
+      change: 19.6
+    - name: addressable-equality
+      current: 1.52
+      previous: 1.74
+      change: 12.3
+    - name: fluentd
+      current: 1.04
+      previous: 1.16
+      change: 10.7
+    - name: addressable-join
+      current: 1.26
+      previous: 1.4
+      change: 10.1
 - week_beginning: '2026-03-23'
   guid: rubybench-week-2026-03-23
   link: https://rubybench.github.io/
