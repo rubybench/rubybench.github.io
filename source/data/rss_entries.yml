@@ -1,4 +1,53 @@
 ---
+- week_beginning: '2026-04-06'
+  guid: rubybench-week-2026-04-06
+  link: https://rubybench.github.io/
+  zjit:
+    current_speedup: 4.23
+    previous_speedup: 3.45
+    change_pct: 22.7
+    improvements:
+    - name: structaset
+      current: 38.55
+      previous: 14.28
+      change: 169.9
+    - name: attr_accessor
+      current: 20.14
+      previous: 11.56
+      change: 74.2
+    - name: structaref
+      current: 20.16
+      previous: 12.26
+      change: 64.5
+    - name: getivar
+      current: 14.93
+      previous: 9.59
+      change: 55.7
+    - name: send_bmethod
+      current: 28.27
+      previous: 20.75
+      change: 36.2
+    regressions:
+    - name: getivar-module
+      current: 1.38
+      previous: 7.45
+      change: 81.5
+    - name: optcarrot
+      current: 1.9
+      previous: 2.95
+      change: 35.6
+    - name: splay
+      current: 1.02
+      previous: 1.14
+      change: 10.5
+    - name: rubyboy
+      current: 0.94
+      previous: 1.04
+      change: 9.3
+    - name: graphql
+      current: 1.6
+      previous: 1.73
+      change: 7.7
 - week_beginning: '2026-03-30'
   guid: rubybench-week-2026-03-30
   link: https://rubybench.github.io/
