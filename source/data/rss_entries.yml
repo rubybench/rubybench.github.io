@@ -1,4 +1,53 @@
 ---
+- week_beginning: '2026-04-20'
+  guid: rubybench-week-2026-04-20
+  link: https://rubybench.github.io/
+  zjit:
+    current_speedup: 4.22
+    previous_speedup: 4.29
+    change_pct: -1.6
+    improvements:
+    - name: nbody
+      current: 2.8
+      previous: 1.81
+      change: 54.7
+    - name: blurhash
+      current: 2.35
+      previous: 2.03
+      change: 15.6
+    - name: structaset
+      current: 39.12
+      previous: 33.98
+      change: 15.1
+    - name: graphql-native
+      current: 1.17
+      previous: 1.05
+      change: 11.3
+    - name: str_concat
+      current: 2.22
+      previous: 2.07
+      change: 7.4
+    regressions:
+    - name: matmul
+      current: 1.47
+      previous: 2.85
+      change: 48.3
+    - name: object-new-no-escape
+      current: 3.07
+      previous: 3.99
+      change: 23.1
+    - name: getivar-module
+      current: 8.82
+      previous: 10.09
+      change: 12.6
+    - name: setivar_object
+      current: 1.94
+      previous: 2.2
+      change: 11.8
+    - name: setivar
+      current: 20.06
+      previous: 21.81
+      change: 8.0
 - week_beginning: '2026-04-13'
   guid: rubybench-week-2026-04-13
   link: https://rubybench.github.io/
@@ -930,52 +979,3 @@
       current: 1.73
       previous: 1.8
       change: 3.9
-- week_beginning: '2025-12-01'
-  guid: rubybench-week-2025-12-01
-  link: https://rubybench.github.io/
-  zjit:
-    current_speedup: 2.63
-    previous_speedup: 2.54
-    change_pct: 3.5
-    improvements:
-    - name: setivar
-      current: 9.4
-      previous: 1.28
-      change: 633.6
-    - name: setivar_object
-      current: 2.05
-      previous: 1.22
-      change: 67.6
-    - name: setivar_young
-      current: 2.25
-      previous: 1.36
-      change: 64.9
-    - name: matmul
-      current: 1.8
-      previous: 1.64
-      change: 9.7
-    - name: protoboeuf
-      current: 1.76
-      previous: 1.63
-      change: 7.8
-    regressions:
-    - name: structaref
-      current: 9.63
-      previous: 10.97
-      change: 12.3
-    - name: 30k_ifelse
-      current: 2.47
-      previous: 2.72
-      change: 9.2
-    - name: getivar
-      current: 9.6
-      previous: 10.46
-      change: 8.2
-    - name: structaset
-      current: 13.0
-      previous: 13.94
-      change: 6.7
-    - name: keyword_args
-      current: 1.04
-      previous: 1.11
-      change: 5.8
