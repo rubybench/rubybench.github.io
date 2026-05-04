@@ -1,4 +1,53 @@
 ---
+- week_beginning: '2026-05-04'
+  guid: rubybench-week-2026-05-04
+  link: https://rubybench.github.io/
+  zjit:
+    current_speedup: 4.27
+    previous_speedup: 4.21
+    change_pct: 1.5
+    improvements:
+    - name: object-new-no-escape
+      current: 4.23
+      previous: 3.78
+      change: 11.7
+    - name: fluentd
+      current: 1.23
+      previous: 1.11
+      change: 10.5
+    - name: cfunc_itself
+      current: 7.07
+      previous: 6.51
+      change: 8.5
+    - name: graphql
+      current: 1.37
+      previous: 1.26
+      change: 8.4
+    - name: addressable-join
+      current: 1.36
+      previous: 1.26
+      change: 7.9
+    regressions:
+    - name: throw
+      current: 0.77
+      previous: 0.94
+      change: 17.8
+    - name: object-new
+      current: 3.28
+      previous: 3.56
+      change: 8.0
+    - name: getivar
+      current: 13.66
+      previous: 14.72
+      change: 7.2
+    - name: blurhash
+      current: 2.18
+      previous: 2.28
+      change: 4.6
+    - name: setivar_object
+      current: 1.94
+      previous: 2.03
+      change: 4.5
 - week_beginning: '2026-04-27'
   guid: rubybench-week-2026-04-27
   link: https://rubybench.github.io/
@@ -930,52 +979,3 @@
       current: 0.99
       previous: 1.05
       change: 4.9
-- week_beginning: '2025-12-15'
-  guid: rubybench-week-2025-12-15
-  link: https://rubybench.github.io/
-  zjit:
-    current_speedup: 2.81
-    previous_speedup: 2.79
-    change_pct: 1.0
-    improvements:
-    - name: keyword_args
-      current: 7.04
-      previous: 1.06
-      change: 562.3
-    - name: ruby-lsp
-      current: 1.37
-      previous: 1.12
-      change: 21.5
-    - name: sudoku
-      current: 1.68
-      previous: 1.52
-      change: 10.4
-    - name: protoboeuf-encode
-      current: 1.89
-      previous: 1.75
-      change: 7.9
-    - name: mail
-      current: 1.12
-      previous: 1.08
-      change: 4.1
-    regressions:
-    - name: rubyboy
-      current: 0.65
-      previous: 0.79
-      change: 17.4
-    - name: cfunc_itself
-      current: 5.29
-      previous: 5.79
-      change: 8.7
-    - name: matmul
-      current: 1.65
-      previous: 1.8
-      change: 8.2
-    - name: structaref
-      current: 10.75
-      previous: 11.56
-      change: 7.0
-    - name: 30k_ifelse
-      current: 2.6
-      previous: 2.76
-      change: 5.7
