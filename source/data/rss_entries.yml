@@ -1,4 +1,53 @@
 ---
+- week_beginning: '2026-05-25'
+  guid: rubybench-week-2026-05-25
+  link: https://rubybench.github.io/
+  zjit:
+    current_speedup: 4.67
+    previous_speedup: 4.71
+    change_pct: -0.8
+    improvements:
+    - name: structaset
+      current: 37.24
+      previous: 30.93
+      change: 20.4
+    - name: graphql-native
+      current: 1.1
+      previous: 0.98
+      change: 12.5
+    - name: activerecord
+      current: 1.74
+      previous: 1.61
+      change: 8.2
+    - name: gcbench
+      current: 2.62
+      previous: 2.44
+      change: 7.4
+    - name: lee
+      current: 1.56
+      previous: 1.48
+      change: 5.4
+    regressions:
+    - name: getivar-module
+      current: 8.23
+      previous: 11.97
+      change: 31.3
+    - name: setivar
+      current: 42.84
+      previous: 47.47
+      change: 9.8
+    - name: send_cfunc_block
+      current: 2.67
+      previous: 2.86
+      change: 6.6
+    - name: 30k_methods
+      current: 7.41
+      previous: 7.84
+      change: 5.6
+    - name: chunky-png
+      current: 1.74
+      previous: 1.83
+      change: 5.0
 - week_beginning: '2026-05-18'
   guid: rubybench-week-2026-05-18
   link: https://rubybench.github.io/
@@ -930,52 +979,3 @@
       current: 1.32
       previous: 1.37
       change: 4.0
-- week_beginning: '2026-01-05'
-  guid: rubybench-week-2026-01-05
-  link: https://rubybench.github.io/
-  zjit:
-    current_speedup: 2.82
-    previous_speedup: 2.88
-    change_pct: -2.1
-    improvements:
-    - name: getivar-module
-      current: 1.83
-      previous: 1.67
-      change: 9.3
-    - name: tinygql
-      current: 1.84
-      previous: 1.69
-      change: 8.6
-    - name: blurhash
-      current: 1.8
-      previous: 1.7
-      change: 5.9
-    - name: matmul
-      current: 1.82
-      previous: 1.77
-      change: 2.9
-    - name: nbody
-      current: 1.26
-      previous: 1.23
-      change: 2.6
-    regressions:
-    - name: setivar
-      current: 9.41
-      previous: 10.47
-      change: 10.2
-    - name: setivar_object
-      current: 1.52
-      previous: 1.67
-      change: 8.7
-    - name: sudoku
-      current: 1.69
-      previous: 1.81
-      change: 6.8
-    - name: setivar_young
-      current: 1.84
-      previous: 1.96
-      change: 6.1
-    - name: fluentd
-      current: 1.1
-      previous: 1.16
-      change: 5.3
