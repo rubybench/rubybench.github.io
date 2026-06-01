@@ -1,4 +1,53 @@
 ---
+- week_beginning: '2026-06-01'
+  guid: rubybench-week-2026-06-01
+  link: https://rubybench.github.io/
+  zjit:
+    current_speedup: 4.76
+    previous_speedup: 4.73
+    change_pct: 0.6
+    improvements:
+    - name: throw
+      current: 0.96
+      previous: 0.88
+      change: 8.7
+    - name: protoboeuf-encode
+      current: 2.72
+      previous: 2.51
+      change: 8.3
+    - name: send_cfunc_block
+      current: 2.84
+      previous: 2.64
+      change: 7.6
+    - name: setivar_object
+      current: 2.95
+      previous: 2.74
+      change: 7.5
+    - name: getivar
+      current: 14.44
+      previous: 13.58
+      change: 6.3
+    regressions:
+    - name: cfunc_itself
+      current: 6.15
+      previous: 7.16
+      change: 14.0
+    - name: structaref
+      current: 18.39
+      previous: 19.79
+      change: 7.1
+    - name: object-new-no-escape
+      current: 4.39
+      previous: 4.72
+      change: 7.0
+    - name: getivar-module
+      current: 9.17
+      previous: 9.86
+      change: 7.0
+    - name: addressable-merge
+      current: 1.66
+      previous: 1.78
+      change: 6.7
 - week_beginning: '2026-05-25'
   guid: rubybench-week-2026-05-25
   link: https://rubybench.github.io/
@@ -930,52 +979,3 @@
       current: 6.11
       previous: 6.61
       change: 7.7
-- week_beginning: '2026-01-12'
-  guid: rubybench-week-2026-01-12
-  link: https://rubybench.github.io/
-  zjit:
-    current_speedup: 2.93
-    previous_speedup: 2.88
-    change_pct: 1.8
-    improvements:
-    - name: sudoku
-      current: 2.4
-      previous: 1.74
-      change: 38.2
-    - name: matmul
-      current: 2.34
-      previous: 1.78
-      change: 31.0
-    - name: loops-times
-      current: 1.91
-      previous: 1.49
-      change: 28.2
-    - name: rubyboy
-      current: 0.8
-      previous: 0.67
-      change: 19.3
-    - name: nqueens
-      current: 2.28
-      previous: 1.96
-      change: 16.2
-    regressions:
-    - name: getivar-module
-      current: 1.6
-      previous: 1.81
-      change: 11.2
-    - name: setivar
-      current: 10.07
-      previous: 11.06
-      change: 8.9
-    - name: blurhash
-      current: 1.64
-      previous: 1.76
-      change: 6.5
-    - name: addressable-parse
-      current: 1.27
-      previous: 1.34
-      change: 5.3
-    - name: addressable-join
-      current: 1.32
-      previous: 1.37
-      change: 4.0
