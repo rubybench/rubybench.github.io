@@ -1,4 +1,53 @@
 ---
+- week_beginning: '2026-06-15'
+  guid: rubybench-week-2026-06-15
+  link: https://rubybench.github.io/
+  zjit:
+    current_speedup: 4.71
+    previous_speedup: 4.92
+    change_pct: -4.3
+    improvements:
+    - name: matmul
+      current: 1.56
+      previous: 1.46
+      change: 7.1
+    - name: protoboeuf-encode
+      current: 2.92
+      previous: 2.74
+      change: 6.8
+    - name: respond_to
+      current: 13.87
+      previous: 13.1
+      change: 5.8
+    - name: erubi
+      current: 1.31
+      previous: 1.24
+      change: 5.0
+    - name: activerecord
+      current: 1.76
+      previous: 1.68
+      change: 4.8
+    regressions:
+    - name: setivar
+      current: 45.44
+      previous: 53.56
+      change: 15.1
+    - name: structaset
+      current: 33.42
+      previous: 36.93
+      change: 9.5
+    - name: send_rubyfunc_block
+      current: 5.32
+      previous: 5.78
+      change: 8.0
+    - name: object-new-initialize
+      current: 4.77
+      previous: 5.19
+      change: 8.0
+    - name: blurhash
+      current: 2.1
+      previous: 2.25
+      change: 6.5
 - week_beginning: '2026-06-08'
   guid: rubybench-week-2026-06-08
   link: https://rubybench.github.io/
@@ -930,52 +979,3 @@
       current: 1.66
       previous: 1.74
       change: 4.8
-- week_beginning: '2026-01-26'
-  guid: rubybench-week-2026-01-26
-  link: https://rubybench.github.io/
-  zjit:
-    current_speedup: 2.79
-    previous_speedup: 2.85
-    change_pct: -2.2
-    improvements:
-    - name: protoboeuf-encode
-      current: 2.07
-      previous: 1.87
-      change: 10.9
-    - name: protoboeuf
-      current: 2.03
-      previous: 1.89
-      change: 7.5
-    - name: setivar_young
-      current: 2.13
-      previous: 1.99
-      change: 7.2
-    - name: setivar_object
-      current: 1.71
-      previous: 1.64
-      change: 4.4
-    - name: loops-times
-      current: 1.98
-      previous: 1.9
-      change: 4.1
-    regressions:
-    - name: getivar
-      current: 8.3
-      previous: 9.39
-      change: 11.6
-    - name: cfunc_itself
-      current: 6.0
-      previous: 6.6
-      change: 9.1
-    - name: getivar-module
-      current: 1.52
-      previous: 1.66
-      change: 8.4
-    - name: 30k_ifelse
-      current: 2.7
-      previous: 2.94
-      change: 8.0
-    - name: erubi-rails
-      current: 1.39
-      previous: 1.48
-      change: 6.3
