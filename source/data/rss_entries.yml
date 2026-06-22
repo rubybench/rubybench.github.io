@@ -1,4 +1,53 @@
 ---
+- week_beginning: '2026-06-22'
+  guid: rubybench-week-2026-06-22
+  link: https://rubybench.github.io/
+  zjit:
+    current_speedup: 4.79
+    previous_speedup: 4.61
+    change_pct: 3.9
+    improvements:
+    - name: getivar-module
+      current: 12.02
+      previous: 9.12
+      change: 31.8
+    - name: setivar
+      current: 57.37
+      previous: 48.59
+      change: 18.1
+    - name: structaset
+      current: 37.43
+      previous: 32.3
+      change: 15.9
+    - name: 30k_methods
+      current: 7.5
+      previous: 6.86
+      change: 9.3
+    - name: activerecord
+      current: 1.89
+      previous: 1.75
+      change: 8.2
+    regressions:
+    - name: cfunc_itself
+      current: 6.67
+      previous: 8.58
+      change: 22.3
+    - name: send_bmethod
+      current: 26.83
+      previous: 29.43
+      change: 8.8
+    - name: getivar
+      current: 12.01
+      previous: 13.1
+      change: 8.3
+    - name: graphql-native
+      current: 1.03
+      previous: 1.1
+      change: 7.0
+    - name: str_concat
+      current: 2.04
+      previous: 2.16
+      change: 5.4
 - week_beginning: '2026-06-15'
   guid: rubybench-week-2026-06-15
   link: https://rubybench.github.io/
@@ -930,52 +979,3 @@
       current: 1.54
       previous: 1.71
       change: 9.5
-- week_beginning: '2026-02-02'
-  guid: rubybench-week-2026-02-02
-  link: https://rubybench.github.io/
-  zjit:
-    current_speedup: 3.02
-    previous_speedup: 2.85
-    change_pct: 5.9
-    improvements:
-    - name: send_rubyfunc_block
-      current: 9.07
-      previous: 0.94
-      change: 864.9
-    - name: throw
-      current: 0.98
-      previous: 0.75
-      change: 31.3
-    - name: binarytrees
-      current: 1.52
-      previous: 1.16
-      change: 30.9
-    - name: keyword_args
-      current: 9.22
-      previous: 7.36
-      change: 25.3
-    - name: object-new
-      current: 3.11
-      previous: 2.67
-      change: 16.7
-    regressions:
-    - name: hexapdf
-      current: 1.1
-      previous: 1.17
-      change: 6.1
-    - name: blurhash
-      current: 1.71
-      previous: 1.82
-      change: 6.0
-    - name: lee
-      current: 1.07
-      previous: 1.13
-      change: 5.4
-    - name: respond_to
-      current: 12.11
-      previous: 12.75
-      change: 5.0
-    - name: matmul
-      current: 1.66
-      previous: 1.74
-      change: 4.8
