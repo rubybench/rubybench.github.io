@@ -1,4 +1,53 @@
 ---
+- week_beginning: '2026-06-29'
+  guid: rubybench-week-2026-06-29
+  link: https://rubybench.github.io/
+  zjit:
+    current_speedup: 4.69
+    previous_speedup: 4.61
+    change_pct: 1.8
+    improvements:
+    - name: 30k_ifelse
+      current: 3.32
+      previous: 2.73
+      change: 21.4
+    - name: graphql-native
+      current: 1.09
+      previous: 0.99
+      change: 9.9
+    - name: setivar
+      current: 50.56
+      previous: 47.31
+      change: 6.9
+    - name: respond_to
+      current: 14.68
+      previous: 13.79
+      change: 6.4
+    - name: setivar_young
+      current: 2.94
+      previous: 2.76
+      change: 6.3
+    regressions:
+    - name: optcarrot
+      current: 1.03
+      previous: 1.74
+      change: 40.8
+    - name: object-new-initialize
+      current: 4.29
+      previous: 4.86
+      change: 11.8
+    - name: rubyboy
+      current: 0.83
+      previous: 0.89
+      change: 6.9
+    - name: activerecord
+      current: 1.71
+      previous: 1.83
+      change: 6.6
+    - name: str_concat
+      current: 1.93
+      previous: 2.06
+      change: 6.1
 - week_beginning: '2026-06-22'
   guid: rubybench-week-2026-06-22
   link: https://rubybench.github.io/
@@ -930,52 +979,3 @@
       current: 6.09
       previous: 6.47
       change: 5.8
-- week_beginning: '2026-02-09'
-  guid: rubybench-week-2026-02-09
-  link: https://rubybench.github.io/
-  zjit:
-    current_speedup: 2.91
-    previous_speedup: 3.01
-    change_pct: -3.4
-    improvements:
-    - name: getivar-module
-      current: 2.08
-      previous: 1.72
-      change: 20.9
-    - name: loops-times
-      current: 2.0
-      previous: 1.74
-      change: 14.9
-    - name: addressable-new
-      current: 1.47
-      previous: 1.31
-      change: 12.0
-    - name: erubi-rails
-      current: 1.59
-      previous: 1.48
-      change: 7.3
-    - name: setivar
-      current: 10.8
-      previous: 10.2
-      change: 5.9
-    regressions:
-    - name: send_bmethod
-      current: 15.77
-      previous: 21.97
-      change: 28.2
-    - name: str_concat
-      current: 2.08
-      previous: 2.39
-      change: 13.0
-    - name: protoboeuf-encode
-      current: 1.87
-      previous: 2.09
-      change: 10.9
-    - name: getivar
-      current: 8.57
-      previous: 9.51
-      change: 10.0
-    - name: setivar_object
-      current: 1.54
-      previous: 1.71
-      change: 9.5
