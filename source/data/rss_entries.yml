@@ -1,4 +1,53 @@
 ---
+- week_beginning: '2026-07-06'
+  guid: rubybench-week-2026-07-06
+  link: https://rubybench.github.io/
+  zjit:
+    current_speedup: 4.63
+    previous_speedup: 4.67
+    change_pct: -0.9
+    improvements:
+    - name: 30k_methods
+      current: 25.14
+      previous: 6.98
+      change: 260.1
+    - name: optcarrot
+      current: 1.69
+      previous: 1.04
+      change: 62.7
+    - name: 30k_ifelse
+      current: 4.5
+      previous: 3.31
+      change: 36.0
+    - name: str_concat
+      current: 2.25
+      previous: 1.98
+      change: 14.0
+    - name: keyword_args
+      current: 8.68
+      previous: 7.8
+      change: 11.4
+    regressions:
+    - name: setivar
+      current: 29.14
+      previous: 51.88
+      change: 43.8
+    - name: setivar_object
+      current: 2.34
+      previous: 3.0
+      change: 21.8
+    - name: setivar_young
+      current: 2.5
+      previous: 2.95
+      change: 15.0
+    - name: getivar-module
+      current: 9.51
+      previous: 10.75
+      change: 11.6
+    - name: graphql-native
+      current: 1.05
+      previous: 1.14
+      change: 8.1
 - week_beginning: '2026-06-29'
   guid: rubybench-week-2026-06-29
   link: https://rubybench.github.io/
@@ -930,52 +979,3 @@
       current: 1.12
       previous: 1.15
       change: 2.6
-- week_beginning: '2026-02-16'
-  guid: rubybench-week-2026-02-16
-  link: https://rubybench.github.io/
-  zjit:
-    current_speedup: 3.08
-    previous_speedup: 2.99
-    change_pct: 2.7
-    improvements:
-    - name: structaset
-      current: 14.17
-      previous: 12.2
-      change: 16.1
-    - name: send_bmethod
-      current: 21.26
-      previous: 19.04
-      change: 11.7
-    - name: send_cfunc_block
-      current: 2.99
-      previous: 2.7
-      change: 10.7
-    - name: keyword_args
-      current: 8.02
-      previous: 7.29
-      change: 10.0
-    - name: throw
-      current: 1.05
-      previous: 0.96
-      change: 8.8
-    regressions:
-    - name: getivar-module
-      current: 1.57
-      previous: 1.82
-      change: 13.8
-    - name: setivar_young
-      current: 1.97
-      previous: 2.14
-      change: 8.0
-    - name: matmul
-      current: 1.65
-      previous: 1.79
-      change: 7.6
-    - name: setivar
-      current: 11.19
-      previous: 12.07
-      change: 7.3
-    - name: cfunc_itself
-      current: 6.09
-      previous: 6.47
-      change: 5.8
