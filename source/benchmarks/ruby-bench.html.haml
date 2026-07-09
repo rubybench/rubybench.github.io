@@ -1,5 +1,5 @@
 :ruby
-  benchmarks = YAML.load_file(File.expand_path('../../ruby-bench/benchmarks.yml', __dir__))
+  benchmarks = ruby_bench_benchmarks
   category_benchmarks = %w[headline other micro].map do |category|
     benchmarks.filter_map do |name, benchmark|
       if benchmark.fetch('category', 'other') == category
@@ -17,7 +17,7 @@
 
     %ul.nav.nav-pills.benchmark_navbar
       - category_benchmarks.each do |benchmarks|
-        - benchmarks.reject{|b, _| b.to_s.include? 'ractor/'}.each_with_index do |benchmark, index|
+        - benchmarks.each_with_index do |benchmark, index|
           %li.nav-item
             %a.nav-link.activate-chart{ href: '#', 'data-id': benchmark }= benchmark
         %li.nav-item{ style: 'clear: both; float: left; display: block; position: relative;' }

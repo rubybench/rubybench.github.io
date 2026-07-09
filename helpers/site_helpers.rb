@@ -1,8 +1,13 @@
 require 'yaml'
+require_relative '../lib/benchmark_registry'
 
 module SiteHelpers
   def github_link(repository)
     link_to repository, "https://github.com/#{repository}"
+  end
+
+  def ruby_bench_benchmarks
+    @ruby_bench_benchmarks ||= BenchmarkRegistry.new.benchmarks
   end
 
   def rss_entries

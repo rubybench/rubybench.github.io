@@ -10,7 +10,7 @@
       %th Benchmarks
   %tbody
     :ruby
-      benchmarks = YAML.load_file(File.expand_path('../ruby-bench/benchmarks.yml', __dir__))
+      benchmarks = ruby_bench_benchmarks
       category_benchmarks = {
         'Headline Benchmarks' => benchmarks.filter_map { |name, benchmark| name if benchmark.fetch('category', 'other') == 'headline' },
         'Other Benchmarks' => benchmarks.filter_map { |name, benchmark| name if benchmark.fetch('category', 'other') == 'other' },
@@ -20,7 +20,7 @@
       %tr
         %td= category
         %td.margined-links
-          - benchmarks.reject{|b, _| b.to_s.include? 'ractor/'}.each do |benchmark|
+          - benchmarks.each do |benchmark|
             = link_to benchmark, "/benchmarks/ruby-bench.html##{benchmark}"
 
 %h2.text-center ruby/ruby
@@ -93,12 +93,8 @@
       %th Benchmarks
   %tbody
     :ruby
-      benchmarks = YAML.load_file(File.expand_path('../ruby-bench/benchmarks.yml', __dir__))
-      # Get all ractor benchmarks - both ractor-only and ractor-capable
-      ractor_only = benchmarks.select { |name, meta| name.to_s.start_with?('ractor/') }
-      ractor_capable = benchmarks.select { |name, meta| meta['ractor'] && !name.to_s.start_with?('ractor/') }
-      # Combine all ractor benchmarks into one list
-      all_ractor_benchmarks = ractor_only.merge(ractor_capable)
+      benchmarks = ruby_bench_benchmarks
+      all_ractor_benchmarks = benchmarks.select { |name, meta| meta['ractor'] }
     %tr
       %td Ractor
       %td.margined-links

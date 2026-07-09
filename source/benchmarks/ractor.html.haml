@@ -1,8 +1,6 @@
 :ruby
-  benchmarks = YAML.load_file(File.expand_path('../../ruby-bench/benchmarks.yml', __dir__))
-  ractor_only = benchmarks.select { |name, meta| name.to_s.start_with?('ractor/') }
-  ractor_capable = benchmarks.select { |name, meta| meta['ractor'] && !name.to_s.start_with?('ractor/') }
-  all_ractor_benchmarks = ractor_only.merge(ractor_capable)
+  benchmarks = ruby_bench_benchmarks
+  all_ractor_benchmarks = benchmarks.select { |name, meta| meta['ractor'] }
 
 .benchmark_page
   .text-center

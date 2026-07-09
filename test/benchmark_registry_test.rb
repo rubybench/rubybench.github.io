@@ -26,6 +26,30 @@ class BenchmarkRegistryTest < Minitest::Test
     end
   end
 
+  def test_names_filters_out_ractor_only_benchmarks
+    with_benchmarks_file({'regular' => {}, 'ractor-only' => {'ractor_only' => true}}) do |path|
+      registry = BenchmarkRegistry.new(path: path)
+
+      result = registry.names
+
+      assert_includes result, 'regular'
+      refute_includes result, 'ractor-only'
+    end
+  end
+
+  def test_benchmarks_returns_filtered_metadata
+    with_benchmarks_file({
+      'regular' => {'category' => 'headline'},
+      'ractor-only' => {'ractor_only' => true}
+    }) do |path|
+      registry = BenchmarkRegistry.new(path: path)
+
+      result = registry.benchmarks
+
+      assert_equal({'regular' => {'category' => 'headline'}}, result)
+    end
+  end
+
   def test_names_returns_empty_array_if_file_missing
     registry = BenchmarkRegistry.new(path: '/nonexistent/path.yml')
 
