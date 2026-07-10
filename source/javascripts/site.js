@@ -73,30 +73,12 @@ var RubyBench = (function() {
   }
 
   // Plot a Highcharts chart
-  function plotChart(graphElement, config, retryCount) {
-    retryCount = retryCount || 0;
+  function plotChart(graphElement, config) {
     initHighchartsDefaults();
 
-    // Ensure the element is visible and has dimensions
+    // Ensure the element is visible before Highcharts measures it
     if (!graphElement.is(':visible')) {
       graphElement.show();
-    }
-
-    // Check if element has actual dimensions
-    var width = graphElement.width();
-    var height = graphElement.height();
-
-    if (width === 0 || height === 0) {
-      console.error('Chart container has no dimensions (width: ' + width + ', height: ' + height + ')');
-      // Try to use setTimeout to allow DOM to update, but only retry once
-      if (retryCount < 1) {
-        setTimeout(function() {
-          plotChart(graphElement, config, retryCount + 1); // Retry once
-        }, 50);
-      } else {
-        graphElement.html('<div style="padding: 100px; text-align: center; color: red;">Chart container has no dimensions</div>');
-      }
-      return null;
     }
 
     // Use the DOM element directly instead of ID string
