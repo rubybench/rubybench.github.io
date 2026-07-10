@@ -73,30 +73,12 @@ var RubyBench = (function() {
   }
 
   // Plot a Highcharts chart
-  function plotChart(graphElement, config, retryCount) {
-    retryCount = retryCount || 0;
+  function plotChart(graphElement, config) {
     initHighchartsDefaults();
 
-    // Ensure the element is visible and has dimensions
+    // Ensure the element is visible before Highcharts measures it
     if (!graphElement.is(':visible')) {
       graphElement.show();
-    }
-
-    // Check if element has actual dimensions
-    var width = graphElement.width();
-    var height = graphElement.height();
-
-    if (width === 0 || height === 0) {
-      console.error('Chart container has no dimensions (width: ' + width + ', height: ' + height + ')');
-      // Try to use setTimeout to allow DOM to update, but only retry once
-      if (retryCount < 1) {
-        setTimeout(function() {
-          plotChart(graphElement, config, retryCount + 1); // Retry once
-        }, 50);
-      } else {
-        graphElement.html('<div style="padding: 100px; text-align: center; color: red;">Chart container has no dimensions</div>');
-      }
-      return null;
     }
 
     // Use the DOM element directly instead of ID string
@@ -121,17 +103,46 @@ var RubyBench = (function() {
   function setupBenchmarkNavigation(options) {
     var activateChart = options.activateChart;
     var defaultBenchmark = options.defaultBenchmark;
+    var enableKeyboardNavigation = options.enableKeyboardNavigation;
+
+    function activateBenchmarkLink(link) {
+      $('.benchmark_navbar .nav-link').removeClass('active');
+      link.addClass('active');
+      var id = link.data('id');
+      var graphElement = $("#" + id);
+      activateChart(graphElement);
+      window.location.hash = id;
+    }
 
     // Switch active tab and render it
     $('.activate-chart').on('click', function(event) {
       event.preventDefault();
-      $('.benchmark_navbar .nav-link').removeClass('active');
-      $(this).addClass('active');
-      var id = $(this).data('id');
-      var graphElement = $("#" + id);
-      activateChart(graphElement);
-      window.location.hash = id;
+      activateBenchmarkLink($(this));
     });
+
+    if (enableKeyboardNavigation) {
+      $(document).on('keydown', function(event) {
+        if (event.key !== 'ArrowLeft' && event.key !== 'ArrowRight') {
+          return;
+        }
+        if (event.altKey || event.ctrlKey || event.metaKey || event.shiftKey) {
+          return;
+        }
+        if ($(event.target).closest('input, textarea, select, [contenteditable="true"]').length > 0) {
+          return;
+        }
+
+        var links = $('.benchmark_navbar .nav-link');
+        var activeIndex = links.index(links.filter('.active'));
+        var nextIndex = activeIndex + (event.key === 'ArrowLeft' ? -1 : 1);
+        if (activeIndex < 0 || nextIndex < 0 || nextIndex >= links.length) {
+          return;
+        }
+
+        event.preventDefault();
+        activateBenchmarkLink(links.eq(nextIndex));
+      });
+    }
 
     // Handle URL hash navigation
     function handleHashNavigation() {

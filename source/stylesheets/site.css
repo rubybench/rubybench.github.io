@@ -7,31 +7,29 @@ body {
 }
 
 a {
-  color: rgba(#000, 0.7);
+  color: rgba(0, 0, 0, 0.7);
+}
 
-  &:focus,
-  &:hover {
-    color: rgba(#000, 0.6);
-  }
+a:focus,
+a:hover {
+  color: rgba(0, 0, 0, 0.6);
 }
 
 .footer {
   margin-top: 40px;
 }
 
-.index_page {
-  .large_title {
-    font-size: 48px;
-    margin-bottom: 24px;
-  }
+.index_page .large_title {
+  font-size: 48px;
+  margin-bottom: 24px;
+}
 
-  .description_box {
-    margin-bottom: 40px;
-  }
+.index_page .description_box {
+  margin-bottom: 40px;
+}
 
-  .large_explanation {
-    font-size: 24px;
-  }
+.index_page .large_explanation {
+  font-size: 24px;
 }
 
 .benchmark_page {
@@ -50,10 +48,10 @@ a {
   margin-bottom: 10px;
   display: inline-flex;
   flex-wrap: wrap;
+}
 
-  .nav-link {
-    padding: 10px 13px;
-  }
+.benchmark_page .nav.benchmark_navbar .nav-link {
+  padding: 10px 13px;
 }
 
 .metric_type {
@@ -67,31 +65,28 @@ a {
 .benchmarks-table {
   width: 70%;
   margin: 0 auto 60px auto;
-  a {
-    text-decoration: underline;
-  }
 }
 
-.margined-links {
-  a,
-  span {
-    margin-right: 10px;
-  }
+.benchmarks-table a {
+  text-decoration: underline;
 }
 
-.filter-section {
-  .form-check-inline {
-    cursor: pointer;
-    padding: 2px 12px;
-    border-radius: 3px;
-    transition: background-color 0.2s ease;
+.margined-links a,
+.margined-links span {
+  margin-right: 10px;
+}
 
-    &:hover {
-      background-color: #f5f5f5;
-    }
-  }
+.filter-section .form-check-inline {
+  cursor: pointer;
+  padding: 2px 12px;
+  border-radius: 3px;
+  transition: background-color 0.2s ease;
+}
 
-  input[type="checkbox"] {
-    cursor: pointer;
-  }
+.filter-section .form-check-inline:hover {
+  background-color: #f5f5f5;
+}
+
+.filter-section input[type="checkbox"] {
+  cursor: pointer;
 }
