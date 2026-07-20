@@ -1,4 +1,53 @@
 ---
+- week_beginning: '2026-07-20'
+  guid: rubybench-week-2026-07-20
+  link: https://rubybench.github.io/
+  zjit:
+    current_speedup: 7.93
+    previous_speedup: 7.37
+    change_pct: 7.6
+    improvements:
+    - name: gcbench
+      current: 6.29
+      previous: 2.79
+      change: 125.7
+    - name: rubyboy
+      current: 1.92
+      previous: 0.93
+      change: 106.5
+    - name: setivar
+      current: 53.75
+      previous: 36.35
+      change: 47.9
+    - name: keyword_args
+      current: 17.91
+      previous: 13.63
+      change: 31.4
+    - name: protoboeuf-encode
+      current: 3.65
+      previous: 2.82
+      change: 29.4
+    regressions:
+    - name: getivar-module
+      current: 9.4
+      previous: 10.22
+      change: 8.1
+    - name: cfunc_itself
+      current: 32.5
+      previous: 35.04
+      change: 7.2
+    - name: fib
+      current: 7.9
+      previous: 8.48
+      change: 6.9
+    - name: rack
+      current: 1.27
+      previous: 1.33
+      change: 4.8
+    - name: activerecord
+      current: 1.92
+      previous: 2.02
+      change: 4.7
 - week_beginning: '2026-07-13'
   guid: rubybench-week-2026-07-13
   link: https://rubybench.github.io/
@@ -930,52 +979,3 @@
       current: 2.95
       previous: 3.05
       change: 3.0
-- week_beginning: '2026-03-02'
-  guid: rubybench-week-2026-03-02
-  link: https://rubybench.github.io/
-  zjit:
-    current_speedup: 3.27
-    previous_speedup: 3.07
-    change_pct: 6.5
-    improvements:
-    - name: getivar-module
-      current: 7.3
-      previous: 1.77
-      change: 312.0
-    - name: structaref
-      current: 13.64
-      previous: 10.47
-      change: 30.3
-    - name: setivar
-      current: 13.83
-      previous: 11.35
-      change: 21.8
-    - name: attr_accessor
-      current: 12.45
-      previous: 11.03
-      change: 12.9
-    - name: ruby-lsp
-      current: 1.42
-      previous: 1.29
-      change: 10.4
-    regressions:
-    - name: str_concat
-      current: 1.97
-      previous: 2.16
-      change: 8.9
-    - name: addressable-new
-      current: 1.42
-      previous: 1.52
-      change: 6.7
-    - name: fib
-      current: 1.12
-      previous: 1.2
-      change: 6.6
-    - name: chunky-png
-      current: 1.68
-      previous: 1.75
-      change: 4.4
-    - name: tinygql
-      current: 1.82
-      previous: 1.9
-      change: 4.1
