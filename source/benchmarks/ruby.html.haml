@@ -1,41 +1,4 @@
-:ruby
-  category_benchmarks = [
-    %w[app_answer app_erb app_fib app_mandelbrot app_raise app_tak app_uri app_aobench
-       app_factorial app_lc_fizzbuzz app_pentomino app_strconcat app_tarai],
-    %w[array_sample_100k__1k array_small_and array_values_at_int
-       array_sample_100k__100 array_sample_100k___50k array_small_diff
-       array_values_at_range array_sample_100k___10k array_sample_100k__6k
-       array_small_or array_sample_100k_10 array_sort_block
-       array_sample_100k_11 array_shift array_sort_float],
-    %w[complex_float_add complex_float_div complex_float_mul complex_float_new complex_float_power complex_float_sub],
-    %w[enum_lazy_grep_v_100 enum_lazy_grep_v_20 enum_lazy_grep_v_50 enum_lazy_uniq_100 enum_lazy_uniq_20 enum_lazy_uniq_50],
-    %w[hash_aref_array hash_aref_dsym_long hash_aref_dsym hash_aref_fix hash_aref_flo hash_aref_miss hash_aref_str
-       hash_aref_sym_long hash_aref_sym hash_flatten hash_ident_flo hash_ident_num
-       hash_ident_obj hash_ident_str hash_ident_sym hash_keys hash_literal_small2 hash_literal_small4 hash_literal_small8
-       hash_long hash_shift hash_shift_u16 hash_shift_u24 hash_shift_u32 hash_small2 hash_small4 hash_small8 hash_to_proc hash_values],
-    %w[io_copy_stream_write io_copy_stream_write_socket io_file_create io_file_read io_file_write io_nonblock_noex2
-       io_nonblock_noex io_pipe_rw io_select2 io_select3 io_select io_write],
-    %w[loop_for loop_generator loop_times loop_whileloop2 loop_whileloop],
-    %w[so_ackermann so_array so_binary_trees so_concatenate so_count_words so_exception so_fannkuch so_fasta
-       so_k_nucleotide so_lists so_mandelbrot so_matrix so_meteor_contest so_nbody so_nested_loop so_nsieve_bits
-       so_nsieve so_object so_partial_sums so_pidigits so_random so_reverse_complement so_sieve so_spectralnorm],
-    %w[vm_array vm_attr_ivar_set vm_attr_ivar vm_backtrace vm_bigarray vm_bighash vm_blockparam_call vm_blockparam_pass
-       vm_blockparam_yield vm_blockparam vm_block vm_case_classes vm_case_lit vm_case vm_clearmethodcache vm_const vm_cvar vm_defined_method
-       vm_dstr_ary vm_dstr_bool vm_dstr_class_module vm_dstr_digit vm_dstr_int vm_dstr_nil vm_dstr_obj_def vm_dstr_obj vm_dstr_str
-       vm_dstr_sym vm_dstr vm_ensure vm_eval vm_fiber_allocate vm_fiber_count vm_fiber_reuse_gc vm_fiber_reuse vm_fiber_switch vm_float_simple
-       vm_freezestring vm_gc_old_full vm_gc_old_immediate vm_gc_old_lazy vm_gc vm_gc_short_lived vm_gc_short_with_complex_long
-       vm_gc_short_with_long vm_gc_short_with_symbol vm_gc_wb_ary_promoted vm_gc_wb_ary vm_gc_wb_obj_promoted vm_gc_wb_obj vm_iclass_super
-       vm_ivar_embedded_obj_init vm_ivar_extended_obj_init vm_ivar_generic_get vm_ivar_generic_set vm_ivar_get
-       vm_ivar_lazy_set vm_ivar_of_class_set vm_ivar_of_class vm_ivar_set_on_instance vm_ivar_set vm_ivar vm_length
-       vm_lvar_cond_set vm_lvar_init vm_lvar_set vm_method_missing vm_method_with_block vm_method vm_module_ann_const_set vm_module_const_set
-       vm_mutex vm_neq vm_newlambda vm_not vm_poly_method_ov vm_poly_method vm_poly_same_method vm_poly_singleton vm_proc vm_raise1
-       vm_raise2 vm_regexp vm_rescue vm_send_cfunc vm_send vm_simplereturn vm_string_literal vm_struct_big_aref_hi vm_struct_big_aref_lo
-       vm_struct_big_aset vm_struct_big_href_hi vm_struct_big_href_lo vm_struct_big_hset vm_struct_small_aref vm_struct_small_aset
-       vm_struct_small_href vm_struct_small_hset vm_super vm_swap vm_symbol_block_pass vm_thread_alive_check vm_thread_close
-       vm_thread_condvar1 vm_thread_condvar2 vm_thread_create_join vm_thread_mutex1 vm_thread_mutex2 vm_thread_mutex3 vm_thread_pass_flood
-       vm_thread_pass vm_thread_pipe vm_thread_queue vm_thread_sized_queue2 vm_thread_sized_queue3 vm_thread_sized_queue4
-       vm_thread_sized_queue vm_thread_sleep vm_unif1 vm_yield vm_zsuper],
-  ]
+- category_benchmarks = ruby_core_benchmarks
 .benchmark_page
   .text-center
     %h1 ruby/ruby
@@ -44,15 +7,19 @@
 
     #graph_metadata{ 'data-unit': 'i/s', 'data-type': 'line' }
 
+    %div
+      .category_switcher
+        - category_benchmarks.each_key do |category|
+          %button.category_switch{ type: 'button', 'data-category': category.downcase }= category
+
     %ul.nav.nav-pills.benchmark_navbar
-      - category_benchmarks.each do |benchmarks|
-        - benchmarks.each_with_index do |benchmark, index|
-          %li.nav-item
+      - category_benchmarks.each do |category, benchmarks|
+        - benchmarks.each do |benchmark|
+          %li.nav-item{ 'data-category': category.downcase }
             %a.nav-link.activate-chart{ href: '#', 'data-id': benchmark }= benchmark
-        %li.nav-item{ style: 'clear: both; float: left; display: block; position: relative;' }
 
   - graph_data = { 'data-ruby-versions': [], 'data-vm-values': [] }
-  - category_benchmarks.each do |benchmarks|
+  - category_benchmarks.each_value do |benchmarks|
     - benchmarks.each do |benchmark|
       .benchmark_graph{ graph_data, id: benchmark, 'data-name': benchmark }
 
@@ -125,10 +92,25 @@
       });
     };
 
+    // Show only the benchmark tabs of the given category
+    function showCategory(category) {
+      $('.category_switch').removeClass('active');
+      $('.category_switch[data-category="' + category + '"]').addClass('active');
+      $('.benchmark_navbar .nav-item[data-category]').hide();
+      $('.benchmark_navbar .nav-item[data-category="' + category + '"]').show();
+    }
+
     function activateChart(graphElement) {
       // TODO: show a loading indicator until it receives a response?
 
       var benchmark = graphElement.attr('id');
+
+      // Keep the category switcher in sync with the benchmark being shown
+      var category = $('.activate-chart[data-id="' + benchmark + '"]').closest('.nav-item').data('category');
+      if (category) {
+        showCategory(category);
+      }
+
       $.get('https://raw.githubusercontent.com/rubybench/rubybench-data/main/ruby/' + benchmark + '/' + benchmark + '.yml').done(function (data) {
         // Show only graphElement and hide everything else
         $('.benchmark_graph').hide();
@@ -162,6 +144,17 @@
       window.location.hash = id;
     });
 
+    // Switch category and jump to its first benchmark
+    showCategory('#{category_benchmarks.keys.first.downcase}');
+    $('.category_switch').on('click', function() {
+      var category = $(this).data('category');
+      showCategory(category);
+      var active = $('.benchmark_navbar li.active');
+      if (active.data('category') !== category) {
+        $('.benchmark_navbar .nav-item[data-category="' + category + '"] .activate-chart').first().trigger('click');
+      }
+    });
+
     // Load rubies first
     $.get('https://raw.githubusercontent.com/rubybench/rubybench-data/master/rubies.yml').done(function (data) {
       rubies = jsyaml.load(data);
@@ -175,7 +168,7 @@
         $('.activate-chart[data-id=' + id + ']').closest('li').addClass('active');
       }
       else {
-        activateChart($('.benchmark_graph##{category_benchmarks.first.first}'));
+        activateChart($('.benchmark_graph##{category_benchmarks.values.flatten.first}'));
       }
     });
   });
