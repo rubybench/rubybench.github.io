@@ -53,6 +53,7 @@
       Highcharts.chart(graphElement.attr('id'), {
         chart: {
           zoomType: 'x',
+          animation: false,
           type: type
         },
         title: {
@@ -86,7 +87,7 @@
         series: series,
         plotOptions: {
           series: {
-            animation: { duration: 400 }
+            animation: false
           }
         }
       });

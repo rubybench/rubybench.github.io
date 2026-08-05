@@ -23,7 +23,8 @@ var RubyBench = (function() {
     var defaultConfig = {
       chart: {
         zoomType: 'x',
-        type: options.graphType || 'line'
+        type: options.graphType || 'line',
+        animation: false
       },
       title: {
         text: options.title || ''
@@ -41,7 +42,7 @@ var RubyBench = (function() {
       series: options.series || [],
       plotOptions: {
         series: {
-          animation: { duration: 400 }
+          animation: false
         },
         line: {
           connectNulls: options.connectNulls !== undefined ? options.connectNulls : true
