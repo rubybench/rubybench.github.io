@@ -43,6 +43,12 @@ a:hover {
   margin: 60px auto;
 }
 
+/* The dashboard shows one graph at a time (Speed or Memory), so give it
+   twice the height of the regular benchmark graphs */
+.benchmark_graph.dashboard_graph {
+  height: 680px;
+}
+
 /* Segmented control for switching benchmark categories, styled differently
    from the benchmark nav-pills below it */
 .category_switcher {
