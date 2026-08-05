@@ -47,10 +47,12 @@ a:hover {
    from the benchmark nav-pills below it */
 .category_switcher {
   display: inline-flex;
+  flex-wrap: wrap;
+  justify-content: center;
   margin-top: 24px;
   padding: 4px;
   background-color: #eef1f4;
-  border-radius: 999px;
+  border-radius: 24px;
 }
 
 .category_switcher .category_switch {

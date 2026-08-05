@@ -10,6 +10,11 @@ module SiteHelpers
     @ruby_bench_benchmarks ||= BenchmarkRegistry.new.benchmarks
   end
 
+  # Categories of ruby/ruby core benchmarks: { 'Application' => ['app_answer', ...], ... }
+  def ruby_core_benchmarks
+    @ruby_core_benchmarks ||= YAML.safe_load_file(File.expand_path('data/ruby_benchmarks.yml', app.root))
+  end
+
   def rss_entries
     @rss_entries ||= begin
       entries_file = File.expand_path('source/data/rss_entries.yml', app.root)
