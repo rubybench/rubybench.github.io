@@ -12,8 +12,17 @@
           %button.category_switch.activate-chart{ type: 'button', 'data-id': category.downcase, class: ('active' if index == 0) }= category
 
   - %w[headline other micro].each do |category|
-    .benchmark_graph{ id: category }
-    .benchmark_graph.rss_graph{ id: "#{category}_rss" }
+    .benchmark_graph.dashboard_graph{ id: category }
+    .benchmark_graph.dashboard_graph.rss_graph{ id: "#{category}_rss" }
+
+  .text-center
+    %div
+      %label.form-check.form-check-inline.metric_type
+        %input.form-check-input{ type: 'radio', name: 'metric_type', value: 'Speed', checked: true }
+        Speed
+      %label.form-check.form-check-inline.metric_type
+        %input.form-check-input{ type: 'radio', name: 'metric_type', value: 'Memory' }
+        Memory
 
 :javascript
   $(function() {
@@ -112,12 +121,21 @@
     function activateChart(graphElement) {
       $('.benchmark_graph').hide();
       var category = graphElement.attr('id');
-      var rssElement = $('#' + category + '_rss');
-      graphElement.show();
-      rssElement.show();
-      plotSpeedChart(graphElement, category);
-      plotRssChart(rssElement, category);
+      if (RubyBench.getSelectedMetricType() === 'Memory') {
+        var rssElement = $('#' + category + '_rss');
+        rssElement.show();
+        plotRssChart(rssElement, category);
+      } else {
+        graphElement.show();
+        plotSpeedChart(graphElement, category);
+      }
     }
+
+    // Re-render the active category when switching between Speed and Memory
+    RubyBench.setupMetricTypeHandlers(function() {
+      var id = $('.category_switch.active').data('id');
+      activateChart($('#' + id));
+    });
 
     // Switch active tab and render it
     $('.activate-chart').on('click', function(event) {
