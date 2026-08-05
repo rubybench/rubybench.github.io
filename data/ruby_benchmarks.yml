@@ -135,6 +135,35 @@ Shootout:
   - so_sieve
   - so_spectralnorm
 # TODO: String
+Struct:
+  - vm_struct_big_aref_hi
+  - vm_struct_big_aref_lo
+  - vm_struct_big_aset
+  - vm_struct_big_href_hi
+  - vm_struct_big_href_lo
+  - vm_struct_big_hset
+  - vm_struct_small_aref
+  - vm_struct_small_aset
+  - vm_struct_small_href
+  - vm_struct_small_hset
+Thread:
+  - vm_thread_alive_check
+  - vm_thread_close
+  - vm_thread_condvar1
+  - vm_thread_condvar2
+  - vm_thread_create_join
+  - vm_thread_mutex1
+  - vm_thread_mutex2
+  - vm_thread_mutex3
+  - vm_thread_pass_flood
+  - vm_thread_pass
+  - vm_thread_pipe
+  - vm_thread_queue
+  - vm_thread_sized_queue2
+  - vm_thread_sized_queue3
+  - vm_thread_sized_queue4
+  - vm_thread_sized_queue
+  - vm_thread_sleep
 # TODO: vm_block_handler vm_freezeobj vm_ivar_get_unintialized vm_ivar_set_subclass
 VM:
   - vm_array
@@ -213,36 +242,9 @@ VM:
   - vm_send
   - vm_simplereturn
   - vm_string_literal
-  - vm_struct_big_aref_hi
-  - vm_struct_big_aref_lo
-  - vm_struct_big_aset
-  - vm_struct_big_href_hi
-  - vm_struct_big_href_lo
-  - vm_struct_big_hset
-  - vm_struct_small_aref
-  - vm_struct_small_aset
-  - vm_struct_small_href
-  - vm_struct_small_hset
   - vm_super
   - vm_swap
   - vm_symbol_block_pass
-  - vm_thread_alive_check
-  - vm_thread_close
-  - vm_thread_condvar1
-  - vm_thread_condvar2
-  - vm_thread_create_join
-  - vm_thread_mutex1
-  - vm_thread_mutex2
-  - vm_thread_mutex3
-  - vm_thread_pass_flood
-  - vm_thread_pass
-  - vm_thread_pipe
-  - vm_thread_queue
-  - vm_thread_sized_queue2
-  - vm_thread_sized_queue3
-  - vm_thread_sized_queue4
-  - vm_thread_sized_queue
-  - vm_thread_sleep
   - vm_unif1
   - vm_yield
   - vm_zsuper
