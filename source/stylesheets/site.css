@@ -95,6 +95,12 @@ a:hover {
   margin-bottom: 30px;
 }
 
+/* Benchmark-name links on the dashboard charts: clickable, but without
+   the underline Bootstrap puts on anchors */
+.dashboard_graph .highcharts-xaxis-labels a {
+  text-decoration: none;
+}
+
 .benchmarks-table {
   width: 70%;
   margin: 0 auto 60px auto;

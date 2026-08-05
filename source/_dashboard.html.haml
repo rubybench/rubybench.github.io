@@ -12,8 +12,8 @@
           %button.category_switch.activate-chart{ type: 'button', 'data-id': category.downcase, class: ('active' if index == 0) }= category
 
   - %w[headline other micro].each do |category|
-    .benchmark_graph{ id: category }
-    .benchmark_graph.rss_graph{ id: "#{category}_rss" }
+    .benchmark_graph.dashboard_graph{ id: category }
+    .benchmark_graph.dashboard_graph.rss_graph{ id: "#{category}_rss" }
 
 :javascript
   $(function() {
