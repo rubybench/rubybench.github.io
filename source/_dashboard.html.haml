@@ -138,6 +138,13 @@
       activateChart($('#' + id));
     });
 
+    // Switch categories with the left/right arrow keys
+    RubyBench.setupArrowKeyNavigation(function() {
+      return $('.category_switch');
+    }, function(categorySwitch) {
+      categorySwitch.trigger('click');
+    });
+
     // Switch active tab and render it
     $('.activate-chart').on('click', function(event) {
       event.preventDefault();

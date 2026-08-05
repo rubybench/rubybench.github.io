@@ -100,6 +100,33 @@ var RubyBench = (function() {
     }
   }
 
+  // Move between the .active element's siblings with the left/right arrow keys.
+  // `links` is a function returning the elements to navigate, and `activate` is
+  // called with the element that an arrow key moved to.
+  function setupArrowKeyNavigation(links, activate) {
+    $(document).on('keydown', function(event) {
+      if (event.key !== 'ArrowLeft' && event.key !== 'ArrowRight') {
+        return;
+      }
+      if (event.altKey || event.ctrlKey || event.metaKey || event.shiftKey) {
+        return;
+      }
+      if ($(event.target).closest('input, textarea, select, [contenteditable="true"]').length > 0) {
+        return;
+      }
+
+      var elements = links();
+      var activeIndex = elements.index(elements.filter('.active'));
+      var nextIndex = activeIndex + (event.key === 'ArrowLeft' ? -1 : 1);
+      if (activeIndex < 0 || nextIndex < 0 || nextIndex >= elements.length) {
+        return;
+      }
+
+      event.preventDefault();
+      activate(elements.eq(nextIndex));
+    });
+  }
+
   // Handle benchmark navigation
   function setupBenchmarkNavigation(options) {
     var activateChart = options.activateChart;
@@ -122,27 +149,9 @@ var RubyBench = (function() {
     });
 
     if (enableKeyboardNavigation) {
-      $(document).on('keydown', function(event) {
-        if (event.key !== 'ArrowLeft' && event.key !== 'ArrowRight') {
-          return;
-        }
-        if (event.altKey || event.ctrlKey || event.metaKey || event.shiftKey) {
-          return;
-        }
-        if ($(event.target).closest('input, textarea, select, [contenteditable="true"]').length > 0) {
-          return;
-        }
-
-        var links = $('.benchmark_navbar .nav-link');
-        var activeIndex = links.index(links.filter('.active'));
-        var nextIndex = activeIndex + (event.key === 'ArrowLeft' ? -1 : 1);
-        if (activeIndex < 0 || nextIndex < 0 || nextIndex >= links.length) {
-          return;
-        }
-
-        event.preventDefault();
-        activateBenchmarkLink(links.eq(nextIndex));
-      });
+      setupArrowKeyNavigation(function() {
+        return $('.benchmark_navbar .nav-link');
+      }, activateBenchmarkLink);
     }
 
     // Handle URL hash navigation
@@ -211,6 +220,7 @@ var RubyBench = (function() {
     initHighchartsDefaults: initHighchartsDefaults,
     createBaseChartConfig: createBaseChartConfig,
     plotChart: plotChart,
+    setupArrowKeyNavigation: setupArrowKeyNavigation,
     setupBenchmarkNavigation: setupBenchmarkNavigation,
     setupMetricTypeHandlers: setupMetricTypeHandlers,
     getActiveBenchmarkId: getActiveBenchmarkId,
