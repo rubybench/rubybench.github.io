@@ -90,6 +90,20 @@ Hash:
   - hash_small8
   - hash_to_proc
   - hash_values
+Instance Variable:
+  - vm_attr_ivar_set
+  - vm_attr_ivar
+  - vm_ivar_embedded_obj_init
+  - vm_ivar_extended_obj_init
+  - vm_ivar_generic_get
+  - vm_ivar_generic_set
+  - vm_ivar_get
+  - vm_ivar_lazy_set
+  - vm_ivar_of_class_set
+  - vm_ivar_of_class
+  - vm_ivar_set_on_instance
+  - vm_ivar_set
+  - vm_ivar
 IO:
   - io_copy_stream_write
   - io_copy_stream_write_socket
@@ -167,8 +181,6 @@ Thread:
 # TODO: vm_block_handler vm_freezeobj vm_ivar_get_unintialized vm_ivar_set_subclass
 VM:
   - vm_array
-  - vm_attr_ivar_set
-  - vm_attr_ivar
   - vm_backtrace
   - vm_bigarray
   - vm_bighash
@@ -205,17 +217,6 @@ VM:
   - vm_float_simple
   - vm_freezestring
   - vm_iclass_super
-  - vm_ivar_embedded_obj_init
-  - vm_ivar_extended_obj_init
-  - vm_ivar_generic_get
-  - vm_ivar_generic_set
-  - vm_ivar_get
-  - vm_ivar_lazy_set
-  - vm_ivar_of_class_set
-  - vm_ivar_of_class
-  - vm_ivar_set_on_instance
-  - vm_ivar_set
-  - vm_ivar
   - vm_length
   - vm_lvar_cond_set
   - vm_lvar_init
