@@ -6,11 +6,10 @@
   .text-center
     #graph_metadata{ 'data-type': 'column' }
 
-    %ul.nav.nav-pills.benchmark_navbar
-      - %w[Headline Other Micro].each_with_index do |category, index|
-        %li.nav-item
-          %a.nav-link.activate-chart{ href: '#', 'data-id': category.downcase, class: ('active' if index == 0) }= category
-      %li.nav-item{ style: 'clear: both; float: left; display: block; position: relative;' }
+    %div
+      .category_switcher
+        - %w[Headline Other Micro].each_with_index do |category, index|
+          %button.category_switch.activate-chart{ type: 'button', 'data-id': category.downcase, class: ('active' if index == 0) }= category
 
   - %w[headline other micro].each do |category|
     .benchmark_graph{ id: category }
@@ -116,9 +115,9 @@
     // Switch active tab and render it
     $('.activate-chart').on('click', function(event) {
       event.preventDefault();
-      $('.benchmark_navbar .nav-link').removeClass('active');
+      $('.category_switch').removeClass('active');
       $(this).addClass('active');
-      var id = $('.benchmark_navbar .nav-link.active').data('id');
+      var id = $(this).data('id');
       var graphElement = $('#' + id);
       activateChart(graphElement);
 
@@ -140,7 +139,7 @@
       var url = document.location.toString();
       if (url.match('#')) {
         var id = url.split('#')[1];
-        $('.benchmark_navbar .nav-link').removeClass('active');
+        $('.category_switch').removeClass('active');
         activateChart($('.benchmark_graph#' + id));
         $('.activate-chart[data-id=' + id + ']').addClass('active');
       }
