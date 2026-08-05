@@ -19,6 +19,13 @@
   $(function() {
     var dashboard = {};
 
+    // Link each benchmark name to its graph on the ruby-bench page
+    var benchmarkLinkLabels = {
+      formatter: function() {
+        return '<a href="/benchmarks/ruby-bench.html#' + this.value + '">' + this.value + '</a>';
+      }
+    };
+
     function plotSpeedChart(graphElement, category) {
       var graphType = $('#graph_metadata').data('type');
       var series = [{
@@ -41,7 +48,7 @@
         chart: { zoomType: 'x', type: graphType },
         title: { text: 'Speed (higher is better)' },
         yAxis: { min: 0, title: { text: 'times' } },
-        xAxis: { categories: categories },
+        xAxis: { categories: categories, labels: benchmarkLinkLabels },
         tooltip: {
           formatter: function() {
             var prefix = '<span style="font-size: 10px">' + this.x + '</span><br/>' +
@@ -86,7 +93,7 @@
             label: { text: 'baseline', style: { color: '#666' } }
           }]
         },
-        xAxis: { categories: categories },
+        xAxis: { categories: categories, labels: benchmarkLinkLabels },
         tooltip: {
           formatter: function() {
             var prefix = '<span style="font-size: 10px">' + this.x + '</span><br/>' +
