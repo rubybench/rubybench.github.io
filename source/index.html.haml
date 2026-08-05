@@ -23,22 +23,6 @@
           - benchmarks.each do |benchmark|
             = link_to benchmark, "/benchmarks/ruby-bench.html##{benchmark}"
 
-%h2.text-center ruby/ruby
-%h4.text-center Ruby core benchmarks
-
-%table.large-margin.benchmarks-table.table.table-striped
-  %thead
-    %tr
-      %th Category
-      %th Benchmarks
-  %tbody
-    - ruby_core_benchmarks.each do |category, benchmarks|
-      %tr
-        %td= category
-        %td.margined-links
-          - benchmarks.each do |benchmark|
-            = link_to benchmark.split('_', 2).last.gsub(/_/, ' '), "/benchmarks/ruby.html##{benchmark}"
-
 %h2.text-center ruby-bench (Ractor)
 %h4.text-center Parallel execution benchmarks
 
@@ -56,3 +40,19 @@
       %td.margined-links
         - all_ractor_benchmarks.each do |benchmark, meta|
           = link_to benchmark, "/benchmarks/ractor.html##{benchmark.gsub('/', '_')}"
+
+%h2.text-center ruby/ruby
+%h4.text-center Ruby core benchmarks
+
+%table.large-margin.benchmarks-table.table.table-striped
+  %thead
+    %tr
+      %th Category
+      %th Benchmarks
+  %tbody
+    - ruby_core_benchmarks.each do |category, benchmarks|
+      %tr
+        %td= category
+        %td.margined-links
+          - benchmarks.each do |benchmark|
+            = link_to benchmark.split('_', 2).last.gsub(/_/, ' '), "/benchmarks/ruby.html##{benchmark}"
