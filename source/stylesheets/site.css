@@ -43,6 +43,37 @@ a:hover {
   margin: 60px auto;
 }
 
+/* Segmented control for switching benchmark categories, styled differently
+   from the benchmark nav-pills below it */
+.category_switcher {
+  display: inline-flex;
+  margin-top: 24px;
+  padding: 4px;
+  background-color: #eef1f4;
+  border-radius: 999px;
+}
+
+.category_switcher .category_switch {
+  border: 0;
+  background-color: transparent;
+  padding: 6px 24px;
+  border-radius: 999px;
+  color: rgba(0, 0, 0, 0.55);
+  cursor: pointer;
+  transition: color 0.15s ease, background-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.category_switcher .category_switch:hover {
+  color: rgba(0, 0, 0, 0.8);
+}
+
+.category_switcher .category_switch.active {
+  background-color: #fff;
+  color: rgba(0, 0, 0, 0.85);
+  font-weight: 600;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+}
+
 .benchmark_page .nav.benchmark_navbar {
   margin-top: 20px;
   margin-bottom: 10px;

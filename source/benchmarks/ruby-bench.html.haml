@@ -1,11 +1,12 @@
 :ruby
   benchmarks = ruby_bench_benchmarks
-  category_benchmarks = %w[headline other micro].map do |category|
-    benchmarks.filter_map do |name, benchmark|
+  category_benchmarks = %w[headline other micro].to_h do |category|
+    names = benchmarks.filter_map do |name, benchmark|
       if benchmark.fetch('category', 'other') == category
         name
       end
     end
+    [category, names]
   end
 .benchmark_page
   .text-center
@@ -15,16 +16,20 @@
 
     #graph_metadata{ 'data-type': 'line' }
 
+    %div
+      .category_switcher
+        - category_benchmarks.each_key do |category|
+          %button.category_switch{ type: 'button', 'data-category': category }= category.capitalize
+
     %ul.nav.nav-pills.benchmark_navbar
-      - category_benchmarks.each do |benchmarks|
-        - benchmarks.each_with_index do |benchmark, index|
-          %li.nav-item
+      - category_benchmarks.each do |category, names|
+        - names.each do |benchmark|
+          %li.nav-item{ 'data-category': category }
             %a.nav-link.activate-chart{ href: '#', 'data-id': benchmark }= benchmark
-        %li.nav-item{ style: 'clear: both; float: left; display: block; position: relative;' }
 
   - graph_data = { 'data-ruby-versions': [], 'data-vm-values': [], 'data-zjit-values': [], 'data-yjit-values': [] }
-  - category_benchmarks.each do |benchmarks|
-    - benchmarks.each do |benchmark|
+  - category_benchmarks.each_value do |names|
+    - names.each do |benchmark|
       .benchmark_graph{ graph_data, id: benchmark, 'data-name': benchmark }
 
 .benchmark_page
@@ -108,8 +113,23 @@
       }
     };
 
+    // Show only the benchmark tabs of the given category
+    function showCategory(category) {
+      $('.category_switch').removeClass('active');
+      $('.category_switch[data-category="' + category + '"]').addClass('active');
+      $('.benchmark_navbar .nav-item[data-category]').hide();
+      $('.benchmark_navbar .nav-item[data-category="' + category + '"]').show();
+    }
+
     function activateChart(graphElement) {
       var benchmark = graphElement.attr('id');
+
+      // Keep the category switcher in sync with the benchmark being shown
+      var category = $('.activate-chart[data-id="' + benchmark + '"]').closest('.nav-item').data('category');
+      if (category) {
+        showCategory(category);
+      }
+
       $.get('https://raw.githubusercontent.com/rubybench/rubybench-data/main/ruby-bench/' + benchmark + '.yml')
         .done(function (data) {
           RubyBench.showOnlyGraph(graphElement);
@@ -156,10 +176,21 @@
         });
     };
 
+    // Switch category and jump to its first benchmark
+    showCategory('headline');
+    $('.category_switch').on('click', function() {
+      var category = $(this).data('category');
+      showCategory(category);
+      var active = $('.benchmark_navbar .nav-link.active');
+      if (active.closest('.nav-item').data('category') !== category) {
+        $('.benchmark_navbar .nav-item[data-category="' + category + '"] .nav-link').first().trigger('click');
+      }
+    });
+
     // Setup navigation
     var navigation = RubyBench.setupBenchmarkNavigation({
       activateChart: activateChart,
-      defaultBenchmark: $('.benchmark_graph##{category_benchmarks.first.first}'),
+      defaultBenchmark: $('.benchmark_graph##{category_benchmarks.values.flatten.first}'),
       enableKeyboardNavigation: true
     });
 
