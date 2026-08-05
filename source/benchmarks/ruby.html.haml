@@ -135,41 +135,27 @@
       });
     };
 
-    $('.activate-chart').on('click', function(event) {
-      event.preventDefault();
-      $('.benchmark_navbar li').removeClass('active');
-      $(this).closest('li').addClass('active');
-      var id = $(this).data('id');
-      var graphElement = $("#" + id);
-      activateChart(graphElement);
-      window.location.hash = id;
-    });
-
     // Switch category and jump to its first benchmark
     showCategory('#{category_benchmarks.keys.first.downcase}');
     $('.category_switch').on('click', function() {
       var category = $(this).data('category');
       showCategory(category);
-      var active = $('.benchmark_navbar li.active');
-      if (active.data('category') !== category) {
-        $('.benchmark_navbar .nav-item[data-category="' + category + '"] .activate-chart').first().trigger('click');
+      var active = $('.benchmark_navbar .nav-link.active');
+      if (active.closest('.nav-item').data('category') !== category) {
+        $('.benchmark_navbar .nav-item[data-category="' + category + '"] .nav-link').first().trigger('click');
       }
+    });
+
+    // Setup navigation
+    var navigation = RubyBench.setupBenchmarkNavigation({
+      activateChart: activateChart,
+      defaultBenchmark: $('.benchmark_graph##{category_benchmarks.values.flatten.first}'),
+      enableKeyboardNavigation: true
     });
 
     // Load rubies first
     $.get('https://raw.githubusercontent.com/rubybench/rubybench-data/master/rubies.yml').done(function (data) {
       rubies = jsyaml.load(data);
-
-      // Activate a benchmark result
-      var url = document.location.toString();
-      if (url.match('#')) {
-        var id = url.split('#')[1];
-        $('.benchmark_navbar li').removeClass('active');
-        activateChart($('.benchmark_graph#' + id));
-        $('.activate-chart[data-id=' + id + ']').closest('li').addClass('active');
-      }
-      else {
-        activateChart($('.benchmark_graph##{category_benchmarks.values.flatten.first}'));
-      }
+      navigation.handleHashNavigation();
     });
   });
