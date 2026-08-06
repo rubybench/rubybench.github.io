@@ -30,7 +30,7 @@
   - graph_data = { 'data-ruby-versions': [], 'data-vm-values': [], 'data-zjit-values': [], 'data-yjit-values': [] }
   - category_benchmarks.each_value do |names|
     - names.each do |benchmark|
-      .benchmark_graph{ graph_data, id: benchmark, 'data-name': benchmark }
+      .benchmark_graph.highcharts-light{ graph_data, id: benchmark, 'data-name': benchmark }
 
 .benchmark_page
   .text-center
