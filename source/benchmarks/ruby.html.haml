@@ -21,7 +21,7 @@
   - graph_data = { 'data-ruby-versions': [], 'data-vm-values': [] }
   - category_benchmarks.each_value do |benchmarks|
     - benchmarks.each do |benchmark|
-      .benchmark_graph{ graph_data, id: benchmark, 'data-name': benchmark }
+      .benchmark_graph.highcharts-light{ graph_data, id: benchmark, 'data-name': benchmark }
 
 :javascript
   $(function() {

@@ -18,7 +18,7 @@
 
   - graph_data = { 'data-dates': [], 'data-baseline-values': [], 'data-yjit-values': [], 'data-zjit-values': [] }
   - all_ractor_benchmarks.each do |name, meta|
-    .benchmark_graph{ graph_data, id: name.gsub('/', '_'), 'data-name': name }
+    .benchmark_graph.highcharts-light{ graph_data, id: name.gsub('/', '_'), 'data-name': name }
 
 .benchmark_page
   .text-center
