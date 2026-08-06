@@ -54,7 +54,7 @@
 
       Highcharts.setOptions({ lang: { thousandsSep: '' } });
       Highcharts.chart(graphElement.attr('id'), {
-        chart: { zoomType: 'x', type: graphType },
+        chart: { zoomType: 'xy', type: graphType },
         title: { text: 'Speed (higher is better)' },
         yAxis: { min: 0, maxPadding: 0, title: { text: 'times' } },
         xAxis: { categories: categories, labels: benchmarkLinkLabels },
