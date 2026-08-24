@@ -1,4 +1,53 @@
 ---
+- week_beginning: '2026-08-24'
+  guid: rubybench-week-2026-08-24
+  link: https://rubybench.github.io/
+  zjit:
+    current_speedup: 7.99
+    previous_speedup: 7.96
+    change_pct: 0.3
+    improvements:
+    - name: splay
+      current: 1.31
+      previous: 1.01
+      change: 29.4
+    - name: setivar_young
+      current: 3.13
+      previous: 2.64
+      change: 18.4
+    - name: graphql-native
+      current: 1.26
+      previous: 1.08
+      change: 16.5
+    - name: setivar_object
+      current: 2.95
+      previous: 2.64
+      change: 11.5
+    - name: object-new
+      current: 7.8
+      previous: 6.99
+      change: 11.5
+    regressions:
+    - name: getivar
+      current: 13.12
+      previous: 14.97
+      change: 12.4
+    - name: protoboeuf-encode
+      current: 3.66
+      previous: 3.99
+      change: 8.1
+    - name: fib
+      current: 7.9
+      previous: 8.58
+      change: 7.9
+    - name: nbody
+      current: 2.99
+      previous: 3.18
+      change: 6.1
+    - name: attr_accessor
+      current: 18.81
+      previous: 19.68
+      change: 4.4
 - week_beginning: '2026-08-17'
   guid: rubybench-week-2026-08-17
   link: https://rubybench.github.io/
@@ -930,52 +979,3 @@
       current: 1.38
       previous: 1.45
       change: 4.7
-- week_beginning: '2026-04-06'
-  guid: rubybench-week-2026-04-06
-  link: https://rubybench.github.io/
-  zjit:
-    current_speedup: 4.23
-    previous_speedup: 3.45
-    change_pct: 22.7
-    improvements:
-    - name: structaset
-      current: 38.55
-      previous: 14.28
-      change: 169.9
-    - name: attr_accessor
-      current: 20.14
-      previous: 11.56
-      change: 74.2
-    - name: structaref
-      current: 20.16
-      previous: 12.26
-      change: 64.5
-    - name: getivar
-      current: 14.93
-      previous: 9.59
-      change: 55.7
-    - name: send_bmethod
-      current: 28.27
-      previous: 20.75
-      change: 36.2
-    regressions:
-    - name: getivar-module
-      current: 1.38
-      previous: 7.45
-      change: 81.5
-    - name: optcarrot
-      current: 1.9
-      previous: 2.95
-      change: 35.6
-    - name: splay
-      current: 1.02
-      previous: 1.14
-      change: 10.5
-    - name: rubyboy
-      current: 0.94
-      previous: 1.04
-      change: 9.3
-    - name: graphql
-      current: 1.6
-      previous: 1.73
-      change: 7.7
