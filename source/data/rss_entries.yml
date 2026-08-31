@@ -1,4 +1,53 @@
 ---
+- week_beginning: '2026-08-31'
+  guid: rubybench-week-2026-08-31
+  link: https://rubybench.github.io/
+  zjit:
+    current_speedup: 9.69
+    previous_speedup: 8.32
+    change_pct: 16.5
+    improvements:
+    - name: 30k_variables
+      current: 121.79
+      previous: 27.35
+      change: 345.3
+    - name: protoboeuf
+      current: 4.58
+      previous: 3.86
+      change: 18.5
+    - name: fluentd
+      current: 1.13
+      previous: 0.98
+      change: 15.6
+    - name: rubocop
+      current: 1.37
+      previous: 1.23
+      change: 11.0
+    - name: protoboeuf-encode
+      current: 3.94
+      previous: 3.58
+      change: 10.3
+    regressions:
+    - name: getivar-module
+      current: 9.73
+      previous: 11.45
+      change: 15.1
+    - name: object-new
+      current: 6.98
+      previous: 8.0
+      change: 12.8
+    - name: attr_accessor
+      current: 18.83
+      previous: 20.1
+      change: 6.3
+    - name: 30k_methods
+      current: 25.87
+      previous: 27.11
+      change: 4.6
+    - name: setivar
+      current: 47.13
+      previous: 49.19
+      change: 4.2
 - week_beginning: '2026-08-24'
   guid: rubybench-week-2026-08-24
   link: https://rubybench.github.io/
@@ -930,52 +979,3 @@
       current: 20.06
       previous: 21.81
       change: 8.0
-- week_beginning: '2026-04-13'
-  guid: rubybench-week-2026-04-13
-  link: https://rubybench.github.io/
-  zjit:
-    current_speedup: 4.29
-    previous_speedup: 4.23
-    change_pct: 1.5
-    improvements:
-    - name: getivar-module
-      current: 11.55
-      previous: 1.51
-      change: 665.5
-    - name: activerecord
-      current: 1.66
-      previous: 1.5
-      change: 10.4
-    - name: erubi-rails
-      current: 1.78
-      previous: 1.62
-      change: 10.2
-    - name: send_cfunc_block
-      current: 2.94
-      previous: 2.71
-      change: 8.8
-    - name: cfunc_itself
-      current: 8.18
-      previous: 7.66
-      change: 6.8
-    regressions:
-    - name: setivar
-      current: 19.94
-      previous: 24.87
-      change: 19.8
-    - name: graphql
-      current: 1.31
-      previous: 1.62
-      change: 19.2
-    - name: splay
-      current: 0.92
-      previous: 1.01
-      change: 9.1
-    - name: throw
-      current: 0.9
-      previous: 0.97
-      change: 7.4
-    - name: ruby-lsp
-      current: 1.38
-      previous: 1.45
-      change: 4.7
