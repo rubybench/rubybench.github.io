@@ -11,6 +11,37 @@ var RubyBench = (function() {
     return String(year) + '-' + String(month).padStart(2, '0') + '-' + String(day).padStart(2, '0');
   }
 
+  // The category preceding `value` on a categories axis, or null at the start
+  function previousCategory(categories, value) {
+    if (!categories) {
+      return null;
+    }
+    var index = categories.indexOf(String(value));
+    if (index < 0) {
+      index = categories.indexOf(Number(value));
+    }
+    if (index <= 0) {
+      return null;
+    }
+    return categories[index - 1];
+  }
+
+  // GitHub URL for the revision benchmarked on `date`. When the revision of the
+  // previous data point is known, link to the diff between them instead of to a
+  // single commit. Returns null when the revision of `date` is unknown.
+  function revisionUrl(rubies, date, previousDate) {
+    var sha = rubies[date];
+    if (!sha) {
+      return null;
+    }
+
+    var previousSha = previousDate === null || previousDate === undefined ? null : rubies[previousDate];
+    if (previousSha && previousSha !== sha) {
+      return 'https://github.com/ruby/ruby/compare/' + previousSha + '...' + sha;
+    }
+    return 'https://github.com/ruby/ruby/commit/' + sha;
+  }
+
   // Initialize Highcharts defaults
   function initHighchartsDefaults() {
     Highcharts.setOptions({
@@ -217,6 +248,8 @@ var RubyBench = (function() {
   // Public API
   return {
     formatDate: formatDate,
+    previousCategory: previousCategory,
+    revisionUrl: revisionUrl,
     initHighchartsDefaults: initHighchartsDefaults,
     createBaseChartConfig: createBaseChartConfig,
     plotChart: plotChart,
