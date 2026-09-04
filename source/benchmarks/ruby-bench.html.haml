@@ -75,13 +75,18 @@
         categories: graphElement.data('ruby-versions'),
         xAxisLabels: {
           formatter: function() {
-            var date = Number(this.value);
-            var sha = rubies[date];
-            if (sha) {
-              return '<a href="https://github.com/ruby/ruby/commit/' + sha + '">' + RubyBench.formatDate(date) + '</a>';
+            var url = RubyBench.commitRangeUrl(rubies, this.axis.categories, this.pos);
+            if (url) {
+              return '<a href="' + url + '">' + RubyBench.formatDate(this.value) + '</a>';
             } else {
-              return RubyBench.formatDate(date);
+              return RubyBench.formatDate(this.value);
             }
+          }
+        },
+        onPointClick: function() {
+          var url = RubyBench.commitRangeUrl(rubies, this.series.xAxis.categories, this.x);
+          if (url) {
+            window.open(url, '_blank');
           }
         },
         tooltip: {

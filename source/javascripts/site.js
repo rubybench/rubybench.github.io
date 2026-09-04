@@ -11,6 +11,24 @@ var RubyBench = (function() {
     return String(year) + '-' + String(month).padStart(2, '0') + '-' + String(day).padStart(2, '0');
   }
 
+  // GitHub URL showing the ruby/ruby changes that landed between the
+  // previous charted day's commit and this day's commit. Falls back to the
+  // single commit when there is no earlier sha to compare against.
+  function commitRangeUrl(rubies, categories, index) {
+    var sha = rubies[Number(categories[index])];
+    if (!sha) {
+      return null;
+    }
+    var prevSha = null;
+    for (var i = index - 1; i >= 0 && !prevSha; i--) {
+      prevSha = rubies[Number(categories[i])];
+    }
+    if (prevSha && prevSha !== sha) {
+      return 'https://github.com/ruby/ruby/compare/' + prevSha + '...' + sha;
+    }
+    return 'https://github.com/ruby/ruby/commit/' + sha;
+  }
+
   // Initialize Highcharts defaults
   function initHighchartsDefaults() {
     Highcharts.setOptions({
@@ -63,6 +81,14 @@ var RubyBench = (function() {
     // Add legend if provided
     if (options.legend) {
       defaultConfig.legend = options.legend;
+    }
+
+    // Make points clickable if a handler is provided
+    if (options.onPointClick) {
+      defaultConfig.plotOptions.series.cursor = 'pointer';
+      defaultConfig.plotOptions.series.point = {
+        events: { click: options.onPointClick }
+      };
     }
 
     // Add plot lines if provided
@@ -217,6 +243,7 @@ var RubyBench = (function() {
   // Public API
   return {
     formatDate: formatDate,
+    commitRangeUrl: commitRangeUrl,
     initHighchartsDefaults: initHighchartsDefaults,
     createBaseChartConfig: createBaseChartConfig,
     plotChart: plotChart,
