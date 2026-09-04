@@ -68,19 +68,17 @@
         color: '#e2c13e'
       }];
 
-      var categories = graphElement.data('ruby-versions');
-
       var config = RubyBench.createBaseChartConfig(graphElement, {
         graphType: graphType,
         title: name,
         yAxisTitle: unit,
-        categories: categories,
+        categories: graphElement.data('ruby-versions'),
         xAxisLabels: {
           formatter: function() {
             var date = Number(this.value);
-            var url = RubyBench.revisionUrl(rubies, date, RubyBench.previousCategory(categories, this.value));
-            if (url) {
-              return '<a href="' + url + '">' + RubyBench.formatDate(date) + '</a>';
+            var sha = rubies[date];
+            if (sha) {
+              return '<a href="https://github.com/ruby/ruby/commit/' + sha + '">' + RubyBench.formatDate(date) + '</a>';
             } else {
               return RubyBench.formatDate(date);
             }
