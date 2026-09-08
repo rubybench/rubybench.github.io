@@ -49,7 +49,7 @@
     function plotChart(graphElement, metricType) {
       var graphType = $('#graph_metadata').data('type');
       var name = graphElement.data('name');
-      var unit = 'seconds';
+      var unit = 'ms';
       if (metricType == 'Speedup') {
         unit = 'times';
       }
