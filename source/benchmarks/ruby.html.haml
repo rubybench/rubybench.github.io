@@ -70,12 +70,8 @@
           labels: {
             formatter: function() {
               var date = Number(this.value);
-              var url = RubyBench.revisionUrl(rubies, date, RubyBench.previousCategory(categories, this.value));
-              if (url) {
-                return '<a href="' + url + '">' + formatDate(date) + '</a>';
-              } else {
-                return formatDate(date);
-              }
+              var sha = rubies[date];
+              return '<a href="https://github.com/ruby/ruby/commit/' + sha + '">' + formatDate(date) + '</a>';
             }
           }
         },
