@@ -1,4 +1,53 @@
 ---
+- week_beginning: '2026-09-21'
+  guid: rubybench-week-2026-09-21
+  link: https://rubybench.github.io/
+  zjit:
+    current_speedup: 10.13
+    previous_speedup: 9.75
+    change_pct: 3.9
+    improvements:
+    - name: setivar
+      current: 55.36
+      previous: 41.63
+      change: 33.0
+    - name: structaset
+      current: 36.18
+      previous: 28.39
+      change: 27.4
+    - name: activerecord
+      current: 2.32
+      previous: 1.87
+      change: 24.0
+    - name: rubyboy
+      current: 2.44
+      previous: 2.05
+      change: 19.2
+    - name: block_methods
+      current: 6.04
+      previous: 5.15
+      change: 17.2
+    regressions:
+    - name: loops-times
+      current: 5.56
+      previous: 6.73
+      change: 17.4
+    - name: getivar-module
+      current: 9.26
+      previous: 10.4
+      change: 10.9
+    - name: tinygql
+      current: 2.52
+      previous: 2.74
+      change: 8.2
+    - name: object-new
+      current: 6.26
+      previous: 6.69
+      change: 6.5
+    - name: throw
+      current: 0.82
+      previous: 0.86
+      change: 5.0
 - week_beginning: '2026-09-14'
   guid: rubybench-week-2026-09-14
   link: https://rubybench.github.io/
@@ -930,52 +979,3 @@
       current: 2.49
       previous: 2.64
       change: 5.7
-- week_beginning: '2026-05-04'
-  guid: rubybench-week-2026-05-04
-  link: https://rubybench.github.io/
-  zjit:
-    current_speedup: 4.27
-    previous_speedup: 4.21
-    change_pct: 1.5
-    improvements:
-    - name: object-new-no-escape
-      current: 4.23
-      previous: 3.78
-      change: 11.7
-    - name: fluentd
-      current: 1.23
-      previous: 1.11
-      change: 10.5
-    - name: cfunc_itself
-      current: 7.07
-      previous: 6.51
-      change: 8.5
-    - name: graphql
-      current: 1.37
-      previous: 1.26
-      change: 8.4
-    - name: addressable-join
-      current: 1.36
-      previous: 1.26
-      change: 7.9
-    regressions:
-    - name: throw
-      current: 0.77
-      previous: 0.94
-      change: 17.8
-    - name: object-new
-      current: 3.28
-      previous: 3.56
-      change: 8.0
-    - name: getivar
-      current: 13.66
-      previous: 14.72
-      change: 7.2
-    - name: blurhash
-      current: 2.18
-      previous: 2.28
-      change: 4.6
-    - name: setivar_object
-      current: 1.94
-      previous: 2.03
-      change: 4.5
