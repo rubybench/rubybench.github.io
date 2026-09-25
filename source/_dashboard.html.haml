@@ -28,12 +28,14 @@
   $(function() {
     var dashboard = {};
 
-    // Link each benchmark name to its graph on the ruby-bench page
-    var benchmarkLinkLabels = {
-      formatter: function() {
-        return '<a href="/benchmarks/ruby-bench.html#' + this.value + '">' + this.value + '</a>';
-      }
-    };
+    // Link each benchmark name to its graph on the given ruby-bench page
+    function benchmarkLinkLabels(page) {
+      return {
+        formatter: function() {
+          return '<a href="/benchmarks/' + page + '#' + this.value + '">' + this.value + '</a>';
+        }
+      };
+    }
 
     function plotSpeedChart(graphElement, category) {
       var graphType = $('#graph_metadata').data('type');
@@ -57,7 +59,7 @@
         chart: { zoomType: 'xy', type: graphType },
         title: { text: 'Speed (higher is better)' },
         yAxis: { min: 0, maxPadding: 0, title: { text: 'times' } },
-        xAxis: { categories: categories, labels: benchmarkLinkLabels },
+        xAxis: { categories: categories, labels: benchmarkLinkLabels('ruby-bench.html') },
         tooltip: {
           formatter: function() {
             var prefix = '<span style="font-size: 10px">' + this.x + '</span><br/>' +
@@ -103,15 +105,12 @@
             label: { text: 'baseline', style: { color: '#666' } }
           }]
         },
-        xAxis: { categories: categories, labels: benchmarkLinkLabels },
+        xAxis: { categories: categories, labels: benchmarkLinkLabels('ruby-bench-memory.html') },
         tooltip: {
           formatter: function() {
             var prefix = '<span style="font-size: 10px">' + this.x + '</span><br/>' +
               '<span style="color:' + this.color + '">●</span> ' + this.series.name + ': ';
-            var pct = ((this.y - 1) * 100).toFixed(0);
-            var label = this.y === 1 ? 'same as baseline' :
-              (this.y > 1 ? '+' + pct + '% memory' : pct + '% memory');
-            return prefix + '<b>' + label + '</b>';
+            return prefix + '<b>' + RubyBench.formatMemoryRatio(this.y) + '</b>';
           }
         },
         series: series,

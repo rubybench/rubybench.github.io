@@ -10,11 +10,13 @@
   end
 .benchmark_page
   .text-center
-    %h1 ruby-bench
+    %h1 ruby-bench (Memory)
 
     = github_link 'ruby/ruby-bench'
     ·
-    = link_to 'Memory', '/benchmarks/ruby-bench-memory.html', class: 'page_switch'
+    = link_to 'Speed', '/benchmarks/ruby-bench.html', class: 'page_switch'
+
+    %p.text-muted RSS after the benchmark iterations finish (lower is better)
 
     #graph_metadata{ 'data-type': 'line' }
 
@@ -38,11 +40,11 @@
   .text-center
     %div
       %label.form-check.form-check-inline.metric_type
-        %input.form-check-input{ type: 'radio', name: 'metric_type', value: 'Speedup', checked: true }
-        Speedup
+        %input.form-check-input{ type: 'radio', name: 'metric_type', value: 'MiB', checked: true }
+        MiB
       %label.form-check.form-check-inline.metric_type
-        %input.form-check-input{ type: 'radio', name: 'metric_type', value: 'Time' }
-        Time
+        %input.form-check-input{ type: 'radio', name: 'metric_type', value: 'Relative' }
+        Relative
 
 :javascript
   $(function() {
@@ -51,9 +53,9 @@
     function plotChart(graphElement, metricType) {
       var graphType = $('#graph_metadata').data('type');
       var name = graphElement.data('name');
-      var unit = 'ms';
-      if (metricType == 'Speedup') {
-        unit = 'times';
+      var unit = 'MiB';
+      if (metricType == 'Relative') {
+        unit = 'relative to no-JIT';
       }
 
       var series = [{
@@ -101,10 +103,10 @@
             }
             prefix += '</span><br/>' +
               '<span style="color:' + this.color + '">●</span> ' + this.series.name + ': ';
-            if (metricType == 'Speedup') {
-              return prefix + '<b>' + this.y.toFixed(2) + 'x faster</b>';
+            if (metricType == 'Relative') {
+              return prefix + '<b>' + RubyBench.formatMemoryRatio(this.y) + '</b>';
             } else {
-              return prefix + '<b>' + this.y + 's</b>';
+              return prefix + '<b>' + this.y.toFixed(1) + ' MiB</b>';
             }
           }
         },
@@ -137,7 +139,7 @@
         showCategory(category);
       }
 
-      $.get('https://raw.githubusercontent.com/rubybench/rubybench-data/main/ruby-bench/' + benchmark + '.yml')
+      $.get('https://raw.githubusercontent.com/rubybench/rubybench-data/main/ruby-bench-rss/' + benchmark + '.yml')
         .done(function (data) {
           RubyBench.showOnlyGraph(graphElement);
 
@@ -154,10 +156,10 @@
               var yjit_result = date_results[date][1];
               var zjit_result = date_results[date][2];
               ruby_versions.push(date);
-              if (metricType == 'Speedup') {
+              if (metricType == 'Relative') {
                 vm_values.push(vm_result ? 1 : null);
-                yjit_values.push(yjit_result && vm_result ? vm_result / yjit_result : null);
-                zjit_values.push(zjit_result && vm_result ? vm_result / zjit_result : null);
+                yjit_values.push(yjit_result && vm_result ? yjit_result / vm_result : null);
+                zjit_values.push(zjit_result && vm_result ? zjit_result / vm_result : null);
               } else {
                 vm_values.push(vm_result || null);
                 yjit_values.push(yjit_result || null);
@@ -173,13 +175,13 @@
 
             plotChart(graphElement, metricType);
           } catch(e) {
-            console.error('Error processing benchmark data:', e);
-            RubyBench.showError(graphElement, 'Error loading benchmark data: ' + e.message);
+            console.error('Error processing memory data:', e);
+            RubyBench.showError(graphElement, 'Error loading memory data: ' + e.message);
           }
         })
         .fail(function(xhr) {
-          console.error('Failed to load benchmark data:', xhr.status);
-          RubyBench.showError(graphElement, 'Failed to load benchmark data (HTTP ' + xhr.status + ')');
+          console.error('Failed to load memory data:', xhr.status);
+          RubyBench.showError(graphElement, 'Failed to load memory data (HTTP ' + xhr.status + ')');
         });
     };
 

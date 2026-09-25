@@ -29,6 +29,23 @@ var RubyBench = (function() {
     return 'https://github.com/ruby/ruby/commit/' + sha;
   }
 
+  // Describe a memory ratio relative to no-JIT, e.g. 1.12 -> "+12% memory"
+  function formatMemoryRatio(ratio) {
+    var pct = ((ratio - 1) * 100).toFixed(0);
+    if (ratio === 1) {
+      return 'same as baseline';
+    }
+    return (ratio > 1 ? '+' + pct : pct) + '% memory';
+  }
+
+  // Keep the current benchmark (the URL hash) when following a .page_switch
+  // link to the same benchmark on another page, e.g. speed <-> memory
+  function setupPageSwitchLinks() {
+    $('.page_switch').on('click', function() {
+      this.hash = window.location.hash;
+    });
+  }
+
   // Initialize Highcharts defaults
   function initHighchartsDefaults() {
     Highcharts.setOptions({
@@ -244,6 +261,8 @@ var RubyBench = (function() {
   return {
     formatDate: formatDate,
     commitRangeUrl: commitRangeUrl,
+    formatMemoryRatio: formatMemoryRatio,
+    setupPageSwitchLinks: setupPageSwitchLinks,
     initHighchartsDefaults: initHighchartsDefaults,
     createBaseChartConfig: createBaseChartConfig,
     plotChart: plotChart,
