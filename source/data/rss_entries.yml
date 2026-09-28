@@ -1,4 +1,53 @@
 ---
+- week_beginning: '2026-09-28'
+  guid: rubybench-week-2026-09-28
+  link: https://rubybench.github.io/
+  zjit:
+    current_speedup: 9.91
+    previous_speedup: 9.69
+    change_pct: 2.2
+    improvements:
+    - name: rubyboy
+      current: 3.18
+      previous: 2.55
+      change: 24.4
+    - name: 30k_variables
+      current: 123.49
+      previous: 100.06
+      change: 23.4
+    - name: setivar
+      current: 66.0
+      previous: 54.14
+      change: 21.9
+    - name: setivar_object
+      current: 3.26
+      previous: 2.85
+      change: 14.5
+    - name: send_rubyfunc_block
+      current: 16.99
+      previous: 14.94
+      change: 13.7
+    regressions:
+    - name: structaset
+      current: 0.36
+      previous: 33.54
+      change: 98.9
+    - name: rubocop
+      current: 0.97
+      previous: 1.45
+      change: 33.1
+    - name: mail
+      current: 0.92
+      previous: 1.24
+      change: 25.8
+    - name: 30k_ifelse
+      current: 6.28
+      previous: 7.4
+      change: 15.1
+    - name: activerecord
+      current: 2.05
+      previous: 2.29
+      change: 10.5
 - week_beginning: '2026-09-21'
   guid: rubybench-week-2026-09-21
   link: https://rubybench.github.io/
@@ -930,52 +979,3 @@
       current: 1.46
       previous: 1.59
       change: 8.3
-- week_beginning: '2026-05-11'
-  guid: rubybench-week-2026-05-11
-  link: https://rubybench.github.io/
-  zjit:
-    current_speedup: 4.37
-    previous_speedup: 4.29
-    change_pct: 1.7
-    improvements:
-    - name: splay
-      current: 1.28
-      previous: 0.95
-      change: 34.4
-    - name: setivar_object
-      current: 2.48
-      previous: 2.05
-      change: 21.2
-    - name: setivar
-      current: 23.17
-      previous: 20.71
-      change: 11.9
-    - name: erubi-rails
-      current: 1.83
-      previous: 1.64
-      change: 11.4
-    - name: setivar_young
-      current: 2.51
-      previous: 2.27
-      change: 10.4
-    regressions:
-    - name: str_concat
-      current: 1.91
-      previous: 2.18
-      change: 12.3
-    - name: chunky-png
-      current: 1.64
-      previous: 1.84
-      change: 10.5
-    - name: send_cfunc_block
-      current: 2.55
-      previous: 2.82
-      change: 9.9
-    - name: structaref
-      current: 18.73
-      previous: 20.07
-      change: 6.7
-    - name: gcbench
-      current: 2.49
-      previous: 2.64
-      change: 5.7
