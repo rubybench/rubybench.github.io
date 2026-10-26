@@ -1,4 +1,53 @@
 ---
+- week_beginning: '2026-10-26'
+  guid: rubybench-week-2026-10-26
+  link: https://rubybench.github.io/
+  zjit:
+    current_speedup: 11.06
+    previous_speedup: 10.56
+    change_pct: 4.8
+    improvements:
+    - name: send_rubyfunc_block
+      current: 44.5
+      previous: 16.83
+      change: 164.5
+    - name: 30k_methods
+      current: 27.94
+      previous: 23.01
+      change: 21.4
+    - name: protoboeuf-encode
+      current: 4.0
+      previous: 3.35
+      change: 19.2
+    - name: gcbench
+      current: 6.62
+      previous: 5.73
+      change: 15.5
+    - name: optcarrot
+      current: 4.6
+      previous: 4.05
+      change: 13.6
+    regressions:
+    - name: 30k_ifelse
+      current: 2.45
+      previous: 7.71
+      change: 68.2
+    - name: protoboeuf
+      current: 4.79
+      previous: 9.49
+      change: 49.6
+    - name: binarytrees
+      current: 3.62
+      previous: 4.37
+      change: 17.0
+    - name: setivar_object
+      current: 12.41
+      previous: 13.91
+      change: 10.8
+    - name: block_methods
+      current: 5.31
+      previous: 5.88
+      change: 9.7
 - week_beginning: '2026-10-19'
   guid: rubybench-week-2026-10-19
   link: https://rubybench.github.io/
@@ -930,52 +979,3 @@
       current: 2.1
       previous: 2.25
       change: 6.5
-- week_beginning: '2026-06-08'
-  guid: rubybench-week-2026-06-08
-  link: https://rubybench.github.io/
-  zjit:
-    current_speedup: 4.77
-    previous_speedup: 4.88
-    change_pct: -2.2
-    improvements:
-    - name: liquid-render
-      current: 1.66
-      previous: 1.47
-      change: 12.3
-    - name: rubykon
-      current: 1.74
-      previous: 1.57
-      change: 10.6
-    - name: loops-times
-      current: 2.05
-      previous: 1.91
-      change: 7.7
-    - name: lobsters
-      current: 1.31
-      previous: 1.24
-      change: 5.6
-    - name: setivar
-      current: 45.72
-      previous: 43.53
-      change: 5.0
-    regressions:
-    - name: getivar-module
-      current: 10.31
-      previous: 11.64
-      change: 11.4
-    - name: activerecord
-      current: 1.57
-      previous: 1.75
-      change: 10.2
-    - name: nbody
-      current: 2.74
-      previous: 3.03
-      change: 9.8
-    - name: 30k_ifelse
-      current: 2.7
-      previous: 2.99
-      change: 9.5
-    - name: getivar
-      current: 12.33
-      previous: 13.46
-      change: 8.4
